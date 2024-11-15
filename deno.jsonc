@@ -3,8 +3,14 @@
   "version": "0.0.0",
   "exports": {
     ".": "./src/applications/.exports.ts",
-    "./modifiers": "./src/modifiers/.exports.ts",
-    "./processors": "./src/processors/.exports.ts"
+    "./modifiers": "./src/applications/modifiers/.exports.ts",
+    "./processors": "./src/applications/processors/.exports.ts",
+    "./runtime": "./src/runtime/_/.exports.ts",
+    "./runtime/islands": "./src/runtime/islands/.exports.ts",
+    "./runtime/modifiers": "./src/runtime/modifiers/.exports.ts",
+    "./runtime/modules": "./src/runtime/modules/.exports.ts",
+    "./runtime/preact": "./src/runtime/preact/.exports.ts",
+    "./runtime/processors": "./src/runtime/processors/.exports.ts"
   },
   "tasks": {
     "build": "deno task build:fmt && deno task build:lint && deno task publish:check && deno task test",
@@ -16,7 +22,9 @@
     "test": "deno test -A tests/tests.ts --coverage=cov",
     "version": "deno run -A jsr:@fathym/common@0/build/version"
   },
-  "imports": {},
+  "imports": {
+    "preact": "npm:preact@10.20.1"
+  },
   "lint": {
     "rules": {
       "tags": ["recommended"],
@@ -28,6 +36,11 @@
         "require-await"
       ]
     }
+  },
+  "compilerOptions": {
+    "jsx": "react-jsx",
+    "jsxImportSource": "preact",
+    "lib": ["deno.ns", "deno.unstable", "dom", "esnext"]
   },
   "unstable": ["kv"],
   "lock": false

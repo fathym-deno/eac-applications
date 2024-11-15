@@ -7,6 +7,12 @@ export type EaCStripeProcessor = {
   /** The database lookup for the stripe processor. */
   DatabaseLookup: string;
 
+  /** Used to handle when the subscriptin is successful. */
+  HandleSubscription: (
+    planLookup: string,
+    priceLookup: string,
+  ) => Promise<unknown>;
+
   /** The license lookup for the stripe processor. */
   LicenseLookup: string;
 } & EaCProcessor<"Stripe">;

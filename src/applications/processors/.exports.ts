@@ -3,10 +3,12 @@
  * @module
  */
 export * from "./EaCAPIProcessor.ts";
+export * from "./EaCApplicationProcessorConfig.ts";
 export * from "./EaCDFSProcessor.ts";
 export * from "./EaCOAuthProcessor.ts";
 export * from "./EaCPreactAppProcessor.ts";
 export * from "./EaCProcessor.ts";
+export * from "./EaCProjectProcessorConfig.ts";
 export * from "./EaCProxyProcessor.ts";
 export * from "./EaCRedirectProcessor.ts";
 export * from "./EaCResponseProcessor.ts";
