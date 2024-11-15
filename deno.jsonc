@@ -9,6 +9,7 @@
     "./runtime/islands": "./src/runtime/islands/.exports.ts",
     "./runtime/modifiers": "./src/runtime/modifiers/.exports.ts",
     "./runtime/modules": "./src/runtime/modules/.exports.ts",
+    "./runtime/plugins": "./src/runtime/plugins/.exports.ts",
     "./runtime/preact": "./src/runtime/preact/.exports.ts",
     "./runtime/processors": "./src/runtime/processors/.exports.ts"
   },

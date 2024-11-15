@@ -523,7 +523,7 @@ to work, we need to add one more configuration for the database:
 const pluginConfig: EaCRuntimePluginConfig = {
   Name: "MyDemoPlugin",
   EaC: {
-    Databases: {
+    DenoKVs: {
       cache: {
         Details: {
           Type: "DenoKV",
@@ -749,7 +749,7 @@ export default class MyDemoPlugin implements EaCRuntimePlugin {
             } as EaCTracingModifierDetails,
           },
         },
-        Databases: {
+        DenoKVs: {
           cache: {
             Details: {
               Type: "DenoKV",
