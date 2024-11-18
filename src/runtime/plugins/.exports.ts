@@ -13,7 +13,7 @@ import FtmECPlgn from "./FathymEaCPlugin.ts";
 export const FathymEaCPlugin = FtmECPlgn;
 
 import FtmECSvcsPlgn from "./FathymEaCDenoKVPlugin.ts";
-export const FathymEaCServicesPlugin = FtmECSvcsPlgn;
+export const FathymEaCDenoKVPlugin = FtmECSvcsPlgn;
 
 import FtmMdfrHndlrPlgn from "./FathymModifierHandlerPlugin.ts";
 export const FathymModifierHandlerPlugin = FtmMdfrHndlrPlgn;
