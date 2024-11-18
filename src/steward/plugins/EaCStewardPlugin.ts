@@ -1,5 +1,11 @@
 import {
+  EaCAPIProcessor,
+  EaCApplicationAsCode,
   EaCDenoKVDetails,
+  EaCDistributedFileSystemDetails,
+  EaCJSRDistributedFileSystemDetails,
+  EaCLocalDistributedFileSystemDetails,
+  EaCProjectAsCode,
   EaCRuntimeConfig,
   EaCRuntimePlugin,
   EaCRuntimePluginConfig,
@@ -7,18 +13,8 @@ import {
   EverythingAsCode,
   EverythingAsCodeApplications,
   EverythingAsCodeDenoKV,
+  IoCContainer,
 } from "./.deps.ts";
-import {
-  EaCDistributedFileSystemDetails,
-  EaCJSRDistributedFileSystemDetails,
-  EaCLocalDistributedFileSystemDetails,
-} from "jsr:@fathym/eac-dfs@0.0.17";
-import {
-  EaCApplicationAsCode,
-  EaCProjectAsCode,
-} from "../../applications/.exports.ts";
-import { IoCContainer } from "jsr:@fathym/ioc@0.0.13";
-import { EaCAPIProcessor } from "../../applications/processors/.exports.ts";
 
 export type EaCStewardPluginOptions = {
   DFS?: {
