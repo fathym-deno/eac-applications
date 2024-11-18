@@ -12,7 +12,7 @@ import {
   EaCDistributedFileSystemDetails,
   EaCJSRDistributedFileSystemDetails,
   EaCLocalDistributedFileSystemDetails,
-} from "jsr:@fathym/eac-dfs@0.0.15";
+} from "jsr:@fathym/eac-dfs@0.0.17";
 import {
   EaCApplicationAsCode,
   EaCProjectAsCode,
@@ -120,7 +120,7 @@ export default class EaCStewardPlugin implements EaCRuntimePlugin {
                 DefaultFile: "index.ts",
                 Extensions: ["ts"],
                 WorkerPath: import.meta.resolve(
-                  "@fathym/eac/runtime/workers/local",
+                  "@fathym/eac-dfs/workers/local",
                 ),
               } as EaCLocalDistributedFileSystemDetails)
               : ({
@@ -131,7 +131,7 @@ export default class EaCStewardPlugin implements EaCRuntimePlugin {
                 DefaultFile: "index.ts",
                 Extensions: ["ts"],
                 WorkerPath: import.meta.resolve(
-                  "@fathym/eac/runtime/workers/jsr",
+                  "@fathym/eac-dfs/workers/jsr",
                 ),
               } as EaCJSRDistributedFileSystemDetails),
           },

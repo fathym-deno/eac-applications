@@ -1,1 +1,1 @@
-export { type EaCDetails, type EaCVertexDetails } from "jsr:@fathym/eac@0.2.14";
+export { type EaCDetails, type EaCVertexDetails } from "jsr:@fathym/eac@0.2.17";
