@@ -55,7 +55,7 @@ export default class EaCStewardPlugin implements EaCRuntimePlugin {
   }
 
   public Setup(_config: EaCRuntimeConfig): Promise<EaCRuntimePluginConfig> {
-    const stewardApiMetaPath = import.meta.resolve("../steward/api");
+    const stewardApiMetaPath = import.meta.resolve("../steward/api/eac");
 
     const fileScheme = "file:///";
 
