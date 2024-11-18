@@ -2,7 +2,7 @@ export {
   buildURLMatch,
   processCacheControlHeaders,
 } from "jsr:@fathym/common@0.2.167/http";
-export { merge } from "jsr:@fathym/common@0.2.167/merge";
+export { merge, mergeWithArrays } from "jsr:@fathym/common@0.2.167/merge";
 
 export { IoCContainer } from "jsr:@fathym/ioc@0.0.13";
 
@@ -43,3 +43,5 @@ export type {
 export type { ModifierHandlerResolver } from "../../runtime/modifiers/.exports.ts";
 
 export type { ProcessorHandlerResolver } from "../../runtime/processors/.exports.ts";
+
+export { FathymCorePlugin } from "../plugins/.exports.ts";

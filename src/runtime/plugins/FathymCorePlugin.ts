@@ -13,20 +13,18 @@ import FathymEaCPlugin from "./FathymEaCPlugin.ts";
 import FathymAzureContainerCheckPlugin from "./azure/FathymAzureContainerCheckPlugin.ts";
 
 export default class FathymCorePlugin implements EaCRuntimePlugin {
-  constructor(
-    protected loadEaC: (eacApiKey: string) => Promise<EverythingAsCode>,
-  ) {}
+  constructor() {}
 
   public Setup(_config: EaCRuntimeConfig): Promise<EaCRuntimePluginConfig> {
     const pluginConfig: EaCRuntimePluginConfig = {
-      Name: "FathymCorePlugin",
+      Name: FathymCorePlugin.name,
       IoC: new IoCContainer(),
       Plugins: [
         new FathymAzureContainerCheckPlugin(),
         new FathymProcessorHandlerPlugin(),
         new FathymModifierHandlerPlugin(),
         new FathymDFSFileHandlerPlugin(),
-        new FathymEaCPlugin(this.loadEaC),
+        new FathymEaCPlugin(),
         new FathymEaCDenoKVPlugin(),
       ],
     };

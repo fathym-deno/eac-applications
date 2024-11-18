@@ -19,7 +19,7 @@ import {
 export default class FathymProcessorHandlerPlugin implements EaCRuntimePlugin {
   public Setup(_config: EaCRuntimeConfig): Promise<EaCRuntimePluginConfig> {
     const pluginConfig: EaCRuntimePluginConfig = {
-      Name: "FathymProcessorHandlerPlugin",
+      Name: FathymProcessorHandlerPlugin.name,
       IoC: new IoCContainer(),
     };
 

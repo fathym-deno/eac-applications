@@ -1,3 +1,4 @@
+import { loadEaCStewardSvc } from "jsr:@fathym/eac@0.2.14/steward/clients";
 import {
   colors,
   djwt,
@@ -9,9 +10,7 @@ import {
 } from "./.deps.ts";
 
 export default class FathymEaCPlugin implements EaCRuntimePlugin {
-  constructor(
-    protected loadEaC: (eacApiKey: string) => Promise<EverythingAsCode>,
-  ) {}
+  constructor() {}
 
   public async Setup(
     config: EaCRuntimeConfig,
@@ -19,7 +18,7 @@ export default class FathymEaCPlugin implements EaCRuntimePlugin {
     const logger = config.LoggingProvider!.Package;
 
     const pluginConfig: EaCRuntimePluginConfig = {
-      Name: "FathymEaCPlugin",
+      Name: FathymEaCPlugin.name,
     };
 
     let eacApiKey = Deno.env.get("EAC_API_KEY");
@@ -46,13 +45,9 @@ export default class FathymEaCPlugin implements EaCRuntimePlugin {
 
         const { EnterpriseLookup } = payload as Record<string, string>;
 
-        // const eacSvc = await loadEaCSvc(eacApiKey);
+        const eacSvc = await loadEaCStewardSvc(eacApiKey);
 
-        // const eac = await eacSvc.Get(EnterpriseLookup as string);
-
-        const eac = await this.loadEaC(eacApiKey);
-
-        pluginConfig.EaC = eac;
+        pluginConfig.EaC = await eacSvc.EaC.Get(EnterpriseLookup as string);
 
         if (pluginConfig.EaC && !pluginConfig.EaC.EnterpriseLookup) {
           pluginConfig.EaC.EnterpriseLookup = EnterpriseLookup;

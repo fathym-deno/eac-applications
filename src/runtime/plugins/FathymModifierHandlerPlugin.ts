@@ -17,7 +17,7 @@ import {
 export default class FathymModifierHandlerPlugin implements EaCRuntimePlugin {
   public Setup(_config: EaCRuntimeConfig): Promise<EaCRuntimePluginConfig> {
     const pluginConfig: EaCRuntimePluginConfig = {
-      Name: "FathymModifierHandlerPlugin",
+      Name: FathymModifierHandlerPlugin.name,
       IoC: new IoCContainer(),
     };
 

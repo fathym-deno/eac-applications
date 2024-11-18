@@ -17,7 +17,7 @@ import {
 export default class FathymDFSFileHandlerPlugin implements EaCRuntimePlugin {
   public Setup(_config: EaCRuntimeConfig): Promise<EaCRuntimePluginConfig> {
     const pluginConfig: EaCRuntimePluginConfig = {
-      Name: "FathymDFSFileHandlerPlugin",
+      Name: FathymDFSFileHandlerPlugin.name,
       IoC: new IoCContainer(),
     };
 
