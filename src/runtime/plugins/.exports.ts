@@ -6,17 +6,17 @@ export const FathymCorePlugin = FtmCrPlgn;
 // import FtmDmPlgn from './FathymDemoPlugin.ts';
 // export const FathymDemoPlugin = FtmDmPlgn;
 
-import FtmDFSFlHndlrPlgn from "./FathymDFSFileHandlerPlugin.ts";
-export const FathymDFSFileHandlerPlugin = FtmDFSFlHndlrPlgn;
+import FDFHP from "./FathymDFSFileHandlerPlugin.ts";
+export const FathymDFSFileHandlerPlugin = FDFHP;
 
-import FtmECPlgn from "./FathymEaCPlugin.ts";
-export const FathymEaCPlugin = FtmECPlgn;
+import FEP from "./FathymEaCPlugin.ts";
+export const FathymEaCPlugin = FEP;
 
-import FtmECSvcsPlgn from "./FathymEaCDenoKVPlugin.ts";
-export const FathymEaCDenoKVPlugin = FtmECSvcsPlgn;
+import FEDKVP from "./FathymEaCDenoKVPlugin.ts";
+export const FathymEaCDenoKVPlugin = FEDKVP;
 
-import FtmMdfrHndlrPlgn from "./FathymModifierHandlerPlugin.ts";
-export const FathymModifierHandlerPlugin = FtmMdfrHndlrPlgn;
+import FMHP from "./FathymModifierHandlerPlugin.ts";
+export const FathymModifierHandlerPlugin = FMHP;
 
-import FtmPrcrHndlrPlgn from "./FathymProcessorHandlerPlugin.ts";
-export const FathymProcessorHandlerPlugin = FtmPrcrHndlrPlgn;
+import FPHP from "./FathymProcessorHandlerPlugin.ts";
+export const FathymProcessorHandlerPlugin = FPHP;
