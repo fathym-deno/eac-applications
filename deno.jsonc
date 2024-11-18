@@ -7,6 +7,7 @@
     "./processors": "./src/applications/processors/.exports.ts",
     "./runtime": "./src/runtime/_/.exports.ts",
     "./runtime/islands": "./src/runtime/islands/.exports.ts",
+    "./runtime/logging": "./src/runtime/logging/.exports.ts",
     "./runtime/modifiers": "./src/runtime/modifiers/.exports.ts",
     "./runtime/modules": "./src/runtime/modules/.exports.ts",
     "./runtime/plugins": "./src/runtime/plugins/.exports.ts",
