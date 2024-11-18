@@ -2,14 +2,14 @@ import {
   EaCRuntimeConfig,
   FathymCorePlugin,
   GenericEaCConfig,
-  mergeWithArrays,
+  merge,
 } from "./.deps.ts";
 import { EaCApplicationsRuntime } from "./EaCApplicationsRuntime.ts";
 
 export async function defineEaCApplicationsConfig(
   config: Partial<EaCRuntimeConfig> | Promise<Partial<EaCRuntimeConfig>>,
 ): Promise<EaCRuntimeConfig> {
-  return mergeWithArrays(
+  return merge(
     GenericEaCConfig(new EaCApplicationsRuntime(config as EaCRuntimeConfig)),
     {
       Plugins: [new FathymCorePlugin()],
