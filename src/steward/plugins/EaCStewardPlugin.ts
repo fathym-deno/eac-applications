@@ -55,7 +55,7 @@ export default class EaCStewardPlugin implements EaCRuntimePlugin {
   }
 
   public Setup(_config: EaCRuntimeConfig): Promise<EaCRuntimePluginConfig> {
-    const stewardApiMetaPath = import.meta.resolve("../steward/api/eac");
+    const stewardApiMetaPath = import.meta.resolve("../api/eac/");
 
     const fileScheme = "file:///";
 
@@ -107,7 +107,7 @@ export default class EaCStewardPlugin implements EaCRuntimePlugin {
           } as EaCApplicationAsCode,
         },
         DFSs: {
-          dfsLookup: {
+          [dfsLookup]: {
             Details: this.options?.DFS?.Details ??
                 stewardApiMetaPath.startsWith(fileScheme)
               ? ({
@@ -115,9 +115,9 @@ export default class EaCStewardPlugin implements EaCRuntimePlugin {
                 FileRoot: stewardApiMetaPath.slice(fileScheme.length),
                 DefaultFile: "index.ts",
                 Extensions: ["ts"],
-                WorkerPath: import.meta.resolve(
-                  "@fathym/eac-dfs/workers/local",
-                ),
+                // WorkerPath: import.meta.resolve(
+                //   "@fathym/eac-dfs/workers/local",
+                // ),
               } as EaCLocalDistributedFileSystemDetails)
               : ({
                 Type: "JSR",
@@ -126,9 +126,9 @@ export default class EaCStewardPlugin implements EaCRuntimePlugin {
                 FileRoot: "/src/steward/api/eac/",
                 DefaultFile: "index.ts",
                 Extensions: ["ts"],
-                WorkerPath: import.meta.resolve(
-                  "@fathym/eac-dfs/workers/jsr",
-                ),
+                // WorkerPath: import.meta.resolve(
+                //   "@fathym/eac-dfs/workers/jsr",
+                // ),
               } as EaCJSRDistributedFileSystemDetails),
           },
         },
@@ -155,7 +155,7 @@ export default class EaCStewardPlugin implements EaCRuntimePlugin {
       },
     };
 
-    pluginConfig.IoC?.Register<EaCSteward>(() => new EaCSteward());
+    pluginConfig.IoC?.Register<EaCSteward>(EaCSteward, () => new EaCSteward());
 
     return Promise.resolve(pluginConfig);
   }

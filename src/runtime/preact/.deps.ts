@@ -40,8 +40,8 @@ export type {
   EaCDistributedFileSystemAsCode,
   EaCDistributedFileSystemDetails,
   EverythingAsCodeDFS,
-} from "jsr:@fathym/eac-dfs@0.0.17";
-export type { DFSFileHandler } from "jsr:@fathym/eac-dfs@0.0.17/handlers";
+} from "jsr:@fathym/eac-dfs@0.0.18";
+export type { DFSFileHandler } from "jsr:@fathym/eac-dfs@0.0.18/handlers";
 export {
   executePathMatch,
   importDFSTypescriptModule,
@@ -49,7 +49,7 @@ export {
   loadMiddleware,
   loadRequestPathPatterns,
   type PathMatch,
-} from "jsr:@fathym/eac-dfs@0.0.17/utils";
+} from "jsr:@fathym/eac-dfs@0.0.18/utils";
 
 export { IoCContainer } from "jsr:@fathym/ioc@0.0.12";
 

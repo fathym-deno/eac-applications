@@ -12,7 +12,7 @@ export type {
   EaCDistributedFileSystemDetails,
   EaCJSRDistributedFileSystemDetails,
   EaCLocalDistributedFileSystemDetails,
-} from "jsr:@fathym/eac-dfs@0.0.17";
+} from "jsr:@fathym/eac-dfs@0.0.18";
 export type {
   EaCApplicationAsCode,
   EaCProjectAsCode,

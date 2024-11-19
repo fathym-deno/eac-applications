@@ -39,6 +39,7 @@ export const EaCAPIProcessorHandlerResolver: ProcessorHandlerResolver = {
             .filter((p) => p.endsWith("_middleware.ts"))
             .sort((a, b) => a.split("/").length - b.split("/").length);
 
+          // debugger;
           const middlewareCalls = middlewarePaths.map((p) => {
             return loadMiddleware(
               logger,
@@ -56,7 +57,7 @@ export const EaCAPIProcessorHandlerResolver: ProcessorHandlerResolver = {
 
         const [middleware] = await Promise.all([middlewareLoader()]);
 
-        logger.debug("Middleware: ");
+        logger.debug(`Middleware ${processor.DFSLookup}: `);
         logger.debug(middleware.map((m) => m));
         logger.debug("");
 
@@ -84,7 +85,7 @@ export const EaCAPIProcessorHandlerResolver: ProcessorHandlerResolver = {
       },
       appProcCfg.Revision,
     ).then((patterns) => {
-      logger.debug("APIs: ");
+      logger.debug(`APIs ${processor.DFSLookup}: `);
       logger.debug(patterns.map((p) => p.PatternText));
       logger.debug("");
 

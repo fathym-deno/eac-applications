@@ -32,7 +32,7 @@ export {
   denoKvCacheReadableStream,
   DenoKVFileStream,
   denoKvReadReadableStreamCache,
-} from "jsr:@fathym/eac-dfs@0.0.17/utils";
+} from "jsr:@fathym/eac-dfs@0.0.18/utils";
 
 export {
   type EaCProviderAsCode,
