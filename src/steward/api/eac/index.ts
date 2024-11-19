@@ -35,7 +35,7 @@ export default {
     };
 
     logger.Package.debug(
-      `Create EaC container for ${createStatus.EnterpriseLookup} with Commit ID ${createStatus.ID} for user ${createStatus.Username}.`,
+      `Create EaC container for ${eac.EnterpriseLookup} with Commit ID ${createStatus.ID} for user ${createStatus.Username}.`,
     );
 
     const eacKv = await ctx.Runtime.IoC.Resolve<Deno.Kv>(Deno.Kv, "eac");

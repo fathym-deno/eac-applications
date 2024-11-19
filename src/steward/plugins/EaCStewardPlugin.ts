@@ -6,6 +6,7 @@ import {
   EaCDenoKVDetails,
   EaCDistributedFileSystemDetails,
   EaCJSRDistributedFileSystemDetails,
+  EaCJWTValidationModifierDetails,
   EaCLocalDistributedFileSystemDetails,
   EaCProjectAsCode,
   EaCRuntimeConfig,
@@ -72,14 +73,14 @@ export default class EaCStewardPlugin implements EaCRuntimePlugin {
 
     const fileScheme = "file:///";
 
-    const projLookup = this.options?.Project?.Lookup ?? "core";
+    const projLookup = this.options?.Project?.Lookup || "core";
 
-    const appLookup = this.options?.Application?.Lookup ?? "steward";
+    const appLookup = this.options?.Application?.Lookup || "steward";
 
-    const dfsLookup = this.options?.DFS?.Lookup ?? "steward:api/eac";
+    const dfsLookup = this.options?.DFS?.Lookup || "steward:api/eac";
 
-    const jwtValidationLookup = this.options?.Application?.JWTValidationModifier
-      ?.Lookup;
+    const jwtValidationLookup =
+      this.options?.Application?.JWTValidationModifier?.Lookup || "jwtValidate";
 
     const pluginConfig: EaCRuntimePluginConfig<
       EverythingAsCode & EverythingAsCodeApplications & EverythingAsCodeDenoKV
@@ -104,14 +105,11 @@ export default class EaCStewardPlugin implements EaCRuntimePlugin {
               Description: "The Steward API endpoints to use.",
             },
             ModifierResolvers: {
-              ...(jwtValidationLookup
-                ? {
-                  [jwtValidationLookup]: {
-                    Priority: this.options!.Application!.JWTValidationModifier!
-                      .Priority ?? 900,
-                  },
-                }
-                : {}),
+              [jwtValidationLookup]: {
+                Priority:
+                  this.options?.Application?.JWTValidationModifier?.Priority ??
+                    900,
+              },
             },
             Processor: {
               Type: "API",
@@ -164,6 +162,19 @@ export default class EaCStewardPlugin implements EaCRuntimePlugin {
               DenoKVPath: Deno.env.get("EAC_COMMIT_DENO_KV_PATH") || undefined,
             } as EaCDenoKVDetails,
           },
+        },
+        Modifiers: {
+          ...(jwtValidationLookup
+            ? {
+              [jwtValidationLookup]: {
+                Details: {
+                  Type: "JWTValidation",
+                  Name: "Validate JWT",
+                  Description: "Validate incoming JWTs to restrict access.",
+                } as EaCJWTValidationModifierDetails,
+              },
+            }
+            : {}),
         },
       },
     };

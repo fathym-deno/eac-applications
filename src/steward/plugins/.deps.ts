@@ -25,6 +25,8 @@ export type {
   EaCProjectAsCode,
 } from "../../applications/.exports.ts";
 
+export type { EaCJWTValidationModifierDetails } from "../../runtime/modifiers/.deps.ts";
+
 export {
   type EaCDenoKVDetails,
   type EaCRuntimeConfig,
