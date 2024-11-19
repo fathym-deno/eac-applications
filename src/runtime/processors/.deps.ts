@@ -12,14 +12,14 @@ export {
 
 export { IoCContainer } from "jsr:@fathym/ioc@0.0.13";
 
-export type { EverythingAsCode } from "jsr:@fathym/eac@0.2.26";
-export type { EaCRuntimeContext } from "jsr:@fathym/eac@0.2.26/runtime";
-export { EAC_RUNTIME_DEV } from "jsr:@fathym/eac@0.2.26/runtime/config";
-export type { ESBuild } from "jsr:@fathym/eac@0.2.26/esbuild";
+export type { EverythingAsCode } from "jsr:@fathym/eac@0.2.27";
+export type { EaCRuntimeContext } from "jsr:@fathym/eac@0.2.27/runtime";
+export { EAC_RUNTIME_DEV } from "jsr:@fathym/eac@0.2.27/runtime/config";
+export type { ESBuild } from "jsr:@fathym/eac@0.2.27/esbuild";
 export type {
   EaCRuntimeHandler,
   EaCRuntimeHandlerSet,
-} from "jsr:@fathym/eac@0.2.26/runtime/pipelines";
+} from "jsr:@fathym/eac@0.2.27/runtime/pipelines";
 
 export {
   executePathMatch,
