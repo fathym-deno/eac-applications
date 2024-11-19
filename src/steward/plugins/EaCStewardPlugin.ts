@@ -135,7 +135,7 @@ export default class EaCStewardPlugin implements EaCRuntimePlugin {
                 Type: "JSR",
                 Package: "@fathym/eac-applications",
                 Version: "",
-                FileRoot: "/src/steward/api/eac/",
+                FileRoot: "/src/steward/api/eac",
                 DefaultFile: "index.ts",
                 Extensions: ["ts"],
                 // WorkerPath: import.meta.resolve(
