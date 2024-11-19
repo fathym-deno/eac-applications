@@ -3,7 +3,7 @@ import { EaCUserRecord } from "../.deps.ts";
 export type EaCStewardAPIState = {
   EnterpriseLookup: string;
 
-  StewardJWT: string;
+  JWT: string;
 
   UserEaC: EaCUserRecord;
 

@@ -61,7 +61,7 @@ export default {
         ...(eac || {}),
         EnterpriseLookup: commitStatus.EnterpriseLookup,
       },
-      JWT: ctx.State.StewardJWT!,
+      JWT: ctx.State.JWT!,
       ProcessingSeconds: processingSeconds,
       Username: "",
     };
@@ -159,7 +159,7 @@ export default {
         ...eac,
         EnterpriseLookup: entLookup,
       },
-      JWT: ctx.State.StewardJWT!,
+      JWT: ctx.State.JWT!,
       ProcessingSeconds: processingSeconds,
       Username: username,
     };

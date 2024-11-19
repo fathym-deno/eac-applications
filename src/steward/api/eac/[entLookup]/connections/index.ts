@@ -52,7 +52,7 @@ export default {
             eacKv,
             eacValue,
             handler,
-            ctx.State.StewardJWT!,
+            ctx.State.JWT!,
             def,
             current,
             lookups,

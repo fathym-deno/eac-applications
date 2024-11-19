@@ -59,6 +59,7 @@ export default class EaCStewardPlugin implements EaCRuntimePlugin {
   ): Promise<void> {
     const steward = await ioc.Resolve(EaCSteward);
 
+    // debugger;
     await steward.Start(ioc, "eac", "commit");
 
     await this.initializePrimaryEaC(config, ioc);
