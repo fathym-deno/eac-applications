@@ -1,4 +1,4 @@
-export { type EaCDetails, type EaCVertexDetails } from "jsr:@fathym/eac@0.2.24";
+export { type EaCDetails, type EaCVertexDetails } from "jsr:@fathym/eac@0.2.25";
 
 export { type EverythingAsCodeDFS } from "jsr:@fathym/eac-dfs@0.0.21";
 
