@@ -2,8 +2,8 @@ export type {
   EaCMetadataBase,
   EaCModuleActuator,
   EverythingAsCode,
-} from "jsr:@fathym/eac@0.2.20";
-export { callEaCActuatorConnections } from "jsr:@fathym/eac@0.2.20/steward/utils";
+} from "jsr:@fathym/eac@0.2.21";
+export { callEaCActuatorConnections } from "jsr:@fathym/eac@0.2.21/steward/utils";
 
 export {
   type EverythingAsCodeClouds,

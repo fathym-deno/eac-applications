@@ -19,7 +19,7 @@ export default class FathymAzureContainerCheckPlugin
     const pluginConfig: EaCRuntimePluginConfig<
       EverythingAsCode & EverythingAsCodeApplications
     > = {
-      Name: "FathymAzureContainerCheckPlugin",
+      Name: FathymAzureContainerCheckPlugin.name,
       IoC: new IoCContainer(),
       Plugins: [],
       EaC: {
