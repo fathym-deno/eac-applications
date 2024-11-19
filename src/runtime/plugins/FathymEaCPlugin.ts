@@ -1,4 +1,4 @@
-import { loadEaCStewardSvc } from "jsr:@fathym/eac@0.2.23/steward/clients";
+import { loadEaCStewardSvc } from "jsr:@fathym/eac@0.2.24/steward/clients";
 import {
   colors,
   djwt,
