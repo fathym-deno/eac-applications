@@ -3,13 +3,13 @@ export * as colors from "jsr:@std/fmt@1.0.3/colors";
 export { initializeDenoKv } from "jsr:@fathym/common@0.2.168/deno-kv";
 export { loadJwtConfig } from "jsr:@fathym/common@0.2.168/jwt";
 
-export type { EverythingAsCode } from "jsr:@fathym/eac@0.2.22";
-export type { EaCRuntimeConfig } from "jsr:@fathym/eac@0.2.22/runtime/config";
+export type { EverythingAsCode } from "jsr:@fathym/eac@0.2.23";
+export type { EaCRuntimeConfig } from "jsr:@fathym/eac@0.2.23/runtime/config";
 export type {
   EaCRuntimePlugin,
   EaCRuntimePluginConfig,
-} from "jsr:@fathym/eac@0.2.22/runtime/plugins";
-export { EaCSteward } from "jsr:@fathym/eac@0.2.22/steward";
+} from "jsr:@fathym/eac@0.2.23/runtime/plugins";
+export { EaCSteward } from "jsr:@fathym/eac@0.2.23/steward";
 
 export {
   type EaCDenoKVDetails,
@@ -28,9 +28,9 @@ export {
   EaCRemoteDistributedFileSystemHandlerResolver,
   EaCWorkerDistributedFileSystemHandlerResolver,
   UnknownEaCDistributedFileSystemHandlerResolver,
-} from "jsr:@fathym/eac-dfs@0.0.20/resolvers";
+} from "jsr:@fathym/eac-dfs@0.0.21/resolvers";
 
-export { IoCContainer } from "jsr:@fathym/ioc@0.0.12";
+export { IoCContainer } from "jsr:@fathym/ioc@0.0.13";
 
 export * as djwt from "jsr:@zaubrik/djwt@3.0.2";
 
