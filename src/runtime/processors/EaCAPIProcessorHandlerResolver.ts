@@ -39,7 +39,6 @@ export const EaCAPIProcessorHandlerResolver: ProcessorHandlerResolver = {
             .filter((p) => p.endsWith("_middleware.ts"))
             .sort((a, b) => a.split("/").length - b.split("/").length);
 
-          // debugger;
           const middlewareCalls = middlewarePaths.map((p) => {
             return loadMiddleware(
               logger,
