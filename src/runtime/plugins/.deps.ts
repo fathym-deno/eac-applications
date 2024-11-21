@@ -28,7 +28,7 @@ export {
   EaCRemoteDistributedFileSystemHandlerResolver,
   EaCWorkerDistributedFileSystemHandlerResolver,
   UnknownEaCDistributedFileSystemHandlerResolver,
-} from "jsr:@fathym/eac-dfs@0.0.26/resolvers";
+} from "jsr:@fathym/eac-dfs@0.0.27/resolvers";
 
 export { IoCContainer } from "jsr:@fathym/ioc@0.0.13";
 

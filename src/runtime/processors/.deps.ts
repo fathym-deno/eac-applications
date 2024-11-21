@@ -27,7 +27,7 @@ export {
   loadFileHandler,
   loadMiddleware,
   loadRequestPathPatterns,
-} from "jsr:@fathym/eac-dfs@0.0.26/utils";
+} from "jsr:@fathym/eac-dfs@0.0.27/utils";
 
 export {
   type EaCGitHubAppProviderDetails,
