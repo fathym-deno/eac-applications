@@ -10,6 +10,7 @@ import {
   EaCRuntimeConfig,
   EaCRuntimeHandler,
   EaCRuntimeHandlerPipeline,
+  EaCRuntimeHandlerRouteGroup,
   EaCRuntimeHandlerSet,
   ESBuild,
   EverythingAsCode,
@@ -33,87 +34,6 @@ export class EaCApplicationsRuntime<
 > extends GenericEaCRuntime<TEaC> {
   constructor(config: EaCRuntimeConfig<TEaC>) {
     super(config);
-  }
-
-  protected override async buildRuntimeHandlers(): Promise<
-    EaCRuntimeHandlerSet
-  > {
-    let projGraph = this.buildProjectGraph();
-
-    const appGraph = await this.buildApplicationGraph(projGraph);
-
-    projGraph = projGraph.map((projProcCfg) => {
-      return {
-        ...projProcCfg,
-        Handler: this.establishProjectHandler(projProcCfg, appGraph),
-      };
-    });
-
-    const handler: EaCRuntimeHandler = (req, ctx) => {
-      const projProcessorConfig = projGraph!.find((node) => {
-        return node.Patterns.some((pattern) => pattern.test(req.url));
-      });
-
-      if (!projProcessorConfig) {
-        throw new Error(`No project is configured for '${req.url}'.`);
-      }
-
-      ctx = merge(ctx, {
-        Runtime: {
-          ProjectProcessorConfig: projProcessorConfig,
-        },
-      } as EaCApplicationsRuntimeContext);
-
-      return projProcessorConfig.Handler(req, ctx);
-    };
-
-    return handler;
-  }
-
-  protected override async configurationFinalization(): Promise<void> {
-    const esbuild = await this.IoC.Resolve<ESBuild>(
-      this.IoC!.Symbol("ESBuild"),
-    );
-
-    esbuild!.stop();
-  }
-
-  protected override async configurationSetup(): Promise<void> {
-    let esbuild: ESBuild | undefined;
-
-    try {
-      esbuild = await this.IoC.Resolve<ESBuild>(this.IoC!.Symbol("ESBuild"));
-    } catch {
-      esbuild = undefined;
-    }
-
-    if (!esbuild) {
-      if (IS_DENO_DEPLOY()) {
-        esbuild = await import("npm:esbuild-wasm@0.23.1");
-
-        this.logger.debug("Initialized esbuild with portable WASM.");
-      } else {
-        esbuild = await import("npm:esbuild@0.23.1");
-
-        this.logger.debug("Initialized esbuild with standard build.");
-      }
-
-      try {
-        const worker = IS_DENO_DEPLOY() ? false : undefined;
-
-        await esbuild!.initialize({
-          worker,
-        });
-      } catch (err) {
-        this.logger.error("There was an issue initializing esbuild", err);
-
-        // throw err;
-      }
-
-      this.IoC.Register<ESBuild>(() => esbuild!, {
-        Type: this.IoC!.Symbol("ESBuild"),
-      });
-    }
   }
 
   protected async buildApplicationGraph(
@@ -226,6 +146,93 @@ export class EaCApplicationsRuntime<
     return projGraph;
   }
 
+  protected override async configureRuntimeRouteMatrix(): Promise<
+    EaCRuntimeHandlerRouteGroup[]
+  > {
+    let projGraph = this.buildProjectGraph();
+
+    const appGraph = await this.buildApplicationGraph(projGraph);
+
+    projGraph = projGraph.map((projProcCfg) => {
+      return {
+        ...projProcCfg,
+        Handler: this.establishProjectHandler(projProcCfg, appGraph),
+      };
+    });
+
+    const handler: EaCRuntimeHandler = (req, ctx) => {
+      const projProcessorConfig = projGraph!.find((node) => {
+        return node.Patterns.some((pattern) => pattern.test(req.url));
+      });
+
+      if (!projProcessorConfig) {
+        throw new Error(`No project is configured for '${req.url}'.`);
+      }
+
+      ctx = merge(ctx, {
+        Runtime: {
+          ProjectProcessorConfig: projProcessorConfig,
+        },
+      } as EaCApplicationsRuntimeContext);
+
+      return projProcessorConfig.Handler(req, ctx);
+    };
+
+    return [{
+      Routes: [{
+        Route: "*",
+        Handler: handler,
+        Name: "project",
+      }],
+    }];
+  }
+
+  protected override async configurationFinalization(): Promise<void> {
+    const esbuild = await this.IoC.Resolve<ESBuild>(
+      this.IoC!.Symbol("ESBuild"),
+    );
+
+    esbuild!.stop();
+  }
+
+  protected override async configurationSetup(): Promise<void> {
+    let esbuild: ESBuild | undefined;
+
+    try {
+      esbuild = await this.IoC.Resolve<ESBuild>(this.IoC!.Symbol("ESBuild"));
+    } catch {
+      esbuild = undefined;
+    }
+
+    if (!esbuild) {
+      if (IS_DENO_DEPLOY()) {
+        esbuild = await import("npm:esbuild-wasm@0.23.1");
+
+        this.logger.debug("Initialized esbuild with portable WASM.");
+      } else {
+        esbuild = await import("npm:esbuild@0.23.1");
+
+        this.logger.debug("Initialized esbuild with standard build.");
+      }
+
+      try {
+        const worker = IS_DENO_DEPLOY() ? false : undefined;
+
+        await esbuild!.initialize({
+          worker,
+        });
+      } catch (err) {
+        this.logger.error("There was an issue initializing esbuild", err);
+
+        // throw err;
+      }
+
+      this.IoC.Register<ESBuild>(() => esbuild!, {
+        Type: this.IoC!.Symbol("ESBuild"),
+      });
+    }
+  }
+
   protected async constructPipeline(
     project: EaCProjectAsCode,
     application: EaCApplicationAsCode,
@@ -306,11 +313,13 @@ export class EaCApplicationsRuntime<
       handler = async (req, ctx) => {
         let resp = await cacheHandler(req, ctx);
 
-        resp = processCacheControlHeaders(
-          resp,
-          appProcessorConfig.Application.Processor.CacheControl,
-          appProcessorConfig.Application.Processor.ForceCache,
-        );
+        if (resp.ok) {
+          resp = processCacheControlHeaders(
+            resp,
+            appProcessorConfig.Application.Processor.CacheControl,
+            appProcessorConfig.Application.Processor.ForceCache,
+          );
+        }
 
         return resp;
       };

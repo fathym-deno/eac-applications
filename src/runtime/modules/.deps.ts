@@ -20,13 +20,13 @@ export {
   userOAuthConnExpired,
 } from "jsr:@fathym/common@0.2.168/oauth";
 
-export type { EverythingAsCode } from "jsr:@fathym/eac@0.2.27";
+export type { EverythingAsCode } from "jsr:@fathym/eac@0.2.29-runtime-matrix";
 
-export { type EaCRuntimeContext } from "jsr:@fathym/eac@0.2.27/runtime";
+export { type EaCRuntimeContext } from "jsr:@fathym/eac@0.2.29-runtime-matrix/runtime";
 
-export { EAC_RUNTIME_DEV } from "jsr:@fathym/eac@0.2.27/runtime/config";
+export { EAC_RUNTIME_DEV } from "jsr:@fathym/eac@0.2.29-runtime-matrix/runtime/config";
 
-export { type EaCRuntimeHandler } from "jsr:@fathym/eac@0.2.27/runtime/pipelines";
+export { type EaCRuntimeHandler } from "jsr:@fathym/eac@0.2.29-runtime-matrix/runtime/pipelines";
 
 export {
   denoKvCacheReadableStream,

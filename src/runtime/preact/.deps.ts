@@ -23,18 +23,18 @@ export {
   type ESBuildPlugin,
   type ESBuildPluginBuild,
   type ESBuildResult,
-} from "jsr:@fathym/eac@0.2.27/esbuild";
-export type { EaCRuntimeContext } from "jsr:@fathym/eac@0.2.27/runtime";
+} from "jsr:@fathym/eac@0.2.29-runtime-matrix/esbuild";
+export type { EaCRuntimeContext } from "jsr:@fathym/eac@0.2.29-runtime-matrix/runtime";
 export {
   EAC_RUNTIME_DEV,
   IS_DENO_DEPLOY,
-} from "jsr:@fathym/eac@0.2.27/runtime/config";
+} from "jsr:@fathym/eac@0.2.29-runtime-matrix/runtime/config";
 export {
   type EaCRuntimeHandler,
   EaCRuntimeHandlerPipeline,
   type EaCRuntimeHandlers,
   type EaCRuntimeHandlerSet,
-} from "jsr:@fathym/eac@0.2.27/runtime/pipelines";
+} from "jsr:@fathym/eac@0.2.29-runtime-matrix/runtime/pipelines";
 
 export type {
   EaCDistributedFileSystemAsCode,

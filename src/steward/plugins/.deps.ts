@@ -3,12 +3,12 @@ export { delay } from "jsr:@std/async@1.0.8/delay";
 export { enqueueAtomic } from "jsr:@fathym/common@0.2.168/deno-kv";
 export { loadJwtConfig } from "jsr:@fathym/common@0.2.168/jwt";
 
-export type { EaCUserRecord } from "jsr:@fathym/eac@0.2.27";
-export type { EaCCommitRequest } from "jsr:@fathym/eac@0.2.27/steward";
+export type { EaCUserRecord } from "jsr:@fathym/eac@0.2.29-runtime-matrix";
+export type { EaCCommitRequest } from "jsr:@fathym/eac@0.2.29-runtime-matrix/steward";
 export {
   type EaCStatus,
   EaCStatusProcessingTypes,
-} from "jsr:@fathym/eac@0.2.27/steward/status";
+} from "jsr:@fathym/eac@0.2.29-runtime-matrix/steward/status";
 
 export type {
   EaCDistributedFileSystemDetails,
