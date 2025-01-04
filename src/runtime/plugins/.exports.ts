@@ -1,5 +1,4 @@
 export * from "./azure/.exports.ts";
-export * from "./buildStewardApiPluginConfig.ts";
 
 import FtmCrPlgn from "./FathymCorePlugin.ts";
 export const FathymCorePlugin = FtmCrPlgn;

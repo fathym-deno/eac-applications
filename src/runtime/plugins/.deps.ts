@@ -62,14 +62,3 @@ export {
   EaCTailwindProcessorHandlerResolver,
   UnknownEaCProcessorHandlerResolver,
 } from "../processors/.exports.ts";
-
-export type {
-  EaCDistributedFileSystemDetails,
-  EaCJSRDistributedFileSystemDetails,
-  EaCLocalDistributedFileSystemDetails,
-} from "jsr:@fathym/eac-dfs@0.0.28";
-export type {
-  EaCApplicationAsCode,
-  EaCProjectAsCode,
-} from "../../applications/.exports.ts";
-export type { EaCAPIProcessor } from "../../applications/processors/.exports.ts";
