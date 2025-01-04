@@ -6,15 +6,6 @@ export type {
 export { callEaCActuatorConnections } from "jsr:@fathym/eac@0.2.28/steward/utils";
 
 export {
-  type EverythingAsCodeClouds,
-  isEverythingAsCodeClouds,
-} from "jsr:@fathym/eac-azure@0.0.4";
-export {
-  loadMainSecretClient,
-  loadSecretClient,
-} from "jsr:@fathym/eac-azure@0.0.4/utils";
-
-export {
   type EaCGitHubAppAsCode,
   type EaCGitHubAppDetails,
   isEaCGitHubAppAsCode,

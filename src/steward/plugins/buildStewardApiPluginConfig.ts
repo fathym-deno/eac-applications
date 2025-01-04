@@ -45,6 +45,7 @@ export function buildStewardApiPluginConfig(
   defaultAppLookup: string,
   defaultDFSLookup: string,
   defaultAppPath: string,
+  packageName: string,
   options?: EaCStewardPluginOptions,
 ): EaCRuntimePluginConfig<
   EverythingAsCode & EverythingAsCodeApplications & EverythingAsCodeDenoKV
@@ -112,7 +113,7 @@ export function buildStewardApiPluginConfig(
               } as EaCLocalDistributedFileSystemDetails)
               : ({
                 Type: "JSR",
-                Package: "@fathym/eac-azure",
+                Package: packageName,
                 Version: "",
                 FileRoot: "/src/steward/api/",
                 DefaultFile: "index.ts",

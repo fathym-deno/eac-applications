@@ -70,7 +70,7 @@ export {
   isEaCTailwindProcessor,
 } from "../../applications/processors/.exports.ts";
 
-export { loadOctokit } from "../../utils/.exports.ts";
+// export { loadOctokit } from "../../utils/.exports.ts";
 
 export {
   establishTailwindHandlers,
