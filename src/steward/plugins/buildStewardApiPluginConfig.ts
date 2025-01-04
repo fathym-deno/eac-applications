@@ -46,7 +46,8 @@ export function buildStewardApiPluginConfig(
   defaultDFSLookup: string,
   defaultAppPath: string,
   packageName: string,
-  options?: EaCStewardPluginOptions,
+  options: EaCStewardPluginOptions,
+  filesRoot: string = "/src/steward/api/",
 ): EaCRuntimePluginConfig<
   EverythingAsCode & EverythingAsCodeApplications & EverythingAsCodeDenoKV
 > {
@@ -115,7 +116,7 @@ export function buildStewardApiPluginConfig(
                 Type: "JSR",
                 Package: packageName,
                 Version: "",
-                FileRoot: "/src/steward/api/",
+                FileRoot: filesRoot,
                 DefaultFile: "index.ts",
                 Extensions: ["ts"],
                 WorkerPath: import.meta.resolve(
