@@ -5,7 +5,6 @@ import {
   EaCRuntimeConfig,
   EaCRuntimePlugin,
   EaCRuntimePluginConfig,
-  EverythingAsCode,
   loadJwtConfig,
 } from "./.deps.ts";
 
