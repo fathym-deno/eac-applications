@@ -14,7 +14,8 @@
     "./runtime/preact": "./src/runtime/preact/.exports.ts",
     "./runtime/processors": "./src/runtime/processors/.exports.ts",
     "./steward/api": "./src/steward/api/.exports.ts",
-    "./steward/plugins": "./src/steward/plugins/.exports.ts"
+    "./steward/plugins": "./src/steward/plugins/.exports.ts",
+    "./utils": "./src/utils/.exports.ts"
   },
   "tasks": {
     "build": "deno task build:fmt && deno task build:lint && deno task publish:check && deno task test",
