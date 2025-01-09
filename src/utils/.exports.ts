@@ -1,2 +1,2 @@
 export * from "./loadConnections.ts";
-export * from "./loadOctokit.ts";
+export * from "./resolveDynamicValues.ts";

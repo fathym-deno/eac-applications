@@ -3,7 +3,7 @@ export {
   type EaCVertexDetails,
 } from "jsr:@fathym/eac@0.2.29-runtime-matrix";
 
-export { type EverythingAsCodeDFS } from "jsr:@fathym/eac-dfs@0.0.27";
+export { type EverythingAsCodeDFS } from "jsr:@fathym/eac-dfs@0.0.28";
 
 export {
   type EaCModifierAsCode,

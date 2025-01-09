@@ -3,12 +3,12 @@ export * as DenoKVOAuth from "jsr:@deno/kv-oauth@0.11.0";
 export { STATUS_CODE } from "jsr:@std/http@1.0.9";
 export { toText } from "jsr:@std/streams@1.0.8";
 
-export { proxyRequest, redirectRequest } from "jsr:@fathym/common@0.2.168/http";
-export { LoggingProvider } from "jsr:@fathym/common@0.2.168/log";
+export { proxyRequest, redirectRequest } from "jsr:@fathym/common@0.2.173/http";
+export { LoggingProvider } from "jsr:@fathym/common@0.2.173/log";
 export {
   oAuthRequest,
   type UserOAuthConnection,
-} from "jsr:@fathym/common@0.2.168/oauth";
+} from "jsr:@fathym/common@0.2.173/oauth";
 
 export { IoCContainer } from "jsr:@fathym/ioc@0.0.13";
 
@@ -27,7 +27,7 @@ export {
   loadFileHandler,
   loadMiddleware,
   loadRequestPathPatterns,
-} from "jsr:@fathym/eac-dfs@0.0.27/utils";
+} from "jsr:@fathym/eac-dfs@0.0.28/utils";
 
 export {
   type EaCGitHubAppProviderDetails,
@@ -70,7 +70,7 @@ export {
   isEaCTailwindProcessor,
 } from "../../applications/processors/.exports.ts";
 
-export { loadOctokit } from "../../utils/.exports.ts";
+// export { loadOctokit } from "../../utils/.exports.ts";
 
 export {
   establishTailwindHandlers,

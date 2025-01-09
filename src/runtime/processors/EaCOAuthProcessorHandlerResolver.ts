@@ -14,7 +14,6 @@ import {
   isEaCOAuthProcessor,
   isEaCOAuthProviderDetails,
   loadOAuth2ClientConfig,
-  loadOctokit,
   // loadOctokit,
   oAuthRequest,
   UserOAuthConnection,
@@ -162,35 +161,35 @@ export const EaCOAuthProcessorHandlerResolver: ProcessorHandlerResolver<
           ctx.Runtime.URLMatch.Base,
           ctx.Runtime.URLMatch.Path,
         );
-      } else if (isEaCGitHubAppProviderDetails(provider.Details)) {
-        return oAuthRequest(
-          req,
-          oAuthConfig,
-          async (tokens, newSessionId, oldSessionId) => {
-            await handleCompleteCallback(
-              async (accessToken) => {
-                const octokit = await loadOctokit(
-                  provider.Details as EaCGitHubAppProviderDetails,
-                  {
-                    Token: accessToken,
-                  } as EaCSourceConnectionDetails,
-                );
+        // } else if (isEaCGitHubAppProviderDetails(provider.Details)) {
+        //   return oAuthRequest(
+        //     req,
+        //     oAuthConfig,
+        //     async (tokens, newSessionId, oldSessionId) => {
+        //       await handleCompleteCallback(
+        //         async (accessToken) => {
+        //           const octokit = await loadOctokit(
+        //             provider.Details as EaCGitHubAppProviderDetails,
+        //             {
+        //               Token: accessToken,
+        //             } as EaCSourceConnectionDetails,
+        //           );
 
-                const {
-                  data: { login },
-                } = await octokit.rest.users.getAuthenticated();
+        //           const {
+        //             data: { login },
+        //           } = await octokit.rest.users.getAuthenticated();
 
-                return login;
-              },
-              tokens,
-              newSessionId,
-              oldSessionId,
-              provider.Details?.IsPrimary,
-            );
-          },
-          ctx.Runtime.URLMatch.Base,
-          ctx.Runtime.URLMatch.Path,
-        );
+        //           return login;
+        //         },
+        //         tokens,
+        //         newSessionId,
+        //         oldSessionId,
+        //         provider.Details?.IsPrimary,
+        //       );
+        //     },
+        //     ctx.Runtime.URLMatch.Base,
+        //     ctx.Runtime.URLMatch.Path,
+        //   );
       } else if (isEaCOAuthProviderDetails(provider.Details)) {
         return oAuthRequest(
           req,

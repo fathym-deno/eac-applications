@@ -1,9 +1,9 @@
 export {
   buildURLMatch,
   processCacheControlHeaders,
-} from "jsr:@fathym/common@0.2.168/http";
-export { LoggingProvider } from "jsr:@fathym/common@0.2.168/log";
-export { merge, mergeWithArrays } from "jsr:@fathym/common@0.2.168/merge";
+} from "jsr:@fathym/common@0.2.173/http";
+export { LoggingProvider } from "jsr:@fathym/common@0.2.173/log";
+export { merge, mergeWithArrays } from "jsr:@fathym/common@0.2.173/merge";
 
 export { IoCContainer } from "jsr:@fathym/ioc@0.0.13";
 
