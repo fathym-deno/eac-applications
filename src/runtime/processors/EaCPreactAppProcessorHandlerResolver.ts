@@ -1,6 +1,6 @@
 import { EaCPreactAppProcessor, isEaCPreactAppProcessor } from "./.deps.ts";
 import { ProcessorHandlerResolver } from "./ProcessorHandlerResolver.ts";
-import { establishPreactAppHandler } from "../preact/establishPreactAppHandler.ts";
+import { establishPreactAppHandler } from "../../preact/establishPreactAppHandler.ts";
 
 export const EaCPreactAppProcessorHandlerResolver: ProcessorHandlerResolver = {
   async Resolve(ioc, appProcCfg, eac) {

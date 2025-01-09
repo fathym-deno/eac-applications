@@ -11,12 +11,10 @@ import {
   EaCRuntimeHandler,
   EaCRuntimeHandlerPipeline,
   EaCRuntimeHandlerRouteGroup,
-  EaCRuntimeHandlerSet,
   ESBuild,
   EverythingAsCode,
   EverythingAsCodeApplications,
   GenericEaCRuntime,
-  IS_DENO_DEPLOY,
   isEverythingAsCodeApplications,
   merge,
   ModifierHandlerResolver,
@@ -185,52 +183,6 @@ export class EaCApplicationsRuntime<
         Name: "project",
       }],
     }];
-  }
-
-  protected override async configurationFinalization(): Promise<void> {
-    const esbuild = await this.IoC.Resolve<ESBuild>(
-      this.IoC!.Symbol("ESBuild"),
-    );
-
-    esbuild!.stop();
-  }
-
-  protected override async configurationSetup(): Promise<void> {
-    let esbuild: ESBuild | undefined;
-
-    try {
-      esbuild = await this.IoC.Resolve<ESBuild>(this.IoC!.Symbol("ESBuild"));
-    } catch {
-      esbuild = undefined;
-    }
-
-    if (!esbuild) {
-      if (IS_DENO_DEPLOY()) {
-        esbuild = await import("npm:esbuild-wasm@0.23.1");
-
-        this.logger.debug("Initialized esbuild with portable WASM.");
-      } else {
-        esbuild = await import("npm:esbuild@0.23.1");
-
-        this.logger.debug("Initialized esbuild with standard build.");
-      }
-
-      try {
-        const worker = IS_DENO_DEPLOY() ? false : undefined;
-
-        await esbuild!.initialize({
-          worker,
-        });
-      } catch (err) {
-        this.logger.error("There was an issue initializing esbuild", err);
-
-        // throw err;
-      }
-
-      this.IoC.Register<ESBuild>(() => esbuild!, {
-        Type: this.IoC!.Symbol("ESBuild"),
-      });
-    }
   }
 
   protected async constructPipeline(

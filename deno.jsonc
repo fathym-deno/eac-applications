@@ -4,6 +4,7 @@
   "exports": {
     ".": "./src/applications/.exports.ts",
     "./modifiers": "./src/applications/modifiers/.exports.ts",
+    "./preact": "./src/runtime/preact/.exports.ts",
     "./processors": "./src/applications/processors/.exports.ts",
     "./runtime": "./src/runtime/_/.exports.ts",
     "./runtime/islands": "./src/runtime/islands/.exports.ts",
@@ -11,7 +12,6 @@
     "./runtime/modifiers": "./src/runtime/modifiers/.exports.ts",
     "./runtime/modules": "./src/runtime/modules/.exports.ts",
     "./runtime/plugins": "./src/runtime/plugins/.exports.ts",
-    "./runtime/preact": "./src/runtime/preact/.exports.ts",
     "./runtime/processors": "./src/runtime/processors/.exports.ts",
     "./steward/api": "./src/steward/api/.exports.ts",
     "./steward/plugins": "./src/steward/plugins/.exports.ts",

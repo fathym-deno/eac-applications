@@ -1,11 +1,11 @@
 export {
   type EaCDetails,
   type EaCVertexDetails,
-} from "jsr:@fathym/eac@0.2.29-runtime-matrix";
+} from "jsr:@fathym/eac@0.2.32-runtime-matrix";
 export type {
   EaCRuntimeHandler,
   EaCRuntimeHandlerPipeline,
-} from "jsr:@fathym/eac@0.2.29-runtime-matrix/runtime/pipelines";
+} from "jsr:@fathym/eac@0.2.32-runtime-matrix/runtime/pipelines";
 
 export type {
   EaCApplicationAsCode,

@@ -23,18 +23,18 @@ export {
   type ESBuildPlugin,
   type ESBuildPluginBuild,
   type ESBuildResult,
-} from "jsr:@fathym/eac@0.2.29-runtime-matrix/esbuild";
-export type { EaCRuntimeContext } from "jsr:@fathym/eac@0.2.29-runtime-matrix/runtime";
+} from "jsr:@fathym/eac@0.2.32-runtime-matrix/esbuild";
+export type { EaCRuntimeContext } from "jsr:@fathym/eac@0.2.32-runtime-matrix/runtime";
 export {
   EAC_RUNTIME_DEV,
   IS_DENO_DEPLOY,
-} from "jsr:@fathym/eac@0.2.29-runtime-matrix/runtime/config";
+} from "jsr:@fathym/eac@0.2.32-runtime-matrix/runtime/config";
 export {
   type EaCRuntimeHandler,
   EaCRuntimeHandlerPipeline,
   type EaCRuntimeHandlers,
   type EaCRuntimeHandlerSet,
-} from "jsr:@fathym/eac@0.2.29-runtime-matrix/runtime/pipelines";
+} from "jsr:@fathym/eac@0.2.32-runtime-matrix/runtime/pipelines";
 
 export type {
   EaCDistributedFileSystemAsCode,
@@ -70,4 +70,4 @@ export {
 
 export * as PreactRenderToString from "npm:preact-render-to-string@6.5.9";
 
-export type { EaCPreactAppProcessor } from "../../applications/processors/.exports.ts";
+export type { EaCPreactAppProcessor } from "../applications/processors/.exports.ts";

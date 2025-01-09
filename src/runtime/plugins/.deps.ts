@@ -3,13 +3,14 @@ export * as colors from "jsr:@std/fmt@1.0.3/colors";
 export { initializeDenoKv } from "jsr:@fathym/common@0.2.173/deno-kv";
 export { loadJwtConfig } from "jsr:@fathym/common@0.2.173/jwt";
 
-export type { EverythingAsCode } from "jsr:@fathym/eac@0.2.29-runtime-matrix";
-export type { EaCRuntimeConfig } from "jsr:@fathym/eac@0.2.29-runtime-matrix/runtime/config";
+export type { EverythingAsCode } from "jsr:@fathym/eac@0.2.32-runtime-matrix";
+export type { EaCRuntimeConfig } from "jsr:@fathym/eac@0.2.32-runtime-matrix/runtime/config";
 export type {
   EaCRuntimePlugin,
   EaCRuntimePluginConfig,
-} from "jsr:@fathym/eac@0.2.29-runtime-matrix/runtime/plugins";
-export { EaCSteward } from "jsr:@fathym/eac@0.2.29-runtime-matrix/steward";
+} from "jsr:@fathym/eac@0.2.32-runtime-matrix/runtime/plugins";
+export { EaCSteward } from "jsr:@fathym/eac@0.2.32-runtime-matrix/steward";
+export { loadEaCStewardSvc } from "jsr:@fathym/eac@0.2.32-runtime-matrix/steward/clients";
 
 export {
   type EaCDenoKVDetails,
