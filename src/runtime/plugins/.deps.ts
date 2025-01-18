@@ -52,6 +52,7 @@ export {
 export {
   DefaultProcessorHandlerResolver,
   EaCAPIProcessorHandlerResolver,
+  EaCDenoLSPProcessorHandlerResolver,
   EaCDFSProcessorHandlerResolver,
   EaCOAuthProcessorHandlerResolver,
   EaCPreactAppProcessorHandlerResolver,

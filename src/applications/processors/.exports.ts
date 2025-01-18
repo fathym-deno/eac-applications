@@ -4,6 +4,7 @@
  */
 export * from "./EaCAPIProcessor.ts";
 export * from "./EaCApplicationProcessorConfig.ts";
+export * from "./EaCDenoLSPProcessor.ts";
 export * from "./EaCDFSProcessor.ts";
 export * from "./EaCOAuthProcessor.ts";
 export * from "./EaCPreactAppProcessor.ts";

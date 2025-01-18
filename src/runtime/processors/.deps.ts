@@ -51,6 +51,7 @@ export type { EverythingAsCodeApplications } from "../../applications/.exports.t
 export {
   type EaCAPIProcessor,
   type EaCApplicationProcessorConfig,
+  type EaCDenoLSPProcessor,
   type EaCDFSProcessor,
   type EaCOAuthProcessor,
   type EaCPreactAppProcessor,
@@ -60,6 +61,7 @@ export {
   type EaCStripeProcessor,
   type EaCTailwindProcessor,
   isEaCAPIProcessor,
+  isEaCDenoLSPProcessor,
   isEaCDFSProcessor,
   isEaCOAuthProcessor,
   isEaCPreactAppProcessor,
