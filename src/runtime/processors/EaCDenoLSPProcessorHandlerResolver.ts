@@ -13,7 +13,7 @@ export const EaCDenoLSPProcessorHandlerResolver: ProcessorHandlerResolver = {
       );
     }
 
-    const processor = appProcCfg.Application.Processor as EaCDenoLSPProcessor;
+    const _processor = appProcCfg.Application.Processor as EaCDenoLSPProcessor;
 
     // Spawn the Deno LSP process using Deno.Command
     const lspProcess = new Deno.Command("deno", {
