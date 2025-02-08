@@ -109,7 +109,7 @@ export function buildStewardApiPluginConfig(
                 DefaultFile: "index.ts",
                 Extensions: ["ts"],
                 WorkerPath: import.meta.resolve(
-                  "@fathym/eac-dfs/workers/local",
+                  "@fathym/eac/dfs/workers/local",
                 ),
               } as EaCLocalDistributedFileSystemDetails)
               : ({
@@ -120,7 +120,7 @@ export function buildStewardApiPluginConfig(
                 DefaultFile: "index.ts",
                 Extensions: ["ts"],
                 WorkerPath: import.meta.resolve(
-                  "@fathym/eac-dfs/workers/jsr",
+                  "@fathym/eac/dfs/workers/jsr",
                 ),
               } as EaCJSRDistributedFileSystemDetails),
         },
