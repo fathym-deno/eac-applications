@@ -1,53 +1,53 @@
 export {
   buildURLMatch,
   processCacheControlHeaders,
-} from 'jsr:@fathym/common@0.2.173/http';
-export { LoggingProvider } from 'jsr:@fathym/common@0.2.173/log';
-export { merge, mergeWithArrays } from 'jsr:@fathym/common@0.2.173/merge';
+} from "jsr:@fathym/common@0.2.173/http";
+export { LoggingProvider } from "jsr:@fathym/common@0.2.173/log";
+export { merge, mergeWithArrays } from "jsr:@fathym/common@0.2.173/merge";
 
-export { IoCContainer } from 'jsr:@fathym/ioc@0.0.13';
+export { IoCContainer } from "jsr:@fathym/ioc@0.0.13";
 
-export type { EverythingAsCode } from 'jsr:@fathym/eac@0.2.32-runtime-matrix';
+export type { EverythingAsCode } from "jsr:@fathym/eac@0.2.31";
 export {
   EAC_RUNTIME_DEV,
   type EaCRuntimeConfig,
   type EaCRuntimeSetupConfig,
   GenericEaCConfig,
   IS_DENO_DEPLOY,
-} from 'jsr:@fathym/eac@0.2.32-runtime-matrix/runtime/config';
-export type { ESBuild } from 'jsr:@fathym/eac@0.2.32-runtime-matrix/esbuild';
+} from "jsr:@fathym/eac@0.2.31/runtime/config";
+export type { ESBuild } from "jsr:@fathym/eac@0.2.31/esbuild";
 export {
   type EaCRuntimeContext,
   GenericEaCRuntime,
-} from '../../../../eac/src/runtime/_/.exports.ts';
-// } from "jsr:@fathym/eac@0.2.32-runtime-matrix/runtime";
-export { EaCLoggingProvider } from 'jsr:@fathym/eac@0.2.32-runtime-matrix/runtime/logging';
+} from "../../../../eac/src/runtime/_/.exports.ts";
+// } from "jsr:@fathym/eac@0.2.31/runtime";
+export { EaCLoggingProvider } from "jsr:@fathym/eac@0.2.31/runtime/logging";
 export {
   type EaCRuntimeHandler,
   EaCRuntimeHandlerPipeline,
   type EaCRuntimeHandlerRouteGroup,
   type EaCRuntimeHandlerSet,
-} from 'jsr:@fathym/eac@0.2.32-runtime-matrix/runtime/pipelines';
+} from "jsr:@fathym/eac@0.2.31/runtime/pipelines";
 
 export {
   type EaCApplicationAsCode,
   type EaCProjectAsCode,
   type EverythingAsCodeApplications,
   isEverythingAsCodeApplications,
-} from '../../applications/.exports.ts';
+} from "../../applications/.exports.ts";
 export type {
   EaCModifierAsCode,
   EaCModifierResolverConfiguration,
-} from '../../applications/modifiers/.exports.ts';
+} from "../../applications/modifiers/.exports.ts";
 export type {
   EaCApplicationProcessorConfig,
   EaCProjectProcessorConfig,
-} from '../../applications/processors/.exports.ts';
+} from "../../applications/processors/.exports.ts";
 
-export type { ModifierHandlerResolver } from '../../runtime/modifiers/.exports.ts';
+export type { ModifierHandlerResolver } from "../../runtime/modifiers/.exports.ts";
 
-export type { ProcessorHandlerResolver } from '../../runtime/processors/.exports.ts';
+export type { ProcessorHandlerResolver } from "../../runtime/processors/.exports.ts";
 
-export { EaCApplicationsLoggingProvider } from '../logging/.exports.ts';
+export { EaCApplicationsLoggingProvider } from "../logging/.exports.ts";
 
-export { FathymCorePlugin } from '../plugins/.exports.ts';
+export { FathymCorePlugin } from "../plugins/.exports.ts";
