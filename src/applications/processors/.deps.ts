@@ -1,8 +1,8 @@
-export { type EaCDetails, type EaCVertexDetails } from "jsr:@fathym/eac@0.2.33";
+export { type EaCDetails, type EaCVertexDetails } from "jsr:@fathym/eac@0.2.34";
 export type {
   EaCRuntimeHandler,
   EaCRuntimeHandlerPipeline,
-} from "jsr:@fathym/eac@0.2.33/runtime/pipelines";
+} from "jsr:@fathym/eac@0.2.34/runtime/pipelines";
 
 export type {
   EaCApplicationAsCode,
