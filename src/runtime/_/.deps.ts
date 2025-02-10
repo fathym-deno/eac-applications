@@ -7,25 +7,25 @@ export { merge, mergeWithArrays } from "jsr:@fathym/common@0.2.173/merge";
 
 export { IoCContainer } from "jsr:@fathym/ioc@0.0.13";
 
-export type { EverythingAsCode } from "jsr:@fathym/eac@0.2.34";
+export type { EverythingAsCode } from "jsr:@fathym/eac@0.2.35";
 export {
   EAC_RUNTIME_DEV,
   type EaCRuntimeConfig,
   type EaCRuntimeSetupConfig,
   GenericEaCConfig,
   IS_DENO_DEPLOY,
-} from "jsr:@fathym/eac@0.2.34/runtime/config";
-export type { ESBuild } from "jsr:@fathym/eac@0.2.34/esbuild";
+} from "jsr:@fathym/eac@0.2.35/runtime/config";
+export type { ESBuild } from "jsr:@fathym/eac@0.2.35/esbuild";
 export {
   type EaCRuntimeContext,
   GenericEaCRuntime,
-} from "jsr:@fathym/eac@0.2.34/runtime";
-export { EaCLoggingProvider } from "jsr:@fathym/eac@0.2.34/runtime/logging";
+} from "jsr:@fathym/eac@0.2.35/runtime";
+export { EaCLoggingProvider } from "jsr:@fathym/eac@0.2.35/runtime/logging";
 export {
   type EaCRuntimeHandler,
   EaCRuntimeHandlerPipeline,
   type EaCRuntimeHandlerSet,
-} from "jsr:@fathym/eac@0.2.34/runtime/pipelines";
+} from "jsr:@fathym/eac@0.2.35/runtime/pipelines";
 
 export {
   type EaCApplicationAsCode,

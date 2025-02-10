@@ -21,6 +21,10 @@ export const EaCDFSProcessorHandlerResolver: ProcessorHandlerResolver = {
 
     const fileHandler = await loadFileHandler(ioc, dfs);
 
+    const cacheDb = dfs.CacheDBLookup
+      ? await ioc.Resolve(Deno.Kv, dfs.CacheDBLookup)
+      : undefined;
+
     return async (_req, ctx) => {
       const filePath = ctx.Runtime.URLMatch.Path;
 
@@ -30,6 +34,8 @@ export const EaCDFSProcessorHandlerResolver: ProcessorHandlerResolver = {
         dfs.DefaultFile,
         dfs.Extensions,
         dfs.UseCascading,
+        cacheDb,
+        dfs.CacheSeconds,
       );
 
       if (
