@@ -3,12 +3,12 @@ export type { Logger } from "jsr:@std/log@0.224.9";
 export * as path from "jsr:@std/path@1.0.8";
 
 export { jsonMapSetClone } from "jsr:@fathym/common@0.2.161/iterables/json-map-set";
-export { LoggingProvider } from "jsr:@fathym/common@0.2.173/log";
+export { LoggingProvider } from "jsr:@fathym/common@0.2.175/log";
 export {
   type DenoConfig,
   loadDenoConfigSync,
-} from "jsr:@fathym/common@0.2.173/build";
-export { merge } from "jsr:@fathym/common@0.2.173/merge";
+} from "jsr:@fathym/common@0.2.175/build";
+export { merge } from "jsr:@fathym/common@0.2.175/merge";
 
 export {
   denoPlugins,
@@ -23,25 +23,25 @@ export {
   type ESBuildPlugin,
   type ESBuildPluginBuild,
   type ESBuildResult,
-} from "jsr:@fathym/eac@0.2.35/esbuild";
-export type { EaCRuntimeContext } from "jsr:@fathym/eac@0.2.35/runtime";
+} from "jsr:@fathym/eac@0.2.36/esbuild";
+export type { EaCRuntimeContext } from "jsr:@fathym/eac@0.2.36/runtime";
 export {
   EAC_RUNTIME_DEV,
   IS_DENO_DEPLOY,
-} from "jsr:@fathym/eac@0.2.35/runtime/config";
+} from "jsr:@fathym/eac@0.2.36/runtime/config";
 export {
   type EaCRuntimeHandler,
   EaCRuntimeHandlerPipeline,
   type EaCRuntimeHandlers,
   type EaCRuntimeHandlerSet,
-} from "jsr:@fathym/eac@0.2.35/runtime/pipelines";
+} from "jsr:@fathym/eac@0.2.36/runtime/pipelines";
 
 export type {
   EaCDistributedFileSystemAsCode,
   EaCDistributedFileSystemDetails,
   EverythingAsCodeDFS,
-} from "jsr:@fathym/eac@0.2.35/dfs";
-export type { DFSFileHandler } from "jsr:@fathym/eac@0.2.35/dfs/handlers";
+} from "jsr:@fathym/eac@0.2.36/dfs";
+export type { DFSFileHandler } from "jsr:@fathym/eac@0.2.36/dfs/handlers";
 export {
   executePathMatch,
   importDFSTypescriptModule,
@@ -49,7 +49,7 @@ export {
   loadMiddleware,
   loadRequestPathPatterns,
   type PathMatch,
-} from "jsr:@fathym/eac@0.2.35/dfs/utils";
+} from "jsr:@fathym/eac@0.2.36/dfs/utils";
 
 export { IoCContainer } from "jsr:@fathym/ioc@0.0.13";
 
