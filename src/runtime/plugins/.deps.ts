@@ -3,13 +3,13 @@ export * as colors from "jsr:@std/fmt@1.0.3/colors";
 export { initializeDenoKv } from "jsr:@fathym/common@0.2.175/deno-kv";
 export { loadJwtConfig } from "jsr:@fathym/common@0.2.175/jwt";
 
-export type { EverythingAsCode } from "jsr:@fathym/eac@0.2.36";
-export type { EaCRuntimeConfig } from "jsr:@fathym/eac@0.2.36/runtime/config";
+export type { EverythingAsCode } from "jsr:@fathym/eac@0.2.37";
+export type { EaCRuntimeConfig } from "jsr:@fathym/eac@0.2.37/runtime/config";
 export type {
   EaCRuntimePlugin,
   EaCRuntimePluginConfig,
-} from "jsr:@fathym/eac@0.2.36/runtime/plugins";
-export { EaCSteward } from "jsr:@fathym/eac@0.2.36/steward";
+} from "jsr:@fathym/eac@0.2.37/runtime/plugins";
+export { EaCSteward } from "jsr:@fathym/eac@0.2.37/steward";
 
 export {
   type EaCDenoKVDetails,
@@ -29,7 +29,7 @@ export {
   EaCRemoteDistributedFileSystemHandlerResolver,
   EaCWorkerDistributedFileSystemHandlerResolver,
   UnknownEaCDistributedFileSystemHandlerResolver,
-} from "jsr:@fathym/eac@0.2.36/dfs/resolvers";
+} from "jsr:@fathym/eac@0.2.37/dfs/resolvers";
 // } from '../../../../eac/src/dfs/resolvers/.exports.ts';
 
 export { IoCContainer } from "jsr:@fathym/ioc@0.0.13";
