@@ -75,7 +75,7 @@ export default class EaCStewardPlugin implements EaCRuntimePlugin {
 
     const projLookup = this.options?.Project?.Lookup || "core";
 
-    const appLookup = this.options?.Application?.Lookup || "steward";
+    const appLookup = this.options?.Application?.Lookup || "eac-steward";
 
     const dfsLookup = this.options?.DFS?.Lookup || "steward:api/eac";
 

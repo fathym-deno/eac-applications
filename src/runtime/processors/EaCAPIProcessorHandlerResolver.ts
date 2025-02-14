@@ -35,6 +35,7 @@ export const EaCAPIProcessorHandlerResolver: ProcessorHandlerResolver = {
         fileHandler!,
         dfs,
         async (allPaths) => {
+          // debugger;
           const middlewareLoader = async () => {
             const middlewarePaths = allPaths
               .filter((p) => p.endsWith("_middleware.ts"))
@@ -57,8 +58,22 @@ export const EaCAPIProcessorHandlerResolver: ProcessorHandlerResolver = {
 
           const [middleware] = await Promise.all([middlewareLoader()]);
 
-          logger.debug(`Middleware ${processor.DFSLookup}: `);
-          logger.debug(middleware.map((m) => m));
+          logger.debug(`Middleware - ${processor.DFSLookup}: `);
+          middleware
+            .map(
+              (m) =>
+                `${appProcCfg.ResolverConfig.PathPattern.replace("*", "")}${
+                  m[0].startsWith(".") ? m[0].slice(1) : m[0]
+                }`,
+              // new URL(
+              //   m[0].slice(1),
+              //   new URL(
+              //     appProcCfg.ResolverConfig.PathPattern.replace('*', '/'),
+              //     'http://notused.com'
+              //   )
+              // ).pathname
+            )
+            .forEach((pt) => logger.debug(`\t${pt}`));
           logger.debug("");
 
           return { middleware };
@@ -85,8 +100,14 @@ export const EaCAPIProcessorHandlerResolver: ProcessorHandlerResolver = {
         },
         appProcCfg.Revision,
       ).then((patterns) => {
-        logger.debug(`APIs ${processor.DFSLookup}: `);
-        logger.debug(patterns.map((p) => p.PatternText));
+        logger.debug(`APIs - ${processor.DFSLookup}: `);
+        patterns
+          .map((p) => p.PatternText)
+          .map(
+            (pt) =>
+              `${appProcCfg.ResolverConfig.PathPattern.replace("*", "")}${pt}`,
+          )
+          .forEach((pt) => logger.debug(`\t${pt}`));
         logger.debug("");
 
         return patterns;
