@@ -8,7 +8,7 @@ import { EaCStewardAPIState } from "../../../state/EaCStewardAPIState.ts";
 
 export default {
   async POST(req, ctx) {
-    const entLookup = ctx.State.UserEaC!.EnterpriseLookup;
+    const entLookup = ctx.State.EnterpriseLookup;
 
     const eacDef: EverythingAsCode = await req.json();
 
