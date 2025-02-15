@@ -331,8 +331,6 @@ export default class EaCStewardPlugin implements EaCRuntimePlugin {
       });
 
       await usersSetupOp.commit();
-    } else {
-      logger.debug("There are existing EaC Records");
     }
   }
 }

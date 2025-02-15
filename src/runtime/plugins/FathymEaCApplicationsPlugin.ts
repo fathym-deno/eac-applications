@@ -338,6 +338,7 @@ export default class FathymEaCApplicationsPlugin implements EaCRuntimePlugin {
       const cacheHandler = handler;
 
       handler = async (req, ctx) => {
+        // debugger;
         let resp = await cacheHandler(req, ctx);
 
         if (resp.ok) {
