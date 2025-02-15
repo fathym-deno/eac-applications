@@ -19,8 +19,8 @@ export type { ESBuild } from "jsr:@fathym/eac@0.2.66-runtime-matrix/esbuild";
 export {
   type EaCRuntimeContext,
   GenericEaCRuntime,
-} from "../../../../eac/src/runtime/_/.exports.ts";
-// } from "jsr:@fathym/eac@0.2.66-runtime-matrix/runtime";
+  // } from "../../../../eac/src/runtime/_/.exports.ts";
+} from "jsr:@fathym/eac@0.2.66-runtime-matrix/runtime";
 export { EaCLoggingProvider } from "jsr:@fathym/eac@0.2.66-runtime-matrix/runtime/logging";
 export {
   type EaCRuntimeHandler,
