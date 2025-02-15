@@ -28,7 +28,12 @@ export async function establishPreactAppHandler(
     },
   );
 
-  await handler.Configure(processor, eac.DFSs || {}, Date.now().toString());
+  await handler.Configure(
+    processor,
+    eac.DFSs || {},
+    eac.$GlobalOptions?.DFSs ?? {},
+    Date.now().toString(),
+  );
 
   await handler.Build(processor, {}, {});
 

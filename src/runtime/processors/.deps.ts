@@ -12,22 +12,22 @@ export {
 
 export { IoCContainer } from "jsr:@fathym/ioc@0.0.13";
 
-export type { EverythingAsCode } from "jsr:@fathym/eac@0.2.61-runtime-matrix";
-export type { EaCRuntimeContext } from "jsr:@fathym/eac@0.2.61-runtime-matrix/runtime";
-export { EAC_RUNTIME_DEV } from "jsr:@fathym/eac@0.2.61-runtime-matrix/runtime/config";
-export type { ESBuild } from "jsr:@fathym/eac@0.2.61-runtime-matrix/esbuild";
+export type { EverythingAsCode } from "jsr:@fathym/eac@0.2.64-runtime-matrix";
+export type { EaCRuntimeContext } from "jsr:@fathym/eac@0.2.64-runtime-matrix/runtime";
+export { EAC_RUNTIME_DEV } from "jsr:@fathym/eac@0.2.64-runtime-matrix/runtime/config";
+export type { ESBuild } from "jsr:@fathym/eac@0.2.64-runtime-matrix/esbuild";
 export type {
   EaCRuntimeHandler,
   EaCRuntimeHandlerSet,
-} from "jsr:@fathym/eac@0.2.61-runtime-matrix/runtime/pipelines";
+} from "jsr:@fathym/eac@0.2.64-runtime-matrix/runtime/pipelines";
 
 export {
   executePathMatch,
-  loadEaCRuntimeHandlers,
   loadDFSFileHandler,
+  loadEaCRuntimeHandlers,
   loadMiddleware,
   loadRequestPathPatterns,
-} from "jsr:@fathym/eac@0.2.61-runtime-matrix/dfs/utils";
+} from "jsr:@fathym/eac@0.2.64-runtime-matrix/dfs/utils";
 
 export {
   type EaCGitHubAppProviderDetails,

@@ -10,6 +10,7 @@ import {
   EaCLocalDistributedFileSystemDetails,
   EaCProjectAsCode,
   EaCRuntimeConfig,
+  EaCRuntimeHandlerRouteGroup,
   EaCRuntimePlugin,
   EaCRuntimePluginConfig,
   EaCStatus,
@@ -57,13 +58,15 @@ export default class EaCStewardPlugin implements EaCRuntimePlugin {
     _eac: EverythingAsCode,
     ioc: IoCContainer,
     config: EaCRuntimeConfig,
-  ): Promise<void> {
+  ): Promise<EaCRuntimeHandlerRouteGroup[]> {
     const steward = await ioc.Resolve(EaCSteward);
 
     // debugger;
     await steward.Start(ioc, "eac", "commit");
 
     await this.initializePrimaryEaC(config, ioc);
+
+    return [];
   }
 
   public async Setup(

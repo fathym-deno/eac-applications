@@ -1,3 +1,3 @@
 export * from "jsr:@std/log@0.224.9";
 
-export { EaCLoggingProvider } from "jsr:@fathym/eac@0.2.61-runtime-matrix/runtime/logging";
+export { EaCLoggingProvider } from "jsr:@fathym/eac@0.2.64-runtime-matrix/runtime/logging";

@@ -4,7 +4,7 @@
   "exports": {
     ".": "./src/applications/.exports.ts",
     "./modifiers": "./src/applications/modifiers/.exports.ts",
-    "./preact": "./src/runtime/preact/.exports.ts",
+    "./preact": "./src/preact/.exports.ts",
     "./processors": "./src/applications/processors/.exports.ts",
     "./runtime": "./src/runtime/_/.exports.ts",
     "./runtime/islands": "./src/runtime/islands/.exports.ts",

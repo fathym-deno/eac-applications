@@ -1,6 +1,7 @@
 import {
   EaCDenoKVDetails,
   EaCRuntimeConfig,
+  EaCRuntimeHandlerRouteGroup,
   EaCRuntimePlugin,
   EaCRuntimePluginConfig,
   EverythingAsCode,
@@ -14,8 +15,10 @@ export default class FathymEaCDenoKVPlugin implements EaCRuntimePlugin {
   public AfterEaCResolved(
     eac: EverythingAsCode,
     ioc: IoCContainer,
-  ): Promise<void> {
-    return Promise.resolve(this.configureEaCDenoKV(eac, ioc));
+  ): Promise<EaCRuntimeHandlerRouteGroup[]> {
+    this.configureEaCDenoKV(eac, ioc);
+
+    return Promise.resolve([]);
   }
 
   public Setup(_config: EaCRuntimeConfig): Promise<EaCRuntimePluginConfig> {

@@ -9,9 +9,9 @@ export type EaCApplicationProcessorConfig = {
 
   Application: EaCApplicationAsCode;
 
-  Handlers: EaCRuntimeHandlerPipeline;
+  Handler: EaCRuntimeHandlerPipeline;
 
-  Pattern: URLPattern;
+  // Pattern: URLPattern;
 
   ResolverConfig: EaCApplicationResolverConfiguration;
 

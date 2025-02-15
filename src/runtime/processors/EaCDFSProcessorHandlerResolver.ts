@@ -17,7 +17,12 @@ export const EaCDFSProcessorHandlerResolver: ProcessorHandlerResolver = {
 
     const processor = appProcCfg.Application.Processor as EaCDFSProcessor;
 
-    const fileHandler = await loadDFSFileHandler(ioc, eac.DFSs!, processor.DFSLookup);
+    const fileHandler = await loadDFSFileHandler(
+      ioc,
+      eac.DFSs!,
+      eac.$GlobalOptions?.DFSs ?? {},
+      processor.DFSLookup,
+    );
 
     const dfs = eac.DFSs![processor.DFSLookup]!.Details!;
 
