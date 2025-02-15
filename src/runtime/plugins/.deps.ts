@@ -1,33 +1,23 @@
-export * as colors from "jsr:@std/fmt@1.0.3/colors";
+export * as colors from 'jsr:@std/fmt@1.0.3/colors';
 
-export { initializeDenoKv } from "jsr:@fathym/common@0.2.175/deno-kv";
-export { loadJwtConfig } from "jsr:@fathym/common@0.2.175/jwt";
+export { initializeDenoKv } from 'jsr:@fathym/common@0.2.175/deno-kv';
+export { loadJwtConfig } from 'jsr:@fathym/common@0.2.175/jwt';
 
-<<<<<<< HEAD
-export type { EverythingAsCode } from "jsr:@fathym/eac@0.2.31";
-export type { EaCRuntimeConfig } from "jsr:@fathym/eac@0.2.31/runtime/config";
+export type { EverythingAsCode } from 'jsr:@fathym/eac@0.2.61-runtime-matrix';
 export type {
-  EaCRuntimePlugin,
+  EaCRuntimeConfig,
   EaCRuntimePluginConfig,
-} from "jsr:@fathym/eac@0.2.31/runtime/plugins";
-export { EaCSteward } from "jsr:@fathym/eac@0.2.31/steward";
-export { loadEaCStewardSvc } from "jsr:@fathym/eac@0.2.31/steward/clients";
-=======
-export type { EverythingAsCode } from "jsr:@fathym/eac@0.2.61-runtime-matrix";
-export type { EaCRuntimeConfig } from "jsr:@fathym/eac@0.2.61-runtime-matrix/runtime/config";
-export type {
-  EaCRuntimePlugin,
-  EaCRuntimePluginConfig,
-} from "jsr:@fathym/eac@0.2.61-runtime-matrix/runtime/plugins";
-export { EaCSteward } from "jsr:@fathym/eac@0.2.61-runtime-matrix/steward";
->>>>>>> integration
+} from 'jsr:@fathym/eac@0.2.61-runtime-matrix/runtime/config';
+export type { EaCRuntimePlugin } from 'jsr:@fathym/eac@0.2.61-runtime-matrix/runtime/plugins';
+export { EaCSteward } from 'jsr:@fathym/eac@0.2.61-runtime-matrix/steward';
+export { loadEaCStewardSvc } from 'jsr:@fathym/eac@0.2.61-runtime-matrix/steward/clients';
 
 export {
   type EaCDenoKVDetails,
   type EverythingAsCodeDenoKV,
   isEaCDenoKVDetails,
   isEverythingAsCodeDenoKV,
-} from "jsr:@fathym/eac-deno-kv@0.0.4";
+} from 'jsr:@fathym/eac-deno-kv@0.0.4';
 
 export {
   DefaultDFSFileHandlerResolver,
@@ -40,19 +30,15 @@ export {
   EaCRemoteDistributedFileSystemHandlerResolver,
   EaCWorkerDistributedFileSystemHandlerResolver,
   UnknownEaCDistributedFileSystemHandlerResolver,
-<<<<<<< HEAD
-} from "jsr:@fathym/eac@0.2.31/dfs/resolvers";
-=======
-} from "jsr:@fathym/eac@0.2.61-runtime-matrix/dfs/resolvers";
+} from 'jsr:@fathym/eac@0.2.61-runtime-matrix/dfs/resolvers';
 // } from '../../../../eac/src/dfs/resolvers/.exports.ts';
->>>>>>> integration
 
-export { IoCContainer } from "jsr:@fathym/ioc@0.0.13";
+export { IoCContainer } from 'jsr:@fathym/ioc@0.0.13';
 
-export * as djwt from "jsr:@zaubrik/djwt@3.0.2";
+export * as djwt from 'jsr:@zaubrik/djwt@3.0.2';
 
-export type { EverythingAsCodeApplications } from "../../applications/.exports.ts";
-export type { EaCResponseProcessor } from "../../applications/processors/.exports.ts";
+export type { EverythingAsCodeApplications } from '../../applications/.exports.ts';
+export type { EaCResponseProcessor } from '../../applications/processors/.exports.ts';
 
 export {
   DefaultModifierMiddlewareResolver,
@@ -64,7 +50,7 @@ export {
   EaCOAuthModifierHandlerResolver,
   EaCStripeModifierHandlerResolver,
   EaCTracingModifierHandlerResolver,
-} from "../modifiers/.exports.ts";
+} from '../modifiers/.exports.ts';
 
 export {
   DefaultProcessorHandlerResolver,
@@ -79,4 +65,4 @@ export {
   EaCStripeProcessorHandlerResolver,
   EaCTailwindProcessorHandlerResolver,
   UnknownEaCProcessorHandlerResolver,
-} from "../processors/.exports.ts";
+} from '../processors/.exports.ts';
