@@ -5,12 +5,12 @@ import {
   executePathMatch,
   isEaCAPIProcessor,
   loadEaCRuntimeHandlers,
-  loadFileHandler,
+  loadDFSFileHandler,
   loadMiddleware,
   loadRequestPathPatterns,
   LoggingProvider,
-} from "./.deps.ts";
-import { ProcessorHandlerResolver } from "./ProcessorHandlerResolver.ts";
+} from './.deps.ts';
+import { ProcessorHandlerResolver } from './ProcessorHandlerResolver.ts';
 
 export const EaCAPIProcessorHandlerResolver: ProcessorHandlerResolver = {
   async Resolve(ioc, appProcCfg, eac) {
@@ -18,16 +18,20 @@ export const EaCAPIProcessorHandlerResolver: ProcessorHandlerResolver = {
 
     if (!isEaCAPIProcessor(appProcCfg.Application.Processor)) {
       throw new Deno.errors.NotSupported(
-        "The provided processor is not supported for the EaCAPIProcessorHandlerResolver.",
+        'The provided processor is not supported for the EaCAPIProcessorHandlerResolver.'
       );
     }
 
     const processor = appProcCfg.Application.Processor as EaCAPIProcessor;
 
     try {
-      const dfs = eac.DFSs![processor.DFSLookup]!.Details!;
+      const fileHandler = await loadDFSFileHandler(
+        ioc,
+        eac.DFSs!,
+        processor.DFSLookup
+      );
 
-      const fileHandler = await loadFileHandler(ioc, dfs);
+      const dfs = eac.DFSs![processor.DFSLookup]!.Details!;
 
       const patterns = await loadRequestPathPatterns<{
         middleware: [string, EaCRuntimeHandlerSet][];
@@ -35,11 +39,11 @@ export const EaCAPIProcessorHandlerResolver: ProcessorHandlerResolver = {
         fileHandler!,
         dfs,
         async (allPaths) => {
-          // debugger;
+          debugger;
           const middlewareLoader = async () => {
             const middlewarePaths = allPaths
-              .filter((p) => p.endsWith("_middleware.ts"))
-              .sort((a, b) => a.split("/").length - b.split("/").length);
+              .filter((p) => p.endsWith('_middleware.ts'))
+              .sort((a, b) => a.split('/').length - b.split('/').length);
 
             const middlewareCalls = middlewarePaths.map((p) => {
               return loadMiddleware(
@@ -47,7 +51,7 @@ export const EaCAPIProcessorHandlerResolver: ProcessorHandlerResolver = {
                 fileHandler!,
                 p,
                 dfs,
-                processor.DFSLookup,
+                processor.DFSLookup
               );
             });
 
@@ -62,9 +66,9 @@ export const EaCAPIProcessorHandlerResolver: ProcessorHandlerResolver = {
           middleware
             .map(
               (m) =>
-                `${appProcCfg.ResolverConfig.PathPattern.replace("*", "")}${
-                  m[0].startsWith(".") ? m[0].slice(1) : m[0]
-                }`,
+                `${appProcCfg.ResolverConfig.PathPattern.replace('*', '')}${
+                  m[0].startsWith('.') ? m[0].slice(1) : m[0]
+                }`
               // new URL(
               //   m[0].slice(1),
               //   new URL(
@@ -74,7 +78,7 @@ export const EaCAPIProcessorHandlerResolver: ProcessorHandlerResolver = {
               // ).pathname
             )
             .forEach((pt) => logger.debug(`\t${pt}`));
-          logger.debug("");
+          logger.debug('');
 
           return { middleware };
         },
@@ -84,7 +88,7 @@ export const EaCAPIProcessorHandlerResolver: ProcessorHandlerResolver = {
             fileHandler!,
             filePath,
             dfs,
-            processor.DFSLookup,
+            processor.DFSLookup
           );
         },
         (filePath, pipeline, { middleware }) => {
@@ -98,17 +102,17 @@ export const EaCAPIProcessorHandlerResolver: ProcessorHandlerResolver = {
 
           pipeline.Prepend(...reqMiddleware);
         },
-        appProcCfg.Revision,
+        appProcCfg.Revision
       ).then((patterns) => {
         logger.debug(`APIs - ${processor.DFSLookup}: `);
         patterns
           .map((p) => p.PatternText)
           .map(
             (pt) =>
-              `${appProcCfg.ResolverConfig.PathPattern.replace("*", "")}${pt}`,
+              `${appProcCfg.ResolverConfig.PathPattern.replace('*', '')}${pt}`
           )
           .forEach((pt) => logger.debug(`\t${pt}`));
-        logger.debug("");
+        logger.debug('');
 
         return patterns;
       });
@@ -118,13 +122,13 @@ export const EaCAPIProcessorHandlerResolver: ProcessorHandlerResolver = {
           patterns,
           req,
           ctx,
-          processor.DefaultContentType,
+          processor.DefaultContentType
         );
       };
     } catch (err) {
       if (err instanceof Error) {
         logger.error(
-          `Error processing ${appProcCfg.ApplicationLookup} API processor: ${err.message}`,
+          `Error processing ${appProcCfg.ApplicationLookup} API processor: ${err.message}`
         );
       }
 

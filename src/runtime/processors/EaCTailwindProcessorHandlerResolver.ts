@@ -2,7 +2,7 @@ import {
   EaCTailwindProcessor,
   establishTailwindHandlers,
   isEaCTailwindProcessor,
-  loadFileHandler,
+  loadDFSFileHandler,
   toText,
 } from "./.deps.ts";
 import { ProcessorHandlerResolver } from "./ProcessorHandlerResolver.ts";
@@ -17,12 +17,8 @@ export const EaCTailwindProcessorHandlerResolver: ProcessorHandlerResolver = {
 
     const processor = appProcCfg.Application.Processor as EaCTailwindProcessor;
 
-    const dfss = processor.DFSLookups.map(
-      (dfsLookup) => eac.DFSs![dfsLookup]!.Details!,
-    );
-
-    const dfsCalls = dfss.map(async (dfs) => {
-      const fileHandler = await loadFileHandler(ioc, dfs);
+    const dfsCalls = processor.DFSLookups.map(async (dfsLookup) => {
+      const fileHandler = await loadDFSFileHandler(ioc, eac.DFSs!, dfsLookup);
 
       const allPaths = await fileHandler!.LoadAllPaths(appProcCfg.Revision);
 
