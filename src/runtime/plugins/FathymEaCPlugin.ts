@@ -46,7 +46,7 @@ export default class FathymEaCPlugin implements EaCRuntimePlugin {
 
         const eacSvc = await loadEaCStewardSvc(eacApiKey);
 
-        pluginConfig.EaC = await eacSvc.EaC.Get(EnterpriseLookup as string);
+        pluginConfig.EaC = await eacSvc.EaC.Get();
 
         if (pluginConfig.EaC && !pluginConfig.EaC.EnterpriseLookup) {
           pluginConfig.EaC.EnterpriseLookup = EnterpriseLookup;

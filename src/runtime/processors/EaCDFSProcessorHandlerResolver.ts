@@ -1,7 +1,7 @@
 import {
   EaCDFSProcessor,
   isEaCDFSProcessor,
-  loadFileHandler,
+  loadDFSFileHandler,
   mime,
   STATUS_CODE,
 } from "./.deps.ts";
@@ -17,9 +17,13 @@ export const EaCDFSProcessorHandlerResolver: ProcessorHandlerResolver = {
 
     const processor = appProcCfg.Application.Processor as EaCDFSProcessor;
 
+    const fileHandler = await loadDFSFileHandler(ioc, eac.DFSs!, processor.DFSLookup);
+
     const dfs = eac.DFSs![processor.DFSLookup]!.Details!;
 
-    const fileHandler = await loadFileHandler(ioc, dfs);
+    const cacheDb = dfs.CacheDBLookup
+      ? await ioc.Resolve(Deno.Kv, dfs.CacheDBLookup)
+      : undefined;
 
     return async (_req, ctx) => {
       const filePath = ctx.Runtime.URLMatch.Path;
@@ -30,6 +34,8 @@ export const EaCDFSProcessorHandlerResolver: ProcessorHandlerResolver = {
         dfs.DefaultFile,
         dfs.Extensions,
         dfs.UseCascading,
+        cacheDb,
+        dfs.CacheSeconds,
       );
 
       if (

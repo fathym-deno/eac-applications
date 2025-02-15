@@ -1,5 +1,6 @@
 import {
   DefaultDFSFileHandlerResolver,
+  EaCAzureBlobStorageDistributedFileSystemHandlerResolver,
   EaCDenoKVDistributedFileSystemHandlerResolver,
   EaCESMDistributedFileSystemHandlerResolver,
   EaCJSRDistributedFileSystemHandlerResolver,
@@ -24,6 +25,14 @@ export default class FathymDFSFileHandlerPlugin implements EaCRuntimePlugin {
     pluginConfig.IoC!.Register(DefaultDFSFileHandlerResolver, {
       Type: pluginConfig.IoC!.Symbol("DFSFileHandler"),
     });
+
+    pluginConfig.IoC!.Register(
+      () => EaCAzureBlobStorageDistributedFileSystemHandlerResolver,
+      {
+        Name: "EaCAzureBlobStorageDistributedFileSystem",
+        Type: pluginConfig.IoC!.Symbol("DFSFileHandler"),
+      },
+    );
 
     pluginConfig.IoC!.Register(
       () => EaCDenoKVDistributedFileSystemHandlerResolver,

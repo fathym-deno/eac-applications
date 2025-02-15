@@ -75,7 +75,7 @@ export default class EaCStewardPlugin implements EaCRuntimePlugin {
 
     const projLookup = this.options?.Project?.Lookup || "core";
 
-    const appLookup = this.options?.Application?.Lookup || "steward";
+    const appLookup = this.options?.Application?.Lookup || "eac-steward";
 
     const dfsLookup = this.options?.DFS?.Lookup || "steward:api/eac";
 
@@ -126,9 +126,9 @@ export default class EaCStewardPlugin implements EaCRuntimePlugin {
                 FileRoot: stewardApiMetaPath.slice(fileScheme.length),
                 DefaultFile: "index.ts",
                 Extensions: ["ts"],
-                // WorkerPath: import.meta.resolve(
-                //   "@fathym/eac-dfs/workers/local",
-                // ),
+                WorkerPath: import.meta.resolve(
+                  "@fathym/eac/dfs/workers/local",
+                ),
               } as EaCLocalDistributedFileSystemDetails)
               : ({
                 Type: "JSR",
@@ -137,9 +137,9 @@ export default class EaCStewardPlugin implements EaCRuntimePlugin {
                 FileRoot: "/src/steward/api/eac",
                 DefaultFile: "index.ts",
                 Extensions: ["ts"],
-                // WorkerPath: import.meta.resolve(
-                //   "@fathym/eac-dfs/workers/jsr",
-                // ),
+                WorkerPath: import.meta.resolve(
+                  "@fathym/eac/dfs/workers/jsr",
+                ),
               } as EaCJSRDistributedFileSystemDetails),
           },
         },

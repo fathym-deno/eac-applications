@@ -3,7 +3,7 @@ import { EaCStewardAPIState } from "../../../../state/EaCStewardAPIState.ts";
 
 export default {
   async GET(_req, ctx) {
-    const entLookup = ctx.State.UserEaC!.EnterpriseLookup;
+    const entLookup = ctx.State.EnterpriseLookup;
 
     const commitId = ctx.Params.commitId as string;
 

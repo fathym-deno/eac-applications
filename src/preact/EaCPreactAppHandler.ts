@@ -27,7 +27,7 @@ import {
   IoCContainer,
   IS_DENO_DEPLOY,
   loadDenoConfigSync,
-  loadFileHandler,
+  loadDFSFileHandler,
   loadMiddleware,
   loadRequestPathPatterns,
   Logger,
@@ -440,25 +440,17 @@ export class EaCPreactAppHandler {
     DFS: EaCDistributedFileSystemDetails;
     Handler: DFSFileHandler;
   }> {
-    const appDFS = dfss[processor.AppDFSLookup]?.Details;
-
-    if (!appDFS) {
-      throw new Deno.errors.NotFound(
-        `The DFS configuration for application '${processor.AppDFSLookup}' is missing, please make sure to add it to your configuration.`,
-      );
-    }
-
-    const appDFSHandler = await loadFileHandler(this.ioc, appDFS);
+    const appDFSHandler = await loadDFSFileHandler(this.ioc, dfss, processor.AppDFSLookup);
 
     if (!appDFSHandler) {
       throw new Deno.errors.NotFound(
-        `The DFS file handler for application type '${appDFS.Type}' is missing, please make sure to add it to your configuration.`,
+        `The DFS file handler for application DFS '${processor.AppDFSLookup}' is missing, please make sure to add it to your configuration.`,
       );
     }
 
     this.dfsHandlers.set(processor.AppDFSLookup, appDFSHandler);
 
-    return { DFS: appDFS, Handler: appDFSHandler };
+    return { DFS: dfss[processor.AppDFSLookup].Details!, Handler: appDFSHandler };
   }
 
   protected async loadCompDFS(
@@ -493,21 +485,11 @@ export class EaCPreactAppHandler {
 
     const componentDFSCalls = processor.ComponentDFSLookups.map(
       async ([compDFSLookup, extensions]) => {
-        const compDFS = dfss[compDFSLookup]?.Details;
-
-        if (!compDFS) {
-          this.logger.warn(
-            `The DFS configuration for component '${compDFSLookup}' is missing, please make sure to add it to your configuration.`,
-          );
-
-          return undefined;
-        }
-
-        const compFileHandler = await loadFileHandler(this.ioc, compDFS);
+        const compFileHandler = await loadDFSFileHandler(this.ioc, dfss, compDFSLookup);
 
         if (!compFileHandler) {
           this.logger.warn(
-            `The DFS file handler for component type '${compDFS.Type}' is missing, please make sure to add it to your configuration.`,
+            `The DFS file handler for component DFS '${compDFSLookup}' is missing, please make sure to add it to your configuration.`,
           );
 
           return undefined;
@@ -516,7 +498,7 @@ export class EaCPreactAppHandler {
         this.dfsHandlers.set(compDFSLookup, compFileHandler);
 
         return {
-          DFS: compDFS,
+          DFS: dfss[compDFSLookup].Details,
           DFSLookup: compDFSLookup,
           Handler: compFileHandler,
           Extensions: extensions,
