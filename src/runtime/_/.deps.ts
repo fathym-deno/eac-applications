@@ -19,16 +19,16 @@ export type { ESBuild } from "jsr:@fathym/eac@0.2.64-runtime-matrix/esbuild";
 export {
   type EaCRuntimeContext,
   GenericEaCRuntime,
-} from "../../../../eac/src/runtime/_/.exports.ts";
-// } from "jsr:@fathym/eac@0.2.64-runtime-matrix/runtime";
+  // } from "../../../../eac/src/runtime/_/.exports.ts";
+} from "jsr:@fathym/eac@0.2.64-runtime-matrix/runtime";
 export { EaCLoggingProvider } from "jsr:@fathym/eac@0.2.64-runtime-matrix/runtime/logging";
 export {
   type EaCRuntimeHandler,
   EaCRuntimeHandlerPipeline,
   type EaCRuntimeHandlerRouteGroup,
   type EaCRuntimeHandlerSet,
-} from "../../../../eac/src/runtime/pipelines/.exports.ts";
-// } from 'jsr:@fathym/eac@0.2.64-runtime-matrix/runtime/pipelines';
+  // } from "../../../../eac/src/runtime/pipelines/.exports.ts";
+} from "jsr:@fathym/eac@0.2.64-runtime-matrix/runtime/pipelines";
 
 export {
   type EaCApplicationAsCode,
