@@ -268,7 +268,7 @@ export default class FathymEaCApplicationsPlugin implements EaCRuntimePlugin {
       EaCModifierResolverConfiguration
     > = {};
 
-    // TODO(mcgear): Add application logic middlewares to pipeline
+    // TODO(mcgear): Add application logic middlewares to pipeline... Maybe not, might be in activators now...
 
     pipelineModifierResolvers = merge(
       pipelineModifierResolvers,

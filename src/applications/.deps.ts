@@ -1,8 +1,8 @@
 export {
   type EaCDetails,
   type EaCVertexDetails,
-} from "jsr:@fathym/eac@0.2.71-runtime-matrix";
-export { type EverythingAsCodeDFS } from "jsr:@fathym/eac@0.2.71-runtime-matrix/dfs";
+} from "jsr:@fathym/eac@0.2.73-runtime-matrix";
+export { type EverythingAsCodeDFS } from "jsr:@fathym/eac@0.2.73-runtime-matrix/dfs";
 
 export {
   type EaCModifierAsCode,

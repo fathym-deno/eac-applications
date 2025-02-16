@@ -8,22 +8,22 @@ export {
 export { initializeDenoKv } from "jsr:@fathym/common@0.2.175/deno-kv";
 export { loadJwtConfig } from "jsr:@fathym/common@0.2.175/jwt";
 
-export type { EverythingAsCode } from "jsr:@fathym/eac@0.2.71-runtime-matrix";
+export type { EverythingAsCode } from "jsr:@fathym/eac@0.2.73-runtime-matrix";
 export {
   EAC_RUNTIME_DEV,
   type EaCRuntimeConfig,
   type EaCRuntimePluginConfig,
-} from "jsr:@fathym/eac@0.2.71-runtime-matrix/runtime/config";
+} from "jsr:@fathym/eac@0.2.73-runtime-matrix/runtime/config";
 export {
   type EaCRuntimeHandler,
   EaCRuntimeHandlerPipeline,
   type EaCRuntimeHandlerRoute,
   type EaCRuntimeHandlerRouteGroup,
   // } from "../../../../eac/src/runtime/pipelines/.exports.ts";
-} from "jsr:@fathym/eac@0.2.71-runtime-matrix/runtime/pipelines";
-export type { EaCRuntimePlugin } from "jsr:@fathym/eac@0.2.71-runtime-matrix/runtime/plugins";
-export { EaCSteward } from "jsr:@fathym/eac@0.2.71-runtime-matrix/steward";
-export { loadEaCStewardSvc } from "jsr:@fathym/eac@0.2.71-runtime-matrix/steward/clients";
+} from "jsr:@fathym/eac@0.2.73-runtime-matrix/runtime/pipelines";
+export type { EaCRuntimePlugin } from "jsr:@fathym/eac@0.2.73-runtime-matrix/runtime/plugins";
+export { EaCSteward } from "jsr:@fathym/eac@0.2.73-runtime-matrix/steward";
+export { loadEaCStewardSvc } from "jsr:@fathym/eac@0.2.73-runtime-matrix/steward/clients";
 
 export {
   type EaCDenoKVDetails,
@@ -43,7 +43,7 @@ export {
   EaCRemoteDistributedFileSystemHandlerResolver,
   EaCWorkerDistributedFileSystemHandlerResolver,
   UnknownEaCDistributedFileSystemHandlerResolver,
-} from "jsr:@fathym/eac@0.2.71-runtime-matrix/dfs/resolvers";
+} from "jsr:@fathym/eac@0.2.73-runtime-matrix/dfs/resolvers";
 // } from '../../../../eac/src/dfs/resolvers/.exports.ts';
 
 export { IoCContainer } from "jsr:@fathym/ioc@0.0.13";
