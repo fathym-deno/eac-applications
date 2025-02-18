@@ -6,7 +6,7 @@ import {
   Logger,
 } from "../.deps.ts";
 
-export function establishGoogleAnalyticsMiddleware(logger: Logger): EaCRuntimeHandler {
+export function establishGoogleTagMgrMiddleware(logger: Logger): EaCRuntimeHandler {
   const initCheck = new Promise<boolean>((resolve) => {
     logger.debug("Configuring keep alive...");
 

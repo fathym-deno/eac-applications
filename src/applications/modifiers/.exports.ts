@@ -4,7 +4,7 @@
  */
 export * from "./EaCBaseHREFModifierDetails.ts";
 export * from "./EaCDenoKVCacheModifierDetails.ts";
-export * from "./EaCGoogleAnalyticsModifierDetails.ts";
+export * from "./EaCGoogleTagMgrModifierDetails.ts";
 export * from "./EaCJWTValidationModifierDetails.ts";
 export * from "./EaCKeepAliveModifierDetails.ts";
 export * from "./EaCMarkdownToHTMLModifierDetails.ts";

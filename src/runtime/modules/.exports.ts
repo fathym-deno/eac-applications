@@ -1,6 +1,6 @@
 export * from "./baseHref/.exports.ts";
 export * from "./cache/.exports.ts";
-export * from "./googleAnalytics/.exports.ts";
+export * from "./googleTagMgr/.exports.ts";
 export * from "./jwt/.exports.ts";
 export * from "./keepAlive/.exports.ts";
 export * from "./markdown/.exports.ts";

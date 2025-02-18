@@ -35,8 +35,8 @@ export default class FathymModifierHandlerPlugin implements EaCRuntimePlugin {
       Type: pluginConfig.IoC!.Symbol("ModifierHandlerResolver"),
     });
 
-    pluginConfig.IoC!.Register(() => EaCGoogleAnalyticsModifierHandlerResolver, {
-      Name: "EaCGoogleAnalyticsModifierDetails",
+    pluginConfig.IoC!.Register(() => EaCGoogleTagMgrModifierHandlerResolver, {
+      Name: "EaCGoogleTagMgrModifierDetails",
       Type: pluginConfig.IoC!.Symbol("ModifierHandlerResolver"),
     });
 

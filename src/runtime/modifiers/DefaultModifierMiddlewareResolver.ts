@@ -4,7 +4,7 @@ import {
   IoCContainer,
   isEaCBaseHREFModifierDetails,
   isEaCDenoKVCacheModifierDetails,
-  isEaCGoogleAnalyticsModifierDetails,
+  isEaCGoogleTagMgrModifierDetails,
   isEaCJWTValidationModifierDetails,
   isEaCKeepAliveModifierDetails,
   isEaCMarkdownToHTMLModifierDetails,
@@ -27,8 +27,8 @@ export class DefaultModifierMiddlewareResolver
       toResolveName = "EaCBaseHREFModifierDetails";
     } else if (isEaCDenoKVCacheModifierDetails(modifier.Details)) {
       toResolveName = "EaCDenoKVCacheModifierDetails";
-    } else if (isEaCGoogleAnalyticsModifierDetails(modifier.Details)) {
-      toResolveName = "EaCGoogleAnalyticsModifierDetails";
+    } else if (isEaCGoogleTagMgrModifierDetails(modifier.Details)) {
+      toResolveName = "EaCGoogleTagMgrModifierDetails";
     } else if (isEaCJWTValidationModifierDetails(modifier.Details)) {
       toResolveName = "EaCJWTValidationModifierDetails";
     } else if (isEaCKeepAliveModifierDetails(modifier.Details)) {

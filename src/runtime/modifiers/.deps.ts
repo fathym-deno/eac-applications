@@ -11,7 +11,7 @@ export type { EaCModifierAsCode } from "../../applications/modifiers/.exports.ts
 export {
   type EaCBaseHREFModifierDetails,
   type EaCDenoKVCacheModifierDetails,
-  type EaCGoogleAnalyticsModifierDetails,
+  type EaCGoogleTagMgrModifierDetails,
   type EaCJWTValidationModifierDetails,
   type EaCKeepAliveModifierDetails,
   type EaCMarkdownToHTMLModifierDetails,
@@ -21,7 +21,7 @@ export {
   type EaCTracingModifierDetails,
   isEaCBaseHREFModifierDetails,
   isEaCDenoKVCacheModifierDetails,
-  isEaCGoogleAnalyticsModifierDetails,
+  isEaCGoogleTagMgrModifierDetails,
   isEaCJWTValidationModifierDetails,
   isEaCKeepAliveModifierDetails,
   isEaCMarkdownToHTMLModifierDetails,
@@ -34,7 +34,7 @@ export {
 export {
   establishBaseHrefMiddleware,
   establishDenoKvCacheMiddleware,
-  establishGoogleAnalyticsMiddleware,
+  establishGoogleTagMgrMiddleware,
   establishJwtValidationMiddleware,
   establishKeepAliveMiddleware,
   establishMarkdownToHTMLMiddleware,
