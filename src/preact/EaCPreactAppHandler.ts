@@ -35,12 +35,12 @@ import {
   parseJsonc,
   path,
   PathMatch,
-} from "./.deps.ts";
-import { loadClientScript } from "./islands/loadClientScript.ts";
-import { loadLayout } from "./loadLayout.ts";
-import { loadPreactAppHandler } from "./loadPreactAppHandler.ts";
-import { PreactRenderHandler } from "./PreactRenderHandler.ts";
-import { EaCComponentDFSHandler } from "./EaCComponentDFSHandler.ts";
+} from './.deps.ts';
+import { loadClientScript } from './islands/loadClientScript.ts';
+import { loadLayout } from './loadLayout.ts';
+import { loadPreactAppHandler } from './loadPreactAppHandler.ts';
+import { PreactRenderHandler } from './PreactRenderHandler.ts';
+import { EaCComponentDFSHandler } from './EaCComponentDFSHandler.ts';
 
 export class EaCPreactAppHandler {
   //#region Fields
@@ -76,7 +76,7 @@ export class EaCPreactAppHandler {
     protected eacIslandsClientPath: string,
     protected eacIslandsClientDepsPath: string,
     protected importMap?: Record<string, string>,
-    protected options: Partial<ESBuildOptions> = {},
+    protected options: Partial<ESBuildOptions> = {}
   ) {
     this.configured = new Map();
 
@@ -92,7 +92,7 @@ export class EaCPreactAppHandler {
 
     this.pipelines = new Map();
 
-    this.denoJsonPath = path.join(Deno.cwd(), "./deno.jsonc");
+    this.denoJsonPath = path.join(Deno.cwd(), './deno.jsonc');
 
     const { Config } = loadDenoConfigSync();
 
@@ -108,16 +108,16 @@ export class EaCPreactAppHandler {
   public async Build(
     processor: EaCPreactAppProcessor,
     importMap?: Record<string, string>,
-    options: Partial<ESBuildOptions> = {},
+    options: Partial<ESBuildOptions> = {}
   ): Promise<void> {
     if (
       !this.configured.get(processor.AppDFSLookup) ||
       processor.ComponentDFSLookups?.some(
-        ([compDFSLookup]) => !this.configured.get(compDFSLookup),
+        ([compDFSLookup]) => !this.configured.get(compDFSLookup)
       )
     ) {
       throw new Deno.errors.InvalidData(
-        `You must call the 'Configure()' method before building.`,
+        `You must call the 'Configure()' method before building.`
       );
     }
 
@@ -127,7 +127,7 @@ export class EaCPreactAppHandler {
       processor,
       options,
       {}, //islandFiles,
-      importMap,
+      importMap
     );
 
     this.establishBundleHandler(processor, bundle);
@@ -139,13 +139,13 @@ export class EaCPreactAppHandler {
     processor: EaCPreactAppProcessor,
     dfss: Record<string, EaCDistributedFileSystemAsCode>,
     dfsOptions: DistributedFileSystemOptions,
-    revision: string,
+    revision: string
   ): Promise<void> {
     const matches = await this.loadPathMatches(
       processor,
       dfss,
       dfsOptions,
-      revision,
+      revision
     );
 
     this.establishPipeline(processor, matches);
@@ -154,7 +154,7 @@ export class EaCPreactAppHandler {
   public Execute(
     processor: EaCPreactAppProcessor,
     request: Request,
-    ctx: EaCRuntimeContext,
+    ctx: EaCRuntimeContext
   ): Response | Promise<Response> {
     const pipeline = this.pipelines.get(processor.AppDFSLookup)!;
 
@@ -239,20 +239,20 @@ export class EaCPreactAppHandler {
     processor: EaCPreactAppProcessor,
     options: Partial<ESBuildOptions>,
     islandLibraryFiles: Record<string, string>,
-    importMap?: Record<string, string>,
+    importMap?: Record<string, string>
   ): Promise<ESBuildResult<ESBuildOptions>> {
-    const esbuild = await this.ioc.Resolve<ESBuild>(this.ioc.Symbol("ESBuild"));
+    const esbuild = await this.ioc.Resolve<ESBuild>(this.ioc.Symbol('ESBuild'));
 
     const appDFSHandler = this.dfsHandlers.get(processor.AppDFSLookup)!;
 
     const absWorkingDir = path.join(
-      !IS_DENO_DEPLOY() ? Deno.cwd() : "/",
-      appDFSHandler.Root || "",
+      !IS_DENO_DEPLOY() ? Deno.cwd() : '/',
+      appDFSHandler.Root || ''
     );
 
     this.logger.debug(`ESBuild working directory: ${absWorkingDir}`);
 
-    const clientSrcPath = `./${this.eacIslandsClientPath.split("/").pop()!}`;
+    const clientSrcPath = `./${this.eacIslandsClientPath.split('/').pop()!}`;
 
     const buildOptions: ESBuildOptions = {
       ...this.loadDefaultBuildOptions(
@@ -260,17 +260,18 @@ export class EaCPreactAppHandler {
         false,
         islandLibraryFiles,
         appDFSHandler.Root,
-        importMap,
+        importMap
       ),
       entryPoints: [clientSrcPath],
       absWorkingDir,
       ...options,
     };
 
-    const context = !this.contexts.has(processor.AppDFSLookup) ||
-        this.hasChanges.get(processor.AppDFSLookup)
-      ? await esbuild.context(buildOptions)
-      : this.contexts.get(processor.AppDFSLookup)!;
+    const context =
+      !this.contexts.has(processor.AppDFSLookup) ||
+      this.hasChanges.get(processor.AppDFSLookup)
+        ? await esbuild.context(buildOptions)
+        : this.contexts.get(processor.AppDFSLookup)!;
 
     const bundle = await context.rebuild();
 
@@ -278,7 +279,7 @@ export class EaCPreactAppHandler {
       if (outFile.path.startsWith(Deno.cwd())) {
         const pathUrl = new URL(
           outFile.path.substring(Deno.cwd().length),
-          "http://not-used.com",
+          'http://not-used.com'
         );
 
         outFile.path = pathUrl.pathname;
@@ -292,7 +293,7 @@ export class EaCPreactAppHandler {
 
   protected async componentLoader(
     handlers: (EaCComponentDFSHandler | undefined)[],
-    revision: string,
+    revision: string
   ): Promise<[string, ComponentType, boolean, string][][] | undefined> {
     const compDFSHandlers = handlers.filter((cdh) => cdh).map((cdh) => cdh!);
 
@@ -304,7 +305,7 @@ export class EaCPreactAppHandler {
             DFSLookup,
             Handler,
             Extensions,
-            revision,
+            revision
           );
 
           if (compDFS?.length > 0) {
@@ -314,7 +315,7 @@ export class EaCPreactAppHandler {
           this.dfsIslands.set(DFSLookup, compDFS);
 
           return compDFS;
-        },
+        }
       );
 
       const compDFSs = await Promise.all(compDFSCalls);
@@ -325,8 +326,8 @@ export class EaCPreactAppHandler {
       //   boolean,
       //   string
       // ][];
-      this.logger.debug("Components Loaded");
-      this.logger.debug("");
+      this.logger.debug('Components Loaded');
+      this.logger.debug('');
 
       return compDFSs;
     }
@@ -334,7 +335,7 @@ export class EaCPreactAppHandler {
 
   protected establishBundleHandler(
     processor: EaCPreactAppProcessor,
-    bundle: ESBuildResult<ESBuildOptions>,
+    bundle: ESBuildResult<ESBuildOptions>
   ): void {
     const bundleHandler: EaCRuntimeHandler = (_req, ctx) => {
       const file = bundle.outputFiles!.find((outFile) => {
@@ -344,8 +345,8 @@ export class EaCPreactAppHandler {
       if (file) {
         return new Response(file.text, {
           headers: {
-            "cache-control": `public, max-age=${60 * 60 * 24 * 365}, immutable`,
-            "Content-Type": "application/javascript",
+            'cache-control': `public, max-age=${60 * 60 * 24 * 365}, immutable`,
+            'Content-Type': 'application/javascript',
             ETag: file.hash,
           },
         });
@@ -361,12 +362,12 @@ export class EaCPreactAppHandler {
 
   protected establishPipeline(
     processor: EaCPreactAppProcessor,
-    matches: PathMatch[],
+    matches: PathMatch[]
   ): void {
     const pipeline = new EaCRuntimeHandlerPipeline();
 
     pipeline.Append((req, ctx) => {
-      return executePathMatch(matches, req, ctx, "text/html; charset=utf-8");
+      return executePathMatch(matches, req, ctx, 'text/html; charset=utf-8');
     });
 
     this.pipelines.set(processor.AppDFSLookup, pipeline);
@@ -376,7 +377,7 @@ export class EaCPreactAppHandler {
     compPath: string,
     compDFS: EaCDistributedFileSystemDetails,
     compDFSLookup: string,
-    componentFileHandler: DFSFileHandler,
+    componentFileHandler: DFSFileHandler
   ): Promise<[string, ComponentType, boolean, string] | undefined> {
     const compModule = await importDFSTypescriptModule(
       this.logger,
@@ -384,7 +385,7 @@ export class EaCPreactAppHandler {
       compPath,
       compDFS,
       compDFSLookup,
-      "tsx",
+      'tsx'
     );
 
     if (compModule) {
@@ -393,7 +394,7 @@ export class EaCPreactAppHandler {
       const comp: ComponentType | undefined = module.default;
 
       if (comp) {
-        const isCompIsland = "IsIsland" in module ? module.IsIsland : false;
+        const isCompIsland = 'IsIsland' in module ? module.IsIsland : false;
 
         return [filePath, comp, isCompIsland, contents];
       }
@@ -403,10 +404,11 @@ export class EaCPreactAppHandler {
   }
 
   protected async layoutLoader(
+    processor: EaCPreactAppProcessor,
     allPaths: string[],
     appDFS: EaCDistributedFileSystemDetails,
     appDFSLookup: string,
-    appDFSHandler: DFSFileHandler,
+    appDFSHandler: DFSFileHandler
   ): Promise<
     [
       string,
@@ -414,12 +416,12 @@ export class EaCPreactAppHandler {
       boolean,
       string,
       EaCRuntimeHandlerSet,
-      string[] | undefined,
+      string[] | undefined
     ][]
   > {
     const layoutPaths = allPaths
-      .filter((p) => p.endsWith("_layout.tsx"))
-      .sort((a, b) => a.split("/").length - b.split("/").length);
+      .filter((p) => p.endsWith('_layout.tsx'))
+      .sort((a, b) => a.split('/').length - b.split('/').length);
 
     const layoutCalls = layoutPaths.map((p) => {
       return loadLayout(this.logger, appDFSHandler, p, appDFS, appDFSLookup);
@@ -433,9 +435,11 @@ export class EaCPreactAppHandler {
       }
     });
 
-    this.logger.debug("Layouts: ");
-    this.logger.debug(layouts.map((m) => m[0]));
-    this.logger.debug("");
+    this.logger.debug(`Layouts - ${processor.AppDFSLookup}: `);
+    layouts
+      .map((l) => `${l[0].startsWith('.') ? l[0].slice(1) : l[0]}`)
+      .forEach((pt) => this.logger.debug(`\t${pt}`));
+    this.logger.debug('');
 
     return layouts;
   }
@@ -443,7 +447,7 @@ export class EaCPreactAppHandler {
   protected async loadAppDFSHandler(
     processor: EaCPreactAppProcessor,
     dfss: Record<string, EaCDistributedFileSystemAsCode>,
-    dfsOptions: DistributedFileSystemOptions,
+    dfsOptions: DistributedFileSystemOptions
   ): Promise<{
     DFS: EaCDistributedFileSystemDetails;
     Handler: DFSFileHandler;
@@ -452,12 +456,12 @@ export class EaCPreactAppHandler {
       this.ioc,
       dfss,
       dfsOptions,
-      processor.AppDFSLookup,
+      processor.AppDFSLookup
     );
 
     if (!appDFSHandler) {
       throw new Deno.errors.NotFound(
-        `The DFS file handler for application DFS '${processor.AppDFSLookup}' is missing, please make sure to add it to your configuration.`,
+        `The DFS file handler for application DFS '${processor.AppDFSLookup}' is missing, please make sure to add it to your configuration.`
       );
     }
 
@@ -474,7 +478,7 @@ export class EaCPreactAppHandler {
     dfsLookup: string,
     componentFileHandler: DFSFileHandler,
     extensions: string[],
-    revision: string,
+    revision: string
   ): Promise<[string, ComponentType, boolean, string][]> {
     const compPaths = await componentFileHandler.LoadAllPaths(revision);
 
@@ -494,7 +498,7 @@ export class EaCPreactAppHandler {
   protected async loadComponentDFSHandlers(
     processor: EaCPreactAppProcessor,
     dfss: Record<string, EaCDistributedFileSystemAsCode>,
-    dfsOptions: DistributedFileSystemOptions,
+    dfsOptions: DistributedFileSystemOptions
   ): Promise<(EaCComponentDFSHandler | undefined)[] | undefined> {
     if (!processor.ComponentDFSLookups) {
       return undefined;
@@ -506,12 +510,12 @@ export class EaCPreactAppHandler {
           this.ioc,
           dfss,
           dfsOptions,
-          compDFSLookup,
+          compDFSLookup
         );
 
         if (!compFileHandler) {
           this.logger.warn(
-            `The DFS file handler for component DFS '${compDFSLookup}' is missing, please make sure to add it to your configuration.`,
+            `The DFS file handler for component DFS '${compDFSLookup}' is missing, please make sure to add it to your configuration.`
           );
 
           return undefined;
@@ -525,7 +529,7 @@ export class EaCPreactAppHandler {
           Handler: compFileHandler,
           Extensions: extensions,
         } as EaCComponentDFSHandler;
-      },
+      }
     );
 
     const componentDFSs = await Promise.all(componentDFSCalls);
@@ -538,7 +542,7 @@ export class EaCPreactAppHandler {
     preserveRemotes: boolean,
     extraFiles: Record<string, string> = {},
     relativeRoot?: string,
-    importMap?: Record<string, string>,
+    importMap?: Record<string, string>
   ): ESBuildOptions {
     const jsx = this.denoCfg.compilerOptions?.jsx;
 
@@ -550,10 +554,10 @@ export class EaCPreactAppHandler {
 
     const minifyOptions: Partial<ESBuildOptions> = this.isDev
       ? {
-        minifyIdentifiers: false,
-        minifySyntax: false, //true,
-        minifyWhitespace: false, //true,
-      }
+          minifyIdentifiers: false,
+          minifySyntax: false, //true,
+          minifyWhitespace: false, //true,
+        }
       : { minify: true };
 
     let files = this.files.get(dfsLookup) || {};
@@ -564,10 +568,10 @@ export class EaCPreactAppHandler {
     };
 
     return {
-      platform: "browser",
-      format: "esm",
-      target: ["chrome99", "firefox99", "safari15"],
-      sourcemap: this.isDev ? "linked" : false,
+      platform: 'browser',
+      format: 'esm',
+      target: ['chrome99', 'firefox99', 'safari15'],
+      sourcemap: this.isDev ? 'linked' : false,
       write: false,
       metafile: true,
       bundle: true,
@@ -575,16 +579,17 @@ export class EaCPreactAppHandler {
       treeShaking: true,
       // TODO(mcgear): Need to make this configurable per Preact App Processor: processor.Externals
       // external: ['path'],
-      jsx: jsx === "react"
-        ? "transform"
-        : jsx === "react-native" || jsx === "preserve"
-        ? "preserve"
-        : !jsxImportSrc
-        ? "transform"
-        : "automatic",
-      jsxImportSource: jsxImportSrc ?? "preact",
-      jsxFactory: jsxFactory ?? "EaC_h",
-      jsxFragment: jsxFragmentFactory ?? "EaC_Fragment",
+      jsx:
+        jsx === 'react'
+          ? 'transform'
+          : jsx === 'react-native' || jsx === 'preserve'
+          ? 'preserve'
+          : !jsxImportSrc
+          ? 'transform'
+          : 'automatic',
+      jsxImportSource: jsxImportSrc ?? 'preact',
+      jsxFactory: jsxFactory ?? 'EaC_h',
+      jsxFragment: jsxFragmentFactory ?? 'EaC_Fragment',
       ...minifyOptions,
       plugins: [
         EaCPreactAppHandler.ConfigurePlugin(
@@ -592,7 +597,7 @@ export class EaCPreactAppHandler {
           files,
           preserveRemotes,
           relativeRoot,
-          importMap,
+          importMap
         ),
         ...denoPlugins({ configPath: this.denoJsonPath }),
       ],
@@ -601,7 +606,7 @@ export class EaCPreactAppHandler {
   }
 
   protected loadImportMap(
-    importMap?: Record<string, string>,
+    importMap?: Record<string, string>
   ): Record<string, string> {
     return {
       ...this.denoCfg.imports,
@@ -614,7 +619,7 @@ export class EaCPreactAppHandler {
     processor: EaCPreactAppProcessor,
     dfss: Record<string, EaCDistributedFileSystemAsCode>,
     dfsOptions: DistributedFileSystemOptions,
-    revision: string,
+    revision: string
   ): Promise<PathMatch[]> {
     const [{ DFS: appDFS, Handler: appDFSHandler }, compDFSHandlers] =
       await Promise.all([
@@ -628,16 +633,18 @@ export class EaCPreactAppHandler {
       async (allPaths) => {
         const [middleware, layouts, compDFSs] = await Promise.all([
           this.middlewareLoader(
+            processor,
             allPaths,
             appDFS,
             processor.AppDFSLookup,
-            appDFSHandler,
+            appDFSHandler
           ),
           this.layoutLoader(
+            processor,
             allPaths,
             appDFS,
             processor.AppDFSLookup,
-            appDFSHandler,
+            appDFSHandler
           ),
           compDFSHandlers
             ? this.componentLoader(compDFSHandlers, revision)
@@ -654,7 +661,7 @@ export class EaCPreactAppHandler {
           appDFS,
           processor.AppDFSLookup,
           layouts,
-          this.renderHandler,
+          this.renderHandler
         );
       },
       (filePath, pipeline, { middleware }) => {
@@ -668,12 +675,13 @@ export class EaCPreactAppHandler {
 
         pipeline.Prepend(...reqMiddleware);
       },
-      revision,
+      revision
     );
 
-    this.logger.debug("Apps");
-    this.logger.debug(matches.map((m) => m.PatternText));
-    this.logger.debug("");
+    this.logger.debug(`Apps - ${processor.AppDFSLookup}: `);
+    matches
+      .forEach((m) => this.logger.debug(`\t${m.PatternText}`));
+    this.logger.debug('');
 
     await this.setupIslandsClientSources(processor, appDFSHandler.Root);
 
@@ -681,14 +689,15 @@ export class EaCPreactAppHandler {
   }
 
   protected async middlewareLoader(
+    processor: EaCPreactAppProcessor,
     allPaths: string[],
     appDFS: EaCDistributedFileSystemDetails,
     appDFSLookup: string,
-    appDFSHandler: DFSFileHandler,
+    appDFSHandler: DFSFileHandler
   ): Promise<[string, EaCRuntimeHandlerSet][]> {
     const middlewarePaths = allPaths
-      .filter((p) => p.endsWith("_middleware.ts"))
-      .sort((a, b) => a.split("/").length - b.split("/").length);
+      .filter((p) => p.endsWith('_middleware.ts'))
+      .sort((a, b) => a.split('/').length - b.split('/').length);
 
     const middlewareCalls = middlewarePaths.map((p) => {
       return loadMiddleware(
@@ -696,7 +705,7 @@ export class EaCPreactAppHandler {
         appDFSHandler,
         p,
         appDFS,
-        appDFSLookup,
+        appDFSLookup
       );
     });
 
@@ -704,16 +713,18 @@ export class EaCPreactAppHandler {
       .filter((m) => m)
       .map((m) => m!);
 
-    this.logger.debug("Middleware: ");
-    this.logger.debug(middleware.map((m) => m[0]));
-    this.logger.debug("");
+    this.logger.debug(`Middleware - ${processor.AppDFSLookup}: `);
+    middleware
+      .map((l) => `${l[0].startsWith('.') ? l[0].slice(1) : l[0]}`)
+      .forEach((pt) => this.logger.debug(`\t${pt}`));
+    this.logger.debug('');
 
     return middleware;
   }
 
   protected setupCompIslandsLibrarySource(
     dfsLookup: string,
-    comps: [string, ComponentType, boolean, string][],
+    comps: [string, ComponentType, boolean, string][]
   ): Promise<void> {
     comps.forEach(([compPath, comp, isIsland, contents]) => {
       if (isIsland) {
@@ -727,7 +738,7 @@ export class EaCPreactAppHandler {
 
         return fs;
       },
-      {} as Record<string, string>,
+      {} as Record<string, string>
     );
 
     this.files.set(dfsLookup, {
@@ -741,51 +752,50 @@ export class EaCPreactAppHandler {
 
   protected async setupIslandsClientSources(
     processor: EaCPreactAppProcessor,
-    appDFSRoot: string,
+    appDFSRoot: string
   ): Promise<void> {
-    const esbuild = await this.ioc.Resolve<ESBuild>(this.ioc.Symbol("ESBuild"));
+    const esbuild = await this.ioc.Resolve<ESBuild>(this.ioc.Symbol('ESBuild'));
 
     // TODO(mcgear): Move client.deps.ts resolution to per request with revision cache so
     //    that only the islands used per request are shipped to the client
     let [clientScript, clientDepsScript] = await Promise.all([
-      loadClientScript(esbuild, this.eacIslandsClientPath, "tsx"),
-      loadClientScript(esbuild, this.eacIslandsClientDepsPath, "ts"),
+      loadClientScript(esbuild, this.eacIslandsClientPath, 'tsx'),
+      loadClientScript(esbuild, this.eacIslandsClientDepsPath, 'ts'),
     ]);
 
-    const clientSrcPath = `./${this.eacIslandsClientPath.split("/").pop()!}`;
+    const clientSrcPath = `./${this.eacIslandsClientPath.split('/').pop()!}`;
 
     const clientDepsSrcPath = `./${this.eacIslandsClientDepsPath
-      .split("/")
+      .split('/')
       .pop()!}`;
 
     const islands = this.renderHandler.LoadIslands();
 
     const islandNamePaths = Object.keys(islands).map((islandPath) => [
       islands[islandPath][0],
-      islandPath.startsWith("file:///")
+      islandPath.startsWith('file:///')
         ? path
-          .relative(
-            path.join(Deno.cwd(), appDFSRoot),
-            islandPath.replace("file:///", ""),
-          )
-          .replace(/\\/g, "/")
+            .relative(
+              path.join(Deno.cwd(), appDFSRoot),
+              islandPath.replace('file:///', '')
+            )
+            .replace(/\\/g, '/')
         : islandPath,
     ]);
 
     const clientDepsImports = islandNamePaths.map(
-      ([islandName, islandPath]) =>
-        `import ${islandName} from '${islandPath}';`,
+      ([islandName, islandPath]) => `import ${islandName} from '${islandPath}';`
     );
 
     clientDepsScript = clientDepsImports
-      ? clientDepsImports.join("\n") + `\n${clientDepsScript}`
+      ? clientDepsImports.join('\n') + `\n${clientDepsScript}`
       : clientDepsScript;
 
     const islandCompMaps = islandNamePaths.map(
-      ([islandName]) => `componentMap.set('${islandName}', ${islandName});`,
+      ([islandName]) => `componentMap.set('${islandName}', ${islandName});`
     );
 
-    clientDepsScript += "\n" + islandCompMaps.join("\n");
+    clientDepsScript += '\n' + islandCompMaps.join('\n');
 
     this.files.set(processor.AppDFSLookup, {
       ...{
@@ -805,10 +815,10 @@ export class EaCPreactAppHandler {
     files: Record<string, string>,
     preserveRemotes: boolean,
     relativeRoot?: string,
-    importMap?: Record<string, string>,
+    importMap?: Record<string, string>
   ): ESBuildPlugin {
     return {
-      name: "EaCPreactAppHandler",
+      name: 'EaCPreactAppHandler',
       setup(build) {
         // build.onLoad({ filter: /.*/ }, (args) => {
         //   return null;
@@ -826,20 +836,20 @@ export class EaCPreactAppHandler {
         build.onLoad({ filter: /\.json$/ }, async (args) => {
           let content: string;
 
-          if (args.path.startsWith("//")) {
-            args.path = args.path.replace("//", "https://");
+          if (args.path.startsWith('//')) {
+            args.path = args.path.replace('//', 'https://');
           }
 
           // Determine if the file is remote or local
           if (
-            args.path.startsWith("http://") ||
-            args.path.startsWith("https://")
+            args.path.startsWith('http://') ||
+            args.path.startsWith('https://')
           ) {
             // Fetch remote JSONc file
             const response = await fetch(args.path);
             if (!response.ok) {
               throw new Error(
-                `Failed to fetch remote JSONc file: ${response.statusText}`,
+                `Failed to fetch remote JSONc file: ${response.statusText}`
               );
             }
             content = await response.text();
@@ -854,7 +864,7 @@ export class EaCPreactAppHandler {
           // Return the transformed content as JSON
           return {
             contents: JSON.stringify(jsonContent),
-            loader: "json",
+            loader: 'json',
           };
         });
 
@@ -862,25 +872,25 @@ export class EaCPreactAppHandler {
           return builder.LoadFetchFile(args);
         });
 
-        build.onLoad({ filter: /.*/, namespace: "$" }, (args) => {
+        build.onLoad({ filter: /.*/, namespace: '$' }, (args) => {
           return builder.LoadVirtualFile(args, files);
         });
 
-        build.onResolve({ filter: /.*/, namespace: "$" }, (args) => {
+        build.onResolve({ filter: /.*/, namespace: '$' }, (args) => {
           return builder.ResolveImportMapFile(
             () => build,
             args,
             preserveRemotes,
-            importMap,
+            importMap
           );
         });
 
-        build.onResolve({ filter: /.*/, namespace: "file" }, (args) => {
+        build.onResolve({ filter: /.*/, namespace: 'file' }, (args) => {
           return builder.ResolveImportMapFile(
             () => build,
             args,
             preserveRemotes,
-            importMap,
+            importMap
           );
         });
 
@@ -889,10 +899,10 @@ export class EaCPreactAppHandler {
         });
 
         build.onResolve(
-          { filter: /^(jsr:|npm:|node:).*/, namespace: "$" },
+          { filter: /^(jsr:|npm:|node:).*/, namespace: '$' },
           (args) => {
             return builder.ResolveSpecifierFile(() => build, args);
-          },
+          }
         );
 
         build.onResolve({ filter: /^(http|https)\:\/\/.+/ }, (args) => {
@@ -903,7 +913,7 @@ export class EaCPreactAppHandler {
           return builder.ResolveRelativeFile(
             args,
             preserveRemotes,
-            relativeRoot,
+            relativeRoot
           );
         });
       },
@@ -911,17 +921,17 @@ export class EaCPreactAppHandler {
   }
 
   public async LoadFetchFile(
-    args: ESBuildOnLoadArgs,
+    args: ESBuildOnLoadArgs
   ): Promise<ESBuildOnLoadResult | null> {
     if (
-      args.namespace === "http" ||
-      args.namespace === "https" ||
-      args.namespace === "remote"
+      args.namespace === 'http' ||
+      args.namespace === 'https' ||
+      args.namespace === 'remote'
     ) {
       // console.debug(`Loading fetch file: ${args.path}`);
 
       const resp = await fetch(args.path, {
-        redirect: "follow",
+        redirect: 'follow',
       });
 
       const contents = await resp.text();
@@ -936,9 +946,9 @@ export class EaCPreactAppHandler {
 
   public LoadVirtualFile(
     args: ESBuildOnLoadArgs,
-    files: Record<string, string>,
+    files: Record<string, string>
   ): ESBuildOnLoadResult | null {
-    if (args.namespace === "$" && args.path in files) {
+    if (args.namespace === '$' && args.path in files) {
       // console.debug(`Loading virtual file: ${args.path}`);
 
       const filePath = args.path;
@@ -957,7 +967,7 @@ export class EaCPreactAppHandler {
     build: () => ESBuildPluginBuild,
     args: ESBuildOnResolveArgs,
     preserveRemotes: boolean,
-    importMap?: Record<string, string>,
+    importMap?: Record<string, string>
   ): Promise<ESBuildOnResolveResult | null> {
     let filePath: string | undefined;
 
@@ -968,27 +978,27 @@ export class EaCPreactAppHandler {
     if (importKeys.includes(args.path)) {
       filePath = this.denoCfg.imports![args.path];
     } else if (
-      importKeys.some((imp) => imp.endsWith("/") && args.path.startsWith(imp))
+      importKeys.some((imp) => imp.endsWith('/') && args.path.startsWith(imp))
     ) {
       const importPath = importKeys.find(
-        (imp) => imp.endsWith("/") && args.path.startsWith(imp),
+        (imp) => imp.endsWith('/') && args.path.startsWith(imp)
       )!;
 
-      filePath = this.denoCfg.imports![importPath] +
-        args.path.replace(importPath, "");
+      filePath =
+        this.denoCfg.imports![importPath] + args.path.replace(importPath, '');
     }
 
-    if (filePath === "node:buffer") {
-      throw new Error("node:buffer");
+    if (filePath === 'node:buffer') {
+      throw new Error('node:buffer');
     }
 
     if (filePath) {
       // console.debug(`Resolving import map file: ${args.path}`);
 
       if (
-        filePath.startsWith("npm:") ||
-        filePath.startsWith("jsr:") ||
-        filePath.startsWith("node:")
+        filePath.startsWith('npm:') ||
+        filePath.startsWith('jsr:') ||
+        filePath.startsWith('node:')
       ) {
         return await this.ResolveSpecifierFile(build, {
           kind: args.kind,
@@ -999,15 +1009,17 @@ export class EaCPreactAppHandler {
       } else {
         try {
           if (filePath) {
-            const [type, pkg] = filePath.split(":");
+            const [type, pkg] = filePath.split(':');
 
-            if (type === "file") {
+            if (type === 'file') {
               filePath = new URL(path.join(Deno.cwd(), filePath)).href;
             }
 
             return {
-              path: (preserveRemotes || type === "file" ? filePath : pkg)
-                .replace("//", "/"),
+              path: (preserveRemotes || type === 'file'
+                ? filePath
+                : pkg
+              ).replace('//', '/'),
               namespace: type,
               external: preserveRemotes,
             };
@@ -1026,21 +1038,21 @@ export class EaCPreactAppHandler {
   public ResolveRelativeFile(
     args: ESBuildOnResolveArgs,
     preserveRemotes: boolean,
-    relativeRoot?: string,
+    relativeRoot?: string
   ): ESBuildOnResolveResult | null {
-    if (args.path.startsWith("./") || args.path.startsWith("../")) {
+    if (args.path.startsWith('./') || args.path.startsWith('../')) {
       // console.debug(`Resolving relative file: ${args.path}`);
 
-      if (args.importer.startsWith("//")) {
+      if (args.importer.startsWith('//')) {
         args.importer = `https:${args.importer}`;
       } else if (
         relativeRoot &&
-        (args.importer.startsWith("./") || args.importer.startsWith("../"))
+        (args.importer.startsWith('./') || args.importer.startsWith('../'))
       ) {
-        if (relativeRoot.startsWith("./") || relativeRoot.startsWith("../")) {
+        if (relativeRoot.startsWith('./') || relativeRoot.startsWith('../')) {
           relativeRoot = new URL(
             relativeRoot,
-            new URL(`file:///${Deno.cwd()}/`),
+            new URL(`file:///${Deno.cwd()}/`)
           ).href;
         }
 
@@ -1050,24 +1062,24 @@ export class EaCPreactAppHandler {
       }
 
       if (
-        args.importer.startsWith("http://") ||
-        args.importer.startsWith("https://")
+        args.importer.startsWith('http://') ||
+        args.importer.startsWith('https://')
       ) {
         const fileURL = new URL(args.path, args.importer);
 
-        const [type, pkg] = fileURL.href.split(":");
+        const [type, pkg] = fileURL.href.split(':');
 
         return {
           path: preserveRemotes ? fileURL.href : pkg,
           namespace: type,
           external: preserveRemotes,
         };
-      } else if (args.importer.startsWith("file:///")) {
+      } else if (args.importer.startsWith('file:///')) {
         const fileURL = new URL(args.path, args.importer);
 
         return {
           path: fileURL.href,
-          namespace: "remote",
+          namespace: 'remote',
           external: preserveRemotes,
         };
       }
@@ -1078,12 +1090,12 @@ export class EaCPreactAppHandler {
 
   public ResolveRemoteFile(
     args: ESBuildOnResolveArgs,
-    preserveRemotes: boolean,
+    preserveRemotes: boolean
   ): ESBuildOnResolveResult | null {
-    if (args.path.startsWith("http://") || args.path.startsWith("https://")) {
+    if (args.path.startsWith('http://') || args.path.startsWith('https://')) {
       // console.debug(`Resolving remote file: ${args.path}`);
 
-      const [type, pkg] = args.path.split(":");
+      const [type, pkg] = args.path.split(':');
 
       return {
         path: preserveRemotes ? args.path : pkg,
@@ -1097,11 +1109,11 @@ export class EaCPreactAppHandler {
 
   public async ResolveSpecifierFile(
     build: () => ESBuildPluginBuild,
-    args: ESBuildOnResolveArgs,
+    args: ESBuildOnResolveArgs
   ): Promise<ESBuildOnResolveResult | null> {
-    const [namespace, ...path] = args.path.split(":");
+    const [namespace, ...path] = args.path.split(':');
 
-    return await build().resolve(path.join(":"), {
+    return await build().resolve(path.join(':'), {
       namespace,
       kind: args.kind,
       // importer: args.importer,
@@ -1117,14 +1129,14 @@ export class EaCPreactAppHandler {
 
   public ResolveVirtualFile(
     args: ESBuildOnResolveArgs,
-    files: Record<string, string>,
+    files: Record<string, string>
   ): ESBuildOnResolveResult | null {
     if (args.path in files) {
       // console.debug(`Resolving virtual file: ${args.path}`);
 
       return {
         path: args.path,
-        namespace: "$",
+        namespace: '$',
       };
     }
 
@@ -1133,17 +1145,16 @@ export class EaCPreactAppHandler {
 
   protected prependJSXParts(
     filePath: string,
-    contents: string,
+    contents: string
   ): ESBuildOnLoadResult {
-    const loader = filePath.endsWith(".tsx")
-      ? "tsx"
-      : filePath.endsWith(".js")
-      ? "jsx"
-      : "ts";
+    const loader = filePath.endsWith('.tsx')
+      ? 'tsx'
+      : filePath.endsWith('.js')
+      ? 'jsx'
+      : 'ts';
 
-    if (loader === "tsx" || loader === "jsx") {
-      contents =
-        `import { Fragment as EaC_Fragment, h as EaC_h } from "preact";\n${contents}`;
+    if (loader === 'tsx' || loader === 'jsx') {
+      contents = `import { Fragment as EaC_Fragment, h as EaC_h } from "preact";\n${contents}`;
     }
 
     return { contents, loader };

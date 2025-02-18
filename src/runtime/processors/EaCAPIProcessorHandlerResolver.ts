@@ -69,13 +69,6 @@ export const EaCAPIProcessorHandlerResolver: ProcessorHandlerResolver = {
                 `${appProcCfg.ResolverConfig.PathPattern.replace("*", "")}${
                   m[0].startsWith(".") ? m[0].slice(1) : m[0]
                 }`,
-              // new URL(
-              //   m[0].slice(1),
-              //   new URL(
-              //     appProcCfg.ResolverConfig.PathPattern.replace('*', '/'),
-              //     'http://notused.com'
-              //   )
-              // ).pathname
             )
             .forEach((pt) => logger.debug(`\t${pt}`));
           logger.debug("");
