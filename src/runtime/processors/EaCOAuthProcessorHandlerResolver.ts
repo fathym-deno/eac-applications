@@ -3,7 +3,6 @@ import {
   djwt,
   EaCGitHubAppProviderDetails,
   EaCOAuthProcessor,
-  EaCSourceConnectionDetails,
   // EaCSourceConnectionDetails,
   EverythingAsCode,
   EverythingAsCodeApplications,
