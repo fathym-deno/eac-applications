@@ -62,16 +62,18 @@ export const EaCAPIProcessorHandlerResolver: ProcessorHandlerResolver = {
 
           const [middleware] = await Promise.all([middlewareLoader()]);
 
-          logger.debug(`Middleware - ${processor.DFSLookup}: `);
-          middleware
-            .map(
-              (m) =>
-                `${appProcCfg.ResolverConfig.PathPattern.replace("*", "")}${
-                  m[0].startsWith(".") ? m[0].slice(1) : m[0]
-                }`,
-            )
-            .forEach((pt) => logger.debug(`\t${pt}`));
-          logger.debug("");
+          if (middleware?.length) {
+            logger.debug(`Middleware - ${processor.DFSLookup}: `);
+            middleware
+              .map(
+                (m) =>
+                  `${appProcCfg.ResolverConfig.PathPattern.replace("*", "")}${
+                    m[0].startsWith(".") ? m[0].slice(1) : m[0]
+                  }`,
+              )
+              .forEach((pt) => logger.debug(`\t${pt}`));
+            logger.debug("");
+          }
 
           return { middleware };
         },
@@ -97,15 +99,19 @@ export const EaCAPIProcessorHandlerResolver: ProcessorHandlerResolver = {
         },
         appProcCfg.Revision,
       ).then((patterns) => {
-        logger.debug(`APIs - ${processor.DFSLookup}: `);
-        patterns
-          .map((p) => p.PatternText)
-          .map(
-            (pt) =>
-              `${appProcCfg.ResolverConfig.PathPattern.replace("*", "")}${pt}`,
-          )
-          .forEach((pt) => logger.debug(`\t${pt}`));
-        logger.debug("");
+        if (patterns?.length) {
+          logger.debug(`APIs - ${processor.DFSLookup}: `);
+          patterns
+            .map((p) => p.PatternText)
+            .map(
+              (pt) =>
+                `${
+                  appProcCfg.ResolverConfig.PathPattern.replace("*", "")
+                }${pt}`,
+            )
+            .forEach((pt) => logger.debug(`\t${pt}`));
+          logger.debug("");
+        }
 
         return patterns;
       });

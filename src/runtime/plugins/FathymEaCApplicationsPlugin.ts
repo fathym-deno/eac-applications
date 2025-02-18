@@ -16,6 +16,7 @@ import {
   EaCRuntimePlugin,
   EaCRuntimePluginConfig,
   EverythingAsCode,
+  EverythingAsCodeApplications,
   IoCContainer,
   isEverythingAsCodeApplications,
   merge,
@@ -96,13 +97,9 @@ export default class FathymEaCApplicationsPlugin implements EaCRuntimePlugin {
 
             const pipeline = await this.constructPipeline(
               ioc,
-              projProcCfg.Project,
-              appProcCfg.Application,
-              eac!.Modifiers || {},
-            );
-
-            pipeline.Append(
-              await this.establishApplicationHandler(eac, ioc, appProcCfg),
+              projProcCfg,
+              appProcCfg,
+              eac,
             );
 
             appProcCfg.Handler = pipeline;
@@ -228,16 +225,6 @@ export default class FathymEaCApplicationsPlugin implements EaCRuntimePlugin {
           const activate = pattern.test(req.url) && isAllowedMethod &&
             matchesRegex;
 
-          if (activate) {
-            ctx.Runtime = merge(
-              ctx.Runtime,
-              {
-                ApplicationProcessorConfig: appProcCfg,
-                URLMatch: buildURLMatch(pattern, req),
-              } as EaCApplicationsRuntimeContext["Runtime"],
-            );
-          }
-
           return activate;
         };
 
@@ -259,10 +246,53 @@ export default class FathymEaCApplicationsPlugin implements EaCRuntimePlugin {
 
   protected async constructPipeline(
     ioc: IoCContainer,
+    projProcCfg: EaCProjectProcessorConfig,
+    appProcCfg: EaCApplicationProcessorConfig,
+    eac: EverythingAsCodeApplications,
+  ): Promise<EaCRuntimeHandlerPipeline> {
+    const pipeline = new EaCRuntimeHandlerPipeline();
+
+    pipeline.Append((req, ctx) => {
+      ctx.Runtime = merge(
+        ctx.Runtime,
+        {
+          ApplicationProcessorConfig: appProcCfg,
+        } as EaCApplicationsRuntimeContext["Runtime"],
+      );
+
+      return ctx.Next();
+    });
+
+    const pipelineModifiers = this.establishPipelineModifiers(
+      projProcCfg.Project,
+      appProcCfg.Application,
+      eac.Modifiers || {},
+    );
+
+    const defaultModifierMiddlewareResolver = await ioc.Resolve<
+      ModifierHandlerResolver
+    >(
+      ioc.Symbol("ModifierHandlerResolver"),
+    );
+
+    for (const mod of pipelineModifiers) {
+      pipeline.Append(
+        await defaultModifierMiddlewareResolver.Resolve(ioc, mod),
+      );
+    }
+
+    pipeline.Append(
+      await this.establishApplicationHandler(eac, ioc, appProcCfg),
+    );
+
+    return pipeline;
+  }
+
+  protected establishPipelineModifiers(
     project: EaCProjectAsCode,
     application: EaCApplicationAsCode,
-    modifiers: Record<string, EaCModifierAsCode | null>,
-  ): Promise<EaCRuntimeHandlerPipeline> {
+    modifiers: Record<string, EaCModifierAsCode>,
+  ): EaCModifierAsCode[] {
     let pipelineModifierResolvers: Record<
       string,
       EaCModifierResolverConfiguration
@@ -296,21 +326,7 @@ export default class FathymEaCApplicationsPlugin implements EaCRuntimePlugin {
         }
       });
 
-    const pipeline = new EaCRuntimeHandlerPipeline();
-
-    const defaultModifierMiddlewareResolver = await ioc.Resolve<
-      ModifierHandlerResolver
-    >(
-      ioc.Symbol("ModifierHandlerResolver"),
-    );
-
-    for (const mod of pipelineModifiers) {
-      pipeline.Append(
-        await defaultModifierMiddlewareResolver.Resolve(ioc, mod),
-      );
-    }
-
-    return pipeline;
+    return pipelineModifiers;
   }
 
   protected async establishApplicationHandler(

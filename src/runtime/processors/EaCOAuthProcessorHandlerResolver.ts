@@ -17,8 +17,8 @@ import {
   // loadOctokit,
   oAuthRequest,
   UserOAuthConnection,
-} from './.deps.ts';
-import { ProcessorHandlerResolver } from './ProcessorHandlerResolver.ts';
+} from "./.deps.ts";
+import { ProcessorHandlerResolver } from "./ProcessorHandlerResolver.ts";
 
 export const EaCOAuthProcessorHandlerResolver: ProcessorHandlerResolver<
   EverythingAsCode & EverythingAsCodeApplications & EverythingAsCodeIdentity
@@ -26,7 +26,7 @@ export const EaCOAuthProcessorHandlerResolver: ProcessorHandlerResolver<
   async Resolve(ioc, appProcCfg, eac) {
     if (!isEaCOAuthProcessor(appProcCfg.Application.Processor)) {
       throw new Deno.errors.NotSupported(
-        'The provided processor is not supported for the EaCOAuthProcessorHandlerResolver.'
+        "The provided processor is not supported for the EaCOAuthProcessorHandlerResolver.",
       );
     }
 
@@ -41,7 +41,7 @@ export const EaCOAuthProcessorHandlerResolver: ProcessorHandlerResolver<
       tokens: DenoKVOAuth.Tokens,
       newSessionId: string,
       oldSessionId?: string,
-      isPrimary?: boolean
+      isPrimary?: boolean,
     ) => {
       const now = Date.now();
 
@@ -53,7 +53,7 @@ export const EaCOAuthProcessorHandlerResolver: ProcessorHandlerResolver<
 
       if (isPrimary) {
         await denoKv.set(
-          ['OAuth', 'User', newSessionId, 'Current'],
+          ["OAuth", "User", newSessionId, "Current"],
           {
             Username: primaryEmail!,
             ExpiresAt: expiresAt,
@@ -62,32 +62,32 @@ export const EaCOAuthProcessorHandlerResolver: ProcessorHandlerResolver<
           } as UserOAuthConnection,
           {
             expireIn: expiresIn! * 1000,
-          }
+          },
         );
       } else {
         const curUser = await denoKv.get([
-          'OAuth',
-          'User',
+          "OAuth",
+          "User",
           oldSessionId!,
-          'Current',
+          "Current",
         ]);
 
         if (curUser.value) {
           await denoKv.set(
-            ['OAuth', 'User', newSessionId, 'Current'],
+            ["OAuth", "User", newSessionId, "Current"],
             {
               ...curUser.value,
               ExpiresAt: expiresAt,
             } as UserOAuthConnection,
             {
               expireIn: expiresIn! * 1000,
-            }
+            },
           );
         }
       }
 
       await denoKv.set(
-        ['OAuth', 'User', newSessionId, processor.ProviderLookup],
+        ["OAuth", "User", newSessionId, processor.ProviderLookup],
         {
           Username: primaryEmail!,
           ExpiresAt: expiresAt,
@@ -96,14 +96,14 @@ export const EaCOAuthProcessorHandlerResolver: ProcessorHandlerResolver<
         } as UserOAuthConnection,
         {
           expireIn: expiresIn! * 1000,
-        }
+        },
       );
 
       if (oldSessionId) {
         await denoKv
           .atomic()
-          .delete(['OAuth', 'User', oldSessionId, 'Current'])
-          .delete(['OAuth', 'User', oldSessionId, processor.ProviderLookup])
+          .delete(["OAuth", "User", oldSessionId, "Current"])
+          .delete(["OAuth", "User", oldSessionId, processor.ProviderLookup])
           .commit();
       }
     };
@@ -111,7 +111,8 @@ export const EaCOAuthProcessorHandlerResolver: ProcessorHandlerResolver<
     const oAuthConfig = loadOAuth2ClientConfig(provider)!;
 
     return (req, ctx) => {
-      debugger;
+      const base = ctx.Runtime.URLMatch.FromBase("./").href;
+
       if (isEaCAzureADB2CProviderDetails(provider.Details)) {
         return oAuthRequest(
           req,
@@ -120,7 +121,7 @@ export const EaCOAuthProcessorHandlerResolver: ProcessorHandlerResolver<
             await handleCompleteCallback(
               async (accessToken) => {
                 const [_header, payload, _signature] = await djwt.decode(
-                  accessToken
+                  accessToken,
                 );
 
                 return (payload as Record<string, string>).emails[0];
@@ -128,14 +129,14 @@ export const EaCOAuthProcessorHandlerResolver: ProcessorHandlerResolver<
               tokens,
               newSessionId,
               oldSessionId,
-              provider.Details?.IsPrimary
+              provider.Details?.IsPrimary,
             );
           },
-          ctx.Runtime.URLMatch.Base,
-          ctx.Runtime.URLMatch.Path
+          base,
+          ctx.Runtime.URLMatch.Path,
         );
       } else if (isEaCAzureADProviderDetails(provider.Details)) {
-        if (ctx.Runtime.URLMatch.Path.endsWith('callback')) {
+        if (ctx.Runtime.URLMatch.Path.endsWith("callback")) {
           const url = new URL(req.url);
 
           oAuthConfig.redirectUri = new URL(url.pathname, url.origin).href;
@@ -148,7 +149,7 @@ export const EaCOAuthProcessorHandlerResolver: ProcessorHandlerResolver<
             await handleCompleteCallback(
               async (accessToken) => {
                 const [_header, payload, _signature] = await djwt.decode(
-                  accessToken
+                  accessToken,
                 );
 
                 return (payload as Record<string, string>).upn;
@@ -156,11 +157,11 @@ export const EaCOAuthProcessorHandlerResolver: ProcessorHandlerResolver<
               tokens,
               newSessionId,
               oldSessionId,
-              provider.Details?.IsPrimary
+              provider.Details?.IsPrimary,
             );
           },
-          ctx.Runtime.URLMatch.Base,
-          ctx.Runtime.URLMatch.Path
+          base,
+          ctx.Runtime.URLMatch.Path,
         );
         // } else if (isEaCGitHubAppProviderDetails(provider.Details)) {
         //   return oAuthRequest(
@@ -188,7 +189,7 @@ export const EaCOAuthProcessorHandlerResolver: ProcessorHandlerResolver<
         //         provider.Details?.IsPrimary,
         //       );
         //     },
-        //     ctx.Runtime.URLMatch.Base,
+        //     base,
         //     ctx.Runtime.URLMatch.Path,
         //   );
       } else if (isEaCOAuthProviderDetails(provider.Details)) {
@@ -199,17 +200,17 @@ export const EaCOAuthProcessorHandlerResolver: ProcessorHandlerResolver<
             const { accessToken } = tokens;
 
             const [_header, payload, _signature] = await djwt.decode(
-              accessToken
+              accessToken,
             );
 
             payload?.toString();
           },
-          ctx.Runtime.URLMatch.Base,
-          ctx.Runtime.URLMatch.Path
+          base,
+          ctx.Runtime.URLMatch.Path,
         );
       } else {
         throw new Error(
-          `The provider '${processor.ProviderLookup}' type cannot be handled.`
+          `The provider '${processor.ProviderLookup}' type cannot be handled.`,
         );
       }
     };
