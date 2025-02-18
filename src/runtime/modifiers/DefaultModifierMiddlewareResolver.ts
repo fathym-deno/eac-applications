@@ -4,9 +4,11 @@ import {
   IoCContainer,
   isEaCBaseHREFModifierDetails,
   isEaCDenoKVCacheModifierDetails,
+  isEaCGoogleAnalyticsModifierDetails,
   isEaCJWTValidationModifierDetails,
   isEaCKeepAliveModifierDetails,
   isEaCMarkdownToHTMLModifierDetails,
+  isEaCMSAppInsightsModifierDetails,
   isEaCOAuthModifierDetails,
   isEaCStripeModifierDetails,
   isEaCTracingModifierDetails,
@@ -25,12 +27,16 @@ export class DefaultModifierMiddlewareResolver
       toResolveName = "EaCBaseHREFModifierDetails";
     } else if (isEaCDenoKVCacheModifierDetails(modifier.Details)) {
       toResolveName = "EaCDenoKVCacheModifierDetails";
+    } else if (isEaCGoogleAnalyticsModifierDetails(modifier.Details)) {
+      toResolveName = "EaCGoogleAnalyticsModifierDetails";
     } else if (isEaCJWTValidationModifierDetails(modifier.Details)) {
       toResolveName = "EaCJWTValidationModifierDetails";
     } else if (isEaCKeepAliveModifierDetails(modifier.Details)) {
       toResolveName = "EaCKeepAliveModifierDetails";
     } else if (isEaCMarkdownToHTMLModifierDetails(modifier.Details)) {
       toResolveName = "EaCMarkdownToHTMLModifierDetails";
+    } else if (isEaCMSAppInsightsModifierDetails(modifier.Details)) {
+      toResolveName = "EaCMSAppInsightsModifierDetails";
     } else if (isEaCOAuthModifierDetails(modifier.Details)) {
       toResolveName = "EaCOAuthModifierDetails";
     } else if (isEaCStripeModifierDetails(modifier.Details)) {
