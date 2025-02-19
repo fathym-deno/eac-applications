@@ -8,7 +8,7 @@ import {
 
 export function establishGoogleTagMgrMiddleware(
   logger: Logger,
-  googleId: string
+  googleId: string,
 ): EaCRuntimeHandler {
   const initCheck = new Promise<boolean>((resolve) => {
     logger.debug("Configuring keep alive...");
@@ -34,7 +34,10 @@ export function establishGoogleTagMgrMiddleware(
         // Google Tag Manager script
         const gtmScript = doc.createElement("script");
         gtmScript.setAttribute("async", "");
-        gtmScript.setAttribute("src", `https://www.googletagmanager.com/gtag/js?id=${googleId}`);
+        gtmScript.setAttribute(
+          "src",
+          `https://www.googletagmanager.com/gtag/js?id=${googleId}`,
+        );
 
         const gtmInlineScript = doc.createElement("script");
         gtmInlineScript.textContent = `

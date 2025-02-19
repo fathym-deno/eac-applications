@@ -8,7 +8,7 @@ import {
 
 export function establishMSAppInsightsMiddleware(
   logger: Logger,
-  instrumentationKey: string
+  instrumentationKey: string,
 ): EaCRuntimeHandler {
   const initCheck = new Promise<boolean>((resolve) => {
     logger.debug("Configuring keep alive...");

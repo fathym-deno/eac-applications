@@ -6,7 +6,9 @@ import {
 /**
  * The details of a Google Tag Manager modifier.
  */
-export type EaCGoogleTagMgrModifierDetails = EaCModifierDetails<"GoogleTagMgr">;
+export type EaCGoogleTagMgrModifierDetails = {
+  GoogleID: string;
+} & EaCModifierDetails<"GoogleTagMgr">;
 
 /**
  * Type Guard: Checks if the given object is an EaC Google Tag Manager modifier details.

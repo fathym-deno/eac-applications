@@ -6,7 +6,9 @@ import {
 /**
  * The details of a MS App Insights modifier.
  */
-export type EaCMSAppInsightsModifierDetails = EaCModifierDetails<"MSAppInsights">;
+export type EaCMSAppInsightsModifierDetails = {
+  InstrumentationKey: string;
+} & EaCModifierDetails<"MSAppInsights">;
 
 /**
  * Type Guard: Checks if the given object is an EaC MS App Insights modifier details.

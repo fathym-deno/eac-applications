@@ -19,6 +19,6 @@ export const EaCGoogleTagMgrModifierHandlerResolver: ModifierHandlerResolver = {
 
     const logger = await ioc.Resolve(LoggingProvider);
 
-    return establishGoogleTagMgrMiddleware(logger.Package);
+    return establishGoogleTagMgrMiddleware(logger.Package, _details.GoogleID);
   },
 };
