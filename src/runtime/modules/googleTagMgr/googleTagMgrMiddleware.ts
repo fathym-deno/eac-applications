@@ -6,7 +6,10 @@ import {
   Logger,
 } from "../.deps.ts";
 
-export function establishGoogleTagMgrMiddleware(logger: Logger): EaCRuntimeHandler {
+export function establishGoogleTagMgrMiddleware(
+  logger: Logger,
+  googleId: string
+): EaCRuntimeHandler {
   const initCheck = new Promise<boolean>((resolve) => {
     logger.debug("Configuring keep alive...");
 
@@ -23,27 +26,29 @@ export function establishGoogleTagMgrMiddleware(logger: Logger): EaCRuntimeHandl
     if (contType?.includes("text/html")) {
       await initCheck;
 
-      let baseHref = ctx.Runtime.URLMatch.Base;
-
-      if (!baseHref.endsWith("/")) {
-        baseHref += "/";
-      }
-
       const htmlStr = await resp.clone().text();
 
       const doc = new DOMParser().parseFromString(htmlStr, "text/html");
 
       if (doc) {
-        const baseScriptNode = doc.head.querySelector("base") ??
-          doc.createElement("base");
-        baseScriptNode.setAttribute("href", baseHref);
+        // Google Tag Manager script
+        const gtmScript = doc.createElement("script");
+        gtmScript.setAttribute("async", "");
+        gtmScript.setAttribute("src", `https://www.googletagmanager.com/gtag/js?id=${googleId}`);
 
-        if (!doc.head.querySelector("base")) {
-          doc.head.prepend(baseScriptNode);
-        }
+        const gtmInlineScript = doc.createElement("script");
+        gtmInlineScript.textContent = `
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', '${googleId}');
+        `;
+
+        // Insert the scripts immediately after the opening <head> tag
+        doc.head.prepend(gtmInlineScript);
+        doc.head.prepend(gtmScript);
 
         const docHtml = doc.childNodes[1] as Element;
-
         const fullDoc = `<!DOCTYPE html>\n${docHtml.outerHTML}`;
 
         resp = new Response(fullDoc, resp);
