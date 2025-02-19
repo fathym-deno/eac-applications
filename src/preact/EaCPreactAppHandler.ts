@@ -325,7 +325,9 @@ export class EaCPreactAppHandler {
       //   boolean,
       //   string
       // ][];
-      this.logger.debug("Components Loaded");
+      this.logger.debug("Components:");
+      compDFSs
+        .forEach((m) => this.logger.debug(`\t${m[0]}`));
       this.logger.debug("");
 
       return compDFSs;
