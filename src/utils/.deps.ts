@@ -2,7 +2,7 @@ export type {
   EaCMetadataBase,
   EaCModuleActuator,
   EverythingAsCode,
-} from "jsr:@fathym/eac@0.2.78";
-export { callEaCActuatorConnections } from "jsr:@fathym/eac@0.2.78/steward/utils";
+} from "jsr:@fathym/eac@0.2.80";
+export { callEaCActuatorConnections } from "jsr:@fathym/eac@0.2.80/steward/utils";
 
 export * as jsonpath from "npm:jsonpath@1.1.1";

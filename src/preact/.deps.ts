@@ -3,12 +3,12 @@ export type { Logger } from "jsr:@std/log@0.224.14";
 export * as path from "jsr:@std/path@1.0.8";
 
 export { jsonMapSetClone } from "jsr:@fathym/common@0.2.161/iterables/json-map-set";
-export { LoggingProvider } from "jsr:@fathym/common@0.2.178/log";
+export { LoggingProvider } from "jsr:@fathym/common@0.2.179/log";
 export {
   type DenoConfig,
   loadDenoConfigSync,
-} from "jsr:@fathym/common@0.2.178/build";
-export { merge } from "jsr:@fathym/common@0.2.178/merge";
+} from "jsr:@fathym/common@0.2.179/build";
+export { merge } from "jsr:@fathym/common@0.2.179/merge";
 
 export {
   denoPlugins,
@@ -23,27 +23,27 @@ export {
   type ESBuildPlugin,
   type ESBuildPluginBuild,
   type ESBuildResult,
-} from "jsr:@fathym/eac@0.2.78/esbuild";
-export type { EaCRuntimeContext } from "jsr:@fathym/eac@0.2.78/runtime";
+} from "jsr:@fathym/eac@0.2.80/esbuild";
+export type { EaCRuntimeContext } from "jsr:@fathym/eac@0.2.80/runtime";
 export {
   EAC_RUNTIME_DEV,
   IS_DENO_DEPLOY,
-} from "jsr:@fathym/eac@0.2.78/runtime/config";
+} from "jsr:@fathym/eac@0.2.80/runtime/config";
 export {
   type EaCRuntimeHandler,
   EaCRuntimeHandlerPipeline,
   type EaCRuntimeHandlers,
   type EaCRuntimeHandlerSet,
   // } from "../../../eac/src/runtime/pipelines/.exports.ts";
-} from "jsr:@fathym/eac@0.2.78/runtime/pipelines";
+} from "jsr:@fathym/eac@0.2.80/runtime/pipelines";
 
 export type {
   DistributedFileSystemOptions,
   EaCDistributedFileSystemAsCode,
   EaCDistributedFileSystemDetails,
   EverythingAsCodeDFS,
-} from "jsr:@fathym/eac@0.2.78/dfs";
-export type { DFSFileHandler } from "jsr:@fathym/eac@0.2.78/dfs/handlers";
+} from "jsr:@fathym/eac@0.2.80/dfs";
+export type { DFSFileHandler } from "jsr:@fathym/eac@0.2.80/dfs/handlers";
 export {
   executePathMatch,
   importDFSTypescriptModule,
@@ -51,7 +51,7 @@ export {
   loadMiddleware,
   loadRequestPathPatterns,
   type PathMatch,
-} from "jsr:@fathym/eac@0.2.78/dfs/utils";
+} from "jsr:@fathym/eac@0.2.80/dfs/utils";
 
 export { IoCContainer } from "jsr:@fathym/ioc@0.0.14";
 
