@@ -2,7 +2,7 @@ export { parse as parseJsonc } from "jsr:@std/jsonc@1.0.0";
 export type { Logger } from "jsr:@std/log@0.224.14";
 export * as path from "jsr:@std/path@1.0.8";
 
-export { jsonMapSetClone } from "jsr:@fathym/common@0.2.161/iterables/json-map-set";
+export { jsonMapSetClone } from "jsr:@fathym/common@0.2.179/iterables/json-map-set";
 export { LoggingProvider } from "jsr:@fathym/common@0.2.179/log";
 export {
   type DenoConfig,
