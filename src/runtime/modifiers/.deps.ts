@@ -3,8 +3,8 @@ export { LoggingProvider } from "jsr:@fathym/common@0.2.179/log";
 
 export { IoCContainer } from "jsr:@fathym/ioc@0.0.14";
 
-export { IS_BUILDING } from "jsr:@fathym/eac@0.2.80/runtime/config";
-export { type EaCRuntimeHandler } from "jsr:@fathym/eac@0.2.80/runtime/pipelines";
+export { IS_BUILDING } from "jsr:@fathym/eac@0.2.84/runtime/config";
+export { type EaCRuntimeHandler } from "jsr:@fathym/eac@0.2.84/runtime/pipelines";
 
 export type { EaCModifierAsCode } from "../../applications/modifiers/.exports.ts";
 
