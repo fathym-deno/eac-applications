@@ -23,27 +23,27 @@ export {
   type ESBuildPlugin,
   type ESBuildPluginBuild,
   type ESBuildResult,
-} from "jsr:@fathym/eac@0.2.89/esbuild";
-export type { EaCRuntimeContext } from "jsr:@fathym/eac@0.2.89/runtime";
+} from "jsr:@fathym/eac@0.2.90/esbuild";
+export type { EaCRuntimeContext } from "jsr:@fathym/eac@0.2.90/runtime";
 export {
   EAC_RUNTIME_DEV,
   IS_DENO_DEPLOY,
-} from "jsr:@fathym/eac@0.2.89/runtime/config";
+} from "jsr:@fathym/eac@0.2.90/runtime/config";
 export {
   type EaCRuntimeHandler,
   EaCRuntimeHandlerPipeline,
   type EaCRuntimeHandlers,
   type EaCRuntimeHandlerSet,
   // } from "../../../eac/src/runtime/pipelines/.exports.ts";
-} from "jsr:@fathym/eac@0.2.89/runtime/pipelines";
+} from "jsr:@fathym/eac@0.2.90/runtime/pipelines";
 
 export type {
   DistributedFileSystemOptions,
   EaCDistributedFileSystemAsCode,
   EaCDistributedFileSystemDetails,
   EverythingAsCodeDFS,
-} from "jsr:@fathym/eac@0.2.89/dfs";
-export type { DFSFileHandler } from "jsr:@fathym/eac@0.2.89/dfs/handlers";
+} from "jsr:@fathym/eac@0.2.90/dfs";
+export type { DFSFileHandler } from "jsr:@fathym/eac@0.2.90/dfs/handlers";
 export {
   executePathMatch,
   importDFSTypescriptModule,
@@ -51,7 +51,7 @@ export {
   loadMiddleware,
   loadRequestPathPatterns,
   type PathMatch,
-} from "jsr:@fathym/eac@0.2.89/dfs/utils";
+} from "jsr:@fathym/eac@0.2.90/dfs/utils";
 
 export { IoCContainer } from "jsr:@fathym/ioc@0.0.14";
 
