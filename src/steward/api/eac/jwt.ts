@@ -9,6 +9,7 @@ import { EaCStewardAPIState } from "../state/EaCStewardAPIState.ts";
 
 export default {
   async GET(req, ctx) {
+    // debugger;
     const parentEntLookup = ctx.State.EnterpriseLookup;
 
     if (!parentEntLookup) {
