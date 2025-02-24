@@ -1,10 +1,10 @@
-export { loadJwtConfig } from "jsr:@fathym/common@0.2.175/jwt";
-export { LoggingProvider } from "jsr:@fathym/common@0.2.175/log";
+export { loadJwtConfig } from "jsr:@fathym/common@0.2.179/jwt";
+export { LoggingProvider } from "jsr:@fathym/common@0.2.179/log";
 
-export { IoCContainer } from "jsr:@fathym/ioc@0.0.13";
+export { IS_BUILDING } from "jsr:@fathym/eac@0.2.90/runtime/config";
+export { type EaCRuntimeHandler } from "jsr:@fathym/eac@0.2.90/runtime/pipelines";
 
-export { IS_BUILDING } from "jsr:@fathym/eac@0.2.39/runtime/config";
-export { type EaCRuntimeHandler } from "jsr:@fathym/eac@0.2.39/runtime/pipelines";
+export { IoCContainer } from "jsr:@fathym/ioc@0.0.14";
 
 export type { EaCModifierAsCode } from "../../applications/modifiers/.exports.ts";
 

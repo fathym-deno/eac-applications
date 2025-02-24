@@ -1,10 +1,10 @@
-import { loadEaCStewardSvc } from "jsr:@fathym/eac@0.2.39/steward/clients";
 import {
   colors,
   djwt,
   EaCRuntimeConfig,
   EaCRuntimePlugin,
   EaCRuntimePluginConfig,
+  loadEaCStewardSvc,
   loadJwtConfig,
 } from "./.deps.ts";
 

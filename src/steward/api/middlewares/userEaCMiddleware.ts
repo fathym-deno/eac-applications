@@ -7,19 +7,19 @@ export const userEaCMiddleware: EaCRuntimeHandler<EaCStewardAPIState> = async (
 ) => {
   const username = ctx.State.Username!;
 
-  const entLookup = ctx.Params.entLookup!;
+  const entLookup = ctx.State.EnterpriseLookup!;
 
-  if (entLookup !== ctx.State.EnterpriseLookup) {
-    return Response.json(
-      {
-        Message:
-          `The current JWT does not have access to the enterprise '${entLookup}'.`,
-      },
-      {
-        status: STATUS_CODE.Unauthorized,
-      },
-    );
-  }
+  // if (entLookup !== ctx.State.EnterpriseLookup) {
+  //   return Response.json(
+  //     {
+  //       Message:
+  //         `The current JWT does not have access to the enterprise '${entLookup}'.`,
+  //     },
+  //     {
+  //       status: STATUS_CODE.Unauthorized,
+  //     },
+  //   );
+  // }
 
   const eacKv = await ctx.Runtime.IoC.Resolve<Deno.Kv>(Deno.Kv, "eac");
 

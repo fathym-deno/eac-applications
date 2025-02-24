@@ -10,6 +10,7 @@ import {
   EaCLocalDistributedFileSystemDetails,
   EaCProjectAsCode,
   EaCRuntimeConfig,
+  EaCRuntimeHandlerRouteGroup,
   EaCRuntimePlugin,
   EaCRuntimePluginConfig,
   EaCStatus,
@@ -57,13 +58,15 @@ export default class EaCStewardPlugin implements EaCRuntimePlugin {
     _eac: EverythingAsCode,
     ioc: IoCContainer,
     config: EaCRuntimeConfig,
-  ): Promise<void> {
+  ): Promise<EaCRuntimeHandlerRouteGroup[]> {
     const steward = await ioc.Resolve(EaCSteward);
 
     // debugger;
     await steward.Start(ioc, "eac", "commit");
 
     await this.initializePrimaryEaC(config, ioc);
+
+    return [];
   }
 
   public async Setup(
@@ -134,7 +137,7 @@ export default class EaCStewardPlugin implements EaCRuntimePlugin {
                 Type: "JSR",
                 Package: "@fathym/eac-applications",
                 Version: "",
-                FileRoot: "/src/steward/api/eac",
+                FileRoot: "/src/steward/api/eac/",
                 DefaultFile: "index.ts",
                 Extensions: ["ts"],
                 WorkerPath: import.meta.resolve(
@@ -328,8 +331,6 @@ export default class EaCStewardPlugin implements EaCRuntimePlugin {
       });
 
       await usersSetupOp.commit();
-    } else {
-      logger.debug("There are existing EaC Records");
     }
   }
 }

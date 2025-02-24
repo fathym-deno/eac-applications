@@ -11,6 +11,7 @@ import FathymModifierHandlerPlugin from "./FathymModifierHandlerPlugin.ts";
 import FathymProcessorHandlerPlugin from "./FathymProcessorHandlerPlugin.ts";
 import FathymEaCPlugin from "./FathymEaCPlugin.ts";
 import FathymAzureContainerCheckPlugin from "./azure/FathymAzureContainerCheckPlugin.ts";
+import FathymEaCApplicationsPlugin from "./FathymEaCApplicationsPlugin.ts";
 
 export default class FathymCorePlugin implements EaCRuntimePlugin {
   constructor() {}
@@ -21,11 +22,12 @@ export default class FathymCorePlugin implements EaCRuntimePlugin {
       IoC: new IoCContainer(),
       Plugins: [
         new FathymAzureContainerCheckPlugin(),
+        new FathymEaCPlugin(),
         new FathymProcessorHandlerPlugin(),
         new FathymModifierHandlerPlugin(),
         new FathymDFSFileHandlerPlugin(),
-        new FathymEaCPlugin(),
         new FathymEaCDenoKVPlugin(),
+        new FathymEaCApplicationsPlugin(),
       ],
     };
 

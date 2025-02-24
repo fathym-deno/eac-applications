@@ -1,7 +1,7 @@
 import {
   EaCDFSProcessor,
   isEaCDFSProcessor,
-  loadFileHandler,
+  loadDFSFileHandler,
   mime,
   STATUS_CODE,
 } from "./.deps.ts";
@@ -17,9 +17,14 @@ export const EaCDFSProcessorHandlerResolver: ProcessorHandlerResolver = {
 
     const processor = appProcCfg.Application.Processor as EaCDFSProcessor;
 
-    const dfs = eac.DFSs![processor.DFSLookup]!.Details!;
+    const fileHandler = await loadDFSFileHandler(
+      ioc,
+      eac.DFSs!,
+      eac.$GlobalOptions?.DFSs ?? {},
+      processor.DFSLookup,
+    );
 
-    const fileHandler = await loadFileHandler(ioc, dfs);
+    const dfs = eac.DFSs![processor.DFSLookup]!.Details!;
 
     const cacheDb = dfs.CacheDBLookup
       ? await ioc.Resolve(Deno.Kv, dfs.CacheDBLookup)

@@ -3,14 +3,14 @@ export * from "./azure/.exports.ts";
 import FtmCrPlgn from "./FathymCorePlugin.ts";
 export const FathymCorePlugin = FtmCrPlgn;
 
-// import FtmDmPlgn from './FathymDemoPlugin.ts';
-// export const FathymDemoPlugin = FtmDmPlgn;
-
 import FDFHP from "./FathymDFSFileHandlerPlugin.ts";
 export const FathymDFSFileHandlerPlugin = FDFHP;
 
 import FEP from "./FathymEaCPlugin.ts";
 export const FathymEaCPlugin = FEP;
+
+import FEAP from "./FathymEaCApplicationsPlugin.ts";
+export const FathymEaCApplicationsPlugin = FEAP;
 
 import FEDKVP from "./FathymEaCDenoKVPlugin.ts";
 export const FathymEaCDenoKVPlugin = FEDKVP;
