@@ -1,3 +1,4 @@
+import { debug } from "../../../runtime/logging/.deps.ts";
 import { EaCRuntimeHandler, EaCUserRecord, STATUS_CODE } from "../.deps.ts";
 import { EaCStewardAPIState } from "../state/EaCStewardAPIState.ts";
 
