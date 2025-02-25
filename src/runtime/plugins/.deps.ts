@@ -43,7 +43,7 @@ export {
   type EverythingAsCodeDenoKV,
   isEaCDenoKVDetails,
   isEverythingAsCodeDenoKV,
-} from "jsr:@fathym/eac-deno-kv@0.0.9";
+} from "jsr:@fathym/eac-deno-kv@0.0.12";
 
 export { IoCContainer } from "jsr:@fathym/ioc@0.0.14";
 
