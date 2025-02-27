@@ -96,7 +96,7 @@ export default class EaCStewardPlugin implements EaCRuntimePlugin {
             ApplicationResolvers: {
               [appLookup]: {
                 PathPattern: this.options?.Application?.Path ?? "/api/steward*",
-                Priority: this.options?.Application?.Priority ?? 500,
+                Priority: this.options?.Application?.Priority ?? 400,
               },
             },
           } as EaCProjectAsCode,
