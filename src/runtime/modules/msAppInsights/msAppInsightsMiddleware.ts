@@ -36,7 +36,7 @@ export function establishMSAppInsightsMiddleware(
           var appInsights = window.appInsights || function(config) {
             function s(config) { t[config] = function() { var args = arguments; t.queue.push(function() { t[config].apply(t, args); }); }; }
             var t = { config: config }, r = document, u = window, e = "script";
-            setTimeout(function() { var s = r.createElement(e); s.src = config.url || "https://az416426.vo.msecnd.net/scripts/a/ai.2.min.js"; r.getElementsByTagName(e)[0].parentNode.appendChild(s); });
+            setTimeout(function() { var s = r.createElement(e); s.src = config.url || "https://js.monitor.azure.com/scripts/b/ai.2.min.js"; r.getElementsByTagName(e)[0].parentNode.appendChild(s); });
             t.queue = [];
             var n = ["trackEvent", "trackPageView", "trackException", "trackTrace", "trackDependencyData", "flush"];
             while (n.length) s(n.pop());
