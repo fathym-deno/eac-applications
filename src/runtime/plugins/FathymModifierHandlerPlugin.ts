@@ -2,9 +2,11 @@ import {
   DefaultModifierMiddlewareResolver,
   EaCBaseHREFModifierHandlerResolver,
   EaCDenoKVCacheModifierHandlerResolver,
+  EaCGoogleTagMgrModifierHandlerResolver,
   EaCJWTValidationModifierHandlerResolver,
   EaCKeepAliveModifierHandlerResolver,
   EaCMarkdownToHTMLModifierHandlerResolver,
+  EaCMSAppInsightsModifierHandlerResolver,
   EaCOAuthModifierHandlerResolver,
   EaCRuntimeConfig,
   EaCRuntimePlugin,
@@ -35,6 +37,11 @@ export default class FathymModifierHandlerPlugin implements EaCRuntimePlugin {
       Type: pluginConfig.IoC!.Symbol("ModifierHandlerResolver"),
     });
 
+    pluginConfig.IoC!.Register(() => EaCGoogleTagMgrModifierHandlerResolver, {
+      Name: "EaCGoogleTagMgrModifierDetails",
+      Type: pluginConfig.IoC!.Symbol("ModifierHandlerResolver"),
+    });
+
     pluginConfig.IoC!.Register(() => EaCJWTValidationModifierHandlerResolver, {
       Name: "EaCJWTValidationModifierDetails",
       Type: pluginConfig.IoC!.Symbol("ModifierHandlerResolver"),
@@ -47,6 +54,11 @@ export default class FathymModifierHandlerPlugin implements EaCRuntimePlugin {
 
     pluginConfig.IoC!.Register(() => EaCMarkdownToHTMLModifierHandlerResolver, {
       Name: "EaCMarkdownToHTMLModifierDetails",
+      Type: pluginConfig.IoC!.Symbol("ModifierHandlerResolver"),
+    });
+
+    pluginConfig.IoC!.Register(() => EaCMSAppInsightsModifierHandlerResolver, {
+      Name: "EaCMSAppInsightsModifierDetails",
       Type: pluginConfig.IoC!.Symbol("ModifierHandlerResolver"),
     });
 
