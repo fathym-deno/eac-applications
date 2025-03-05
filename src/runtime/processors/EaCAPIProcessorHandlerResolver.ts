@@ -105,9 +105,9 @@ export const EaCAPIProcessorHandlerResolver: ProcessorHandlerResolver = {
             .map((p) => p.PatternText)
             .map(
               (pt) =>
-                `${
-                  appProcCfg.ResolverConfig.PathPattern.replace("*", "")
-                }${pt.endsWith("/") ? pt.substring(0, pt.length - 1) : pt}`,
+                `${appProcCfg.ResolverConfig.PathPattern.replace("*", "")}${
+                  pt.endsWith("/") ? pt.substring(0, pt.length - 1) : pt
+                }`,
             )
             .forEach((pt) => logger.debug(`\t${pt}`));
           logger.debug("");

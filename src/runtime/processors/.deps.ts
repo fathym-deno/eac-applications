@@ -11,14 +11,14 @@ export {
   type UserOAuthConnection,
 } from "jsr:@fathym/common@0.2.179/oauth";
 
-export type { EverythingAsCode } from "jsr:@fathym/eac@0.2.91";
-export type { EaCRuntimeContext } from "jsr:@fathym/eac@0.2.91/runtime";
-export { EAC_RUNTIME_DEV } from "jsr:@fathym/eac@0.2.91/runtime/config";
-export type { ESBuild } from "jsr:@fathym/eac@0.2.91/esbuild";
+export type { EverythingAsCode } from "jsr:@fathym/eac@0.2.94";
+export type { EaCRuntimeContext } from "jsr:@fathym/eac@0.2.94/runtime";
+export { EAC_RUNTIME_DEV } from "jsr:@fathym/eac@0.2.94/runtime/config";
+export type { ESBuild } from "jsr:@fathym/eac@0.2.94/esbuild";
 export type {
   EaCRuntimeHandler,
   EaCRuntimeHandlerSet,
-} from "jsr:@fathym/eac@0.2.91/runtime/pipelines";
+} from "jsr:@fathym/eac@0.2.94/runtime/pipelines";
 
 export {
   executePathMatch,
@@ -26,7 +26,7 @@ export {
   loadEaCRuntimeHandlers,
   loadMiddleware,
   loadRequestPathPatterns,
-} from "jsr:@fathym/eac@0.2.91/dfs/utils";
+} from "jsr:@fathym/eac@0.2.94/dfs/utils";
 
 export {
   type EaCGitHubAppProviderDetails,
@@ -36,7 +36,7 @@ export {
   isEaCAzureADProviderDetails,
   isEaCGitHubAppProviderDetails,
   isEaCOAuthProviderDetails,
-} from "jsr:@fathym/eac-identity@0.0.11";
+} from "jsr:@fathym/eac-identity@0.0.12";
 
 export { IoCContainer } from "jsr:@fathym/ioc@0.0.14";
 
