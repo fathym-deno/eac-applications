@@ -41,6 +41,7 @@ import { loadLayout } from "./loadLayout.ts";
 import { loadPreactAppHandler } from "./loadPreactAppHandler.ts";
 import { PreactRenderHandler } from "./PreactRenderHandler.ts";
 import { EaCComponentDFSHandler } from "./EaCComponentDFSHandler.ts";
+import { EaCApplicationProcessorConfig } from "../applications/processors/.exports.ts";
 
 export class EaCPreactAppHandler {
   //#region Fields
@@ -136,19 +137,19 @@ export class EaCPreactAppHandler {
   }
 
   public async Configure(
-    processor: EaCPreactAppProcessor,
+    appProcCfg: EaCApplicationProcessorConfig,
     dfss: Record<string, EaCDistributedFileSystemAsCode>,
     dfsOptions: DistributedFileSystemOptions,
     revision: string,
   ): Promise<void> {
     const matches = await this.loadPathMatches(
-      processor,
+      appProcCfg,
       dfss,
       dfsOptions,
       revision,
     );
 
-    this.establishPipeline(processor, matches);
+    this.establishPipeline(appProcCfg, matches);
   }
 
   public Execute(
@@ -326,8 +327,9 @@ export class EaCPreactAppHandler {
       //   string
       // ][];
       this.logger.debug("Components:");
-      compDFSs
-        .forEach((m) => this.logger.debug(`\t${m[0]}`));
+      compDFSs.forEach((n) => {
+        n.forEach((m) => this.logger.debug(`\t${m[0]}`));
+      });
       this.logger.debug("");
 
       return compDFSs;
@@ -362,9 +364,11 @@ export class EaCPreactAppHandler {
   }
 
   protected establishPipeline(
-    processor: EaCPreactAppProcessor,
+    appProcCfg: EaCApplicationProcessorConfig,
     matches: PathMatch[],
   ): void {
+    const processor = appProcCfg.Application.Processor as EaCPreactAppProcessor;
+
     const pipeline = new EaCRuntimeHandlerPipeline();
 
     pipeline.Append((req, ctx) => {
@@ -405,7 +409,7 @@ export class EaCPreactAppHandler {
   }
 
   protected async layoutLoader(
-    processor: EaCPreactAppProcessor,
+    appProcCfg: EaCApplicationProcessorConfig,
     allPaths: string[],
     appDFS: EaCDistributedFileSystemDetails,
     appDFSLookup: string,
@@ -420,6 +424,8 @@ export class EaCPreactAppHandler {
       string[] | undefined,
     ][]
   > {
+    const processor = appProcCfg.Application.Processor as EaCPreactAppProcessor;
+
     const layoutPaths = allPaths
       .filter((p) => p.endsWith("_layout.tsx"))
       .sort((a, b) => a.split("/").length - b.split("/").length);
@@ -438,7 +444,12 @@ export class EaCPreactAppHandler {
 
     this.logger.debug(`Layouts - ${processor.AppDFSLookup}: `);
     layouts
-      .map((l) => `${l[0].startsWith(".") ? l[0].slice(1) : l[0]}`)
+      .map(
+        (l) =>
+          `${appProcCfg.ResolverConfig.PathPattern.replace("*", "")}${
+            l[0].startsWith(".") ? l[0].slice(1) : l[0]
+          }`,
+      )
       .forEach((pt) => this.logger.debug(`\t${pt}`));
     this.logger.debug("");
 
@@ -616,11 +627,13 @@ export class EaCPreactAppHandler {
   }
 
   protected async loadPathMatches(
-    processor: EaCPreactAppProcessor,
+    appProcCfg: EaCApplicationProcessorConfig,
     dfss: Record<string, EaCDistributedFileSystemAsCode>,
     dfsOptions: DistributedFileSystemOptions,
     revision: string,
   ): Promise<PathMatch[]> {
+    const processor = appProcCfg.Application.Processor as EaCPreactAppProcessor;
+
     const [{ DFS: appDFS, Handler: appDFSHandler }, compDFSHandlers] =
       await Promise.all([
         this.loadAppDFSHandler(processor, dfss, dfsOptions),
@@ -633,14 +646,14 @@ export class EaCPreactAppHandler {
       async (allPaths) => {
         const [middleware, layouts, compDFSs] = await Promise.all([
           this.middlewareLoader(
-            processor,
+            appProcCfg,
             allPaths,
             appDFS,
             processor.AppDFSLookup,
             appDFSHandler,
           ),
           this.layoutLoader(
-            processor,
+            appProcCfg,
             allPaths,
             appDFS,
             processor.AppDFSLookup,
@@ -679,8 +692,13 @@ export class EaCPreactAppHandler {
     );
 
     this.logger.debug(`Apps - ${processor.AppDFSLookup}: `);
-    matches
-      .forEach((m) => this.logger.debug(`\t${m.PatternText}`));
+    matches.forEach((m) =>
+      this.logger.debug(
+        `\t${
+          appProcCfg.ResolverConfig.PathPattern.replace("*", "")
+        }${m.PatternText}`,
+      )
+    );
     this.logger.debug("");
 
     await this.setupIslandsClientSources(processor, appDFSHandler.Root);
@@ -689,12 +707,14 @@ export class EaCPreactAppHandler {
   }
 
   protected async middlewareLoader(
-    processor: EaCPreactAppProcessor,
+    appProcCfg: EaCApplicationProcessorConfig,
     allPaths: string[],
     appDFS: EaCDistributedFileSystemDetails,
     appDFSLookup: string,
     appDFSHandler: DFSFileHandler,
   ): Promise<[string, EaCRuntimeHandlerSet][]> {
+    const processor = appProcCfg.Application.Processor as EaCPreactAppProcessor;
+
     const middlewarePaths = allPaths
       .filter((p) => p.endsWith("_middleware.ts"))
       .sort((a, b) => a.split("/").length - b.split("/").length);
@@ -715,7 +735,12 @@ export class EaCPreactAppHandler {
 
     this.logger.debug(`Middleware - ${processor.AppDFSLookup}: `);
     middleware
-      .map((l) => `${l[0].startsWith(".") ? l[0].slice(1) : l[0]}`)
+      .map(
+        (l) =>
+          `${appProcCfg.ResolverConfig.PathPattern.replace("*", "")}${
+            l[0].startsWith(".") ? l[0].slice(1) : l[0]
+          }`,
+      )
       .forEach((pt) => this.logger.debug(`\t${pt}`));
     this.logger.debug("");
 

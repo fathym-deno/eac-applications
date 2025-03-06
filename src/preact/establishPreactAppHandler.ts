@@ -1,3 +1,4 @@
+import { EaCApplicationProcessorConfig } from "../applications/processors/.exports.ts";
 import {
   EaCPreactAppProcessor,
   EaCRuntimeHandler,
@@ -11,10 +12,12 @@ import { PreactRenderHandler } from "./PreactRenderHandler.ts";
 
 export async function establishPreactAppHandler(
   ioc: IoCContainer,
-  processor: EaCPreactAppProcessor,
+  appProcCfg: EaCApplicationProcessorConfig,
   eac: EverythingAsCodeDFS,
 ): Promise<EaCRuntimeHandler> {
   const logger = await ioc.Resolve(LoggingProvider);
+
+  const processor = appProcCfg.Application.Processor as EaCPreactAppProcessor;
 
   const handler = new EaCPreactAppHandler(
     ioc,
@@ -29,7 +32,7 @@ export async function establishPreactAppHandler(
   );
 
   await handler.Configure(
-    processor,
+    appProcCfg,
     eac.DFSs || {},
     eac.$GlobalOptions?.DFSs ?? {},
     Date.now().toString(),
