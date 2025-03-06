@@ -31,6 +31,7 @@ export const EaCStripeProcessorHandlerResolver: ProcessorHandlerResolver = {
           Username?: string;
         }>,
       ) => {
+        // debugger;
         const username = ctx.State.Username as string;
 
         if (!username) {
@@ -61,6 +62,9 @@ export const EaCStripeProcessorHandlerResolver: ProcessorHandlerResolver = {
             // );
 
             const subRes = await processor.HandleSubscription(
+              ctx.Runtime.EaC.EnterpriseLookup!,
+              username,
+              processor.LicenseLookup,
               inpReq.PlanLookup,
               inpReq.PriceLookup,
             );

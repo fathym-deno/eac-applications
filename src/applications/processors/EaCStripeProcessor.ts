@@ -9,6 +9,9 @@ export type EaCStripeProcessor = {
 
   /** Used to handle when the subscriptin is successful. */
   HandleSubscription: (
+    entLookup: string,
+    username: string,
+    licLookup: string,
     planLookup: string,
     priceLookup: string,
   ) => Promise<unknown>;
