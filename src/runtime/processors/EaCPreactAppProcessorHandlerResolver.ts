@@ -10,8 +10,6 @@ export const EaCPreactAppProcessorHandlerResolver: ProcessorHandlerResolver = {
       );
     }
 
-    const processor = appProcCfg.Application.Processor as EaCPreactAppProcessor;
-
-    return establishPreactAppHandler(ioc, processor, eac);
+    return establishPreactAppHandler(ioc, appProcCfg, eac);
   },
 };
