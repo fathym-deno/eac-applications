@@ -1,14 +1,8 @@
 import {
   delay,
-  EaCAPIProcessor,
-  EaCApplicationAsCode,
   EaCCommitRequest,
   EaCDenoKVDetails,
   EaCDistributedFileSystemDetails,
-  EaCJSRDistributedFileSystemDetails,
-  EaCJWTValidationModifierDetails,
-  EaCLocalDistributedFileSystemDetails,
-  EaCProjectAsCode,
   EaCRuntimeConfig,
   EaCRuntimeHandlerRouteGroup,
   EaCRuntimePlugin,
@@ -26,32 +20,22 @@ import {
 } from "./.deps.ts";
 
 export type EaCStewardPluginOptions = {
-  DFS?: {
-    Details?: EaCDistributedFileSystemDetails;
+  DenoKVs?: {
+    StewardCommitDBLookup?: string;
 
-    Lookup?: string;
-  };
-
-  Application?: {
-    JWTValidationModifier?: {
-      Lookup?: string;
-
-      Priority?: number;
-    };
-
-    Lookup?: string;
-
-    Path?: string;
-
-    Priority?: number;
-  };
-
-  Project?: {
-    Lookup?: string;
+    StewardDBLookup?: string;
   };
 };
 
 export default class EaCStewardPlugin implements EaCRuntimePlugin {
+  protected get stewardCommitDBLookup(): string {
+    return this.options?.DenoKVs?.StewardDBLookup || "commit";
+  }
+
+  protected get stewardDBLookup(): string {
+    return this.options?.DenoKVs?.StewardDBLookup || "eac";
+  }
+
   constructor(protected options?: EaCStewardPluginOptions) {}
 
   public async AfterEaCResolved(
@@ -61,8 +45,7 @@ export default class EaCStewardPlugin implements EaCRuntimePlugin {
   ): Promise<EaCRuntimeHandlerRouteGroup[]> {
     const steward = await ioc.Resolve(EaCSteward);
 
-    // debugger;
-    await steward.Start(ioc, "eac", "commit");
+    await steward.Start(ioc, this.stewardDBLookup, this.stewardCommitDBLookup);
 
     await this.initializePrimaryEaC(config, ioc);
 
@@ -72,112 +55,32 @@ export default class EaCStewardPlugin implements EaCRuntimePlugin {
   public async Setup(
     config: EaCRuntimeConfig,
   ): Promise<EaCRuntimePluginConfig> {
-    const stewardApiMetaPath = import.meta.resolve("../api/eac/");
-
-    const fileScheme = "file:///";
-
-    const projLookup = this.options?.Project?.Lookup || "core";
-
-    const appLookup = this.options?.Application?.Lookup || "eac-steward";
-
-    const dfsLookup = this.options?.DFS?.Lookup || "steward:api/eac";
-
-    const jwtValidationLookup =
-      this.options?.Application?.JWTValidationModifier?.Lookup || "jwtValidate";
-
     const pluginConfig: EaCRuntimePluginConfig<
       EverythingAsCode & EverythingAsCodeApplications & EverythingAsCodeDenoKV
     > = {
       Name: EaCStewardPlugin.name,
       IoC: new IoCContainer(),
       EaC: {
-        Projects: {
-          [projLookup]: {
-            ApplicationResolvers: {
-              [appLookup]: {
-                PathPattern: this.options?.Application?.Path ?? "/api/steward*",
-                Priority: this.options?.Application?.Priority ?? 400,
-              },
-            },
-          } as EaCProjectAsCode,
-        },
-        Applications: {
-          [appLookup]: {
-            Details: {
-              Name: "Steward API Endpoints",
-              Description: "The Steward API endpoints to use.",
-            },
-            ModifierResolvers: {
-              [jwtValidationLookup]: {
-                Priority:
-                  this.options?.Application?.JWTValidationModifier?.Priority ??
-                    900,
-              },
-            },
-            Processor: {
-              Type: "API",
-              DFSLookup: dfsLookup,
-            } as EaCAPIProcessor,
-          } as EaCApplicationAsCode,
-        },
-        DFSs: {
-          [dfsLookup]: {
-            Details: this.options?.DFS?.Details ??
-                stewardApiMetaPath.startsWith(fileScheme)
-              ? ({
-                Type: "Local",
-                FileRoot: stewardApiMetaPath.slice(fileScheme.length),
-                DefaultFile: "index.ts",
-                Extensions: ["ts"],
-                WorkerPath: import.meta.resolve(
-                  "@fathym/eac/dfs/workers/local",
-                ),
-              } as EaCLocalDistributedFileSystemDetails)
-              : ({
-                Type: "JSR",
-                Package: "@fathym/eac-applications",
-                Version: "",
-                FileRoot: "/src/steward/api/eac/",
-                DefaultFile: "index.ts",
-                Extensions: ["ts"],
-                WorkerPath: import.meta.resolve(
-                  "@fathym/eac/dfs/workers/jsr",
-                ),
-              } as EaCJSRDistributedFileSystemDetails),
-          },
-        },
         DenoKVs: {
-          eac: {
+          [this.options?.DenoKVs?.StewardDBLookup || "eac"]: {
             Details: {
               Type: "DenoKV",
-              Name: "EaC DenoKV",
+              Name: "EaC Steward DenoKV",
               Description:
                 "The Deno KV database to use for storing EaC information",
-              DenoKVPath: Deno.env.get("EAC_DENO_KV_PATH") || undefined,
+              DenoKVPath: Deno.env.get("STEWARD_DENO_KV_PATH") || undefined,
             } as EaCDenoKVDetails,
           },
-          commit: {
+          [this.options?.DenoKVs?.StewardCommitDBLookup || "commit"]: {
             Details: {
               Type: "DenoKV",
-              Name: "EaC Commit DenoKV",
+              Name: "EaC Steward Commit DenoKV",
               Description:
                 "The Deno KV database to use for the commit processing of an EaC",
-              DenoKVPath: Deno.env.get("EAC_COMMIT_DENO_KV_PATH") || undefined,
+              DenoKVPath: Deno.env.get("STEWARD_COMMIT_DENO_KV_PATH") ||
+                undefined,
             } as EaCDenoKVDetails,
           },
-        },
-        Modifiers: {
-          ...(jwtValidationLookup
-            ? {
-              [jwtValidationLookup]: {
-                Details: {
-                  Type: "JWTValidation",
-                  Name: "Validate JWT",
-                  Description: "Validate incoming JWTs to restrict access.",
-                } as EaCJWTValidationModifierDetails,
-              },
-            }
-            : {}),
         },
       },
     };
@@ -195,7 +98,7 @@ export default class EaCStewardPlugin implements EaCRuntimePlugin {
 
     logger.debug("Initializing primary EaC checks");
 
-    const eacKv = await ioc.Resolve(Deno.Kv, "eac");
+    const eacKv = await ioc.Resolve(Deno.Kv, this.stewardDBLookup);
 
     const existingEaCs = await eacKv.list(
       { prefix: ["EaC", "Current"] },
@@ -214,7 +117,10 @@ export default class EaCStewardPlugin implements EaCRuntimePlugin {
     if (!hasExistingEaCs) {
       logger.debug("Preparing core EaC record...");
 
-      const commitKv = await ioc.Resolve<Deno.Kv>(Deno.Kv, "commit");
+      const commitKv = await ioc.Resolve<Deno.Kv>(
+        Deno.Kv,
+        this.stewardCommitDBLookup,
+      );
 
       const entLookup = crypto.randomUUID();
 
