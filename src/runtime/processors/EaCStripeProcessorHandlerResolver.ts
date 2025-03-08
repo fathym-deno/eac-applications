@@ -31,7 +31,6 @@ export const EaCStripeProcessorHandlerResolver: ProcessorHandlerResolver = {
           Username?: string;
         }>,
       ) => {
-        // debugger;
         const username = ctx.State.Username as string;
 
         if (!username) {
@@ -51,16 +50,6 @@ export const EaCStripeProcessorHandlerResolver: ProcessorHandlerResolver = {
           };
 
           try {
-            // const parentEaCSvc = await loadEaCSvc();
-
-            // const licSubRes = await parentEaCSvc.LicenseSubscription(
-            //   ctx.Runtime.EaC.EnterpriseLookup!,
-            //   username,
-            //   processor.LicenseLookup,
-            //   inpReq.PlanLookup,
-            //   inpReq.PriceLookup
-            // );
-
             const subRes = await processor.HandleSubscription(
               ctx.Runtime.EaC.EnterpriseLookup!,
               username,

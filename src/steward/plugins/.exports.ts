@@ -1,4 +1,7 @@
 export * from "./buildStewardApiPluginConfig.ts";
 
-import FtmCrPlgn from "./EaCStewardPlugin.ts";
-export const EaCStewardPlugin = FtmCrPlgn;
+import ESAP from "./EaCStewardAPIPlugin.ts";
+export const EaCStewardAPIPlugin = ESAP;
+
+import ESP from "./EaCStewardPlugin.ts";
+export const EaCStewardPlugin = ESP;
