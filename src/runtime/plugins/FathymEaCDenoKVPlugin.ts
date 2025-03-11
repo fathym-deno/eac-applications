@@ -12,13 +12,12 @@ import {
 } from "./.deps.ts";
 
 export default class FathymEaCDenoKVPlugin implements EaCRuntimePlugin {
-  public AfterEaCResolved(
+  public async Build(
     eac: EverythingAsCode,
     ioc: IoCContainer,
-  ): Promise<EaCRuntimeHandlerRouteGroup[]> {
-    this.configureEaCDenoKV(eac, ioc);
-
-    return Promise.resolve([]);
+  ): Promise<void>{
+    debugger;
+    await this.configureEaCDenoKV(eac, ioc);
   }
 
   public Setup(_config: EaCRuntimeConfig): Promise<EaCRuntimePluginConfig> {

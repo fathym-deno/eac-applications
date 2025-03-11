@@ -32,6 +32,7 @@ export default class FathymEaCApplicationsPlugin implements EaCRuntimePlugin {
     eac: EverythingAsCode,
     ioc: IoCContainer,
   ): Promise<EaCRuntimeHandlerRouteGroup[]> {
+    debugger;
     return await this.configureRuntimeRouteMatrix(eac, ioc);
   }
 

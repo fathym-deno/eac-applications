@@ -94,6 +94,7 @@ export default class EaCStewardPlugin implements EaCRuntimePlugin {
     config: EaCRuntimeConfig,
     ioc: IoCContainer,
   ): Promise<void> {
+    debugger;
     const logger = (await config).LoggingProvider!.Package;
 
     logger.debug("Initializing primary EaC checks");
