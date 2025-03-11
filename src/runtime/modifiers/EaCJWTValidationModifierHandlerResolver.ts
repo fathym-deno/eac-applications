@@ -23,7 +23,7 @@ export const EaCJWTValidationModifierHandlerResolver: ModifierHandlerResolver =
 
       const _details = modifier.Details as EaCJWTValidationModifierDetails;
 
-      debugger;
+      // debugger;
       return Promise.resolve(establishJwtValidationMiddleware(loadJwtConfig()));
     },
   };

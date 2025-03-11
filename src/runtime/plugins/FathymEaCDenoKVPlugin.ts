@@ -15,8 +15,7 @@ export default class FathymEaCDenoKVPlugin implements EaCRuntimePlugin {
   public async Build(
     eac: EverythingAsCode,
     ioc: IoCContainer,
-  ): Promise<void>{
-    debugger;
+  ): Promise<void> {
     await this.configureEaCDenoKV(eac, ioc);
   }
 
