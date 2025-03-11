@@ -1,6 +1,5 @@
-import { debug } from "../../../runtime/logging/.deps.ts";
 import { loadEaCStewardSvc } from "../../../runtime/plugins/.deps.ts";
-import { EaCRuntimeHandler, EaCUserRecord, STATUS_CODE } from "../.deps.ts";
+import { EaCRuntimeHandler, STATUS_CODE } from "../.deps.ts";
 import { EaCStewardAPIState } from "../state/EaCStewardAPIState.ts";
 
 export const buildUserEaCMiddleware: () => EaCRuntimeHandler<
@@ -14,25 +13,6 @@ export const buildUserEaCMiddleware: () => EaCRuntimeHandler<
     const eacSvc = await loadEaCStewardSvc(entLookup, username);
 
     try {
-      // const eacKv = await ctx.Runtime.IoC.Resolve<Deno.Kv>(Deno.Kv, eacDBLookup);
-
-      // let userEaC = await eacKv.get<EaCUserRecord>([
-      //   "User",
-      //   username,
-      //   "EaC",
-      //   entLookup,
-      // ]);
-
-      // if (!userEaC.value) {
-      //   userEaC = await eacKv.get<EaCUserRecord>([
-      //     "User",
-      //     username,
-      //     "Archive",
-      //     "EaC",
-      //     entLookup,
-      //   ]);
-      // }
-
       const userEaC = await eacSvc.Users.Get();
 
       if (userEaC) {
