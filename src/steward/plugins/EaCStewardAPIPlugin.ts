@@ -15,6 +15,7 @@ import {
   EverythingAsCodeDenoKV,
   IoCContainer,
 } from "./.deps.ts";
+import { EaCStewardPluginOptions } from "./EaCStewardPlugin.ts";
 
 export type EaCStewardAPIPluginOptions = {
   Application?: {
@@ -31,12 +32,6 @@ export type EaCStewardAPIPluginOptions = {
     Priority?: number;
   };
 
-  DenoKVs?: {
-    StewardCommitDBLookup?: string;
-
-    StewardDBLookup?: string;
-  };
-
   DFS?: {
     Details?: EaCDistributedFileSystemDetails;
 
@@ -46,7 +41,7 @@ export type EaCStewardAPIPluginOptions = {
   Project?: {
     Lookup?: string;
   };
-};
+} & EaCStewardPluginOptions;
 
 export default class EaCStewardAPIPlugin implements EaCRuntimePlugin {
   protected get stewardCommitDBLookup(): string {

@@ -1,4 +1,4 @@
 import { EaCRuntimeHandlerSet } from "../../.deps.ts";
-import { userEaCMiddleware } from "../../middlewares/userEaCMiddleware.ts";
+import { buildUserEaCStewardMiddleware } from "../../middlewares/buildUserEaCStewardMiddleware.ts";
 
-export default [userEaCMiddleware] as EaCRuntimeHandlerSet;
+export default [buildUserEaCStewardMiddleware()] as EaCRuntimeHandlerSet;

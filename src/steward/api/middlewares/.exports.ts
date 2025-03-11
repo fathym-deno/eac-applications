@@ -1,1 +1,2 @@
-export * from "./userEaCMiddleware.ts";
+export * from "./buildUserEaCMiddleware.ts";
+export * from "./buildUserEaCStewardMiddleware.ts";
