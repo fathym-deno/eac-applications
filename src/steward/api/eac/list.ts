@@ -8,9 +8,9 @@ export default {
     const url = new URL(req.url);
 
     // TODO(mcgear): Remove this once we update everything
-    const username = url.searchParams.get("username") ?? ctx.State.Username!;
+    const username = ctx.State.Username!;
 
-    const parentEntLookup = url.searchParams.get("parentEntLookup");
+    const parentEntLookup = ctx.State.EnterpriseLookup!;
 
     const eacKv = await ctx.Runtime.IoC.Resolve<Deno.Kv>(Deno.Kv, "eac");
 
