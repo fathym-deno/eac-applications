@@ -24,15 +24,7 @@ export function buildCurrentEaCMiddleware(
 
     let eac: EverythingAsCode | undefined = undefined;
 
-    // const [_header, payload] = await loadJwtConfig().Decode<{
-    //   EnterpriseLookup: string;
-    // }>(Deno.env.get('EAC_API_KEY')!);
-
-    // const parentEntLookup = payload.EnterpriseLookup;
-
     ctx.State.ParentSteward = await loadEaCStewardSvc();
-
-    const parentEntLookup = ctx.Runtime.EaC.EnterpriseLookup!;
 
     const username = ctx.State.Username!;
 
