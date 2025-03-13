@@ -13,9 +13,9 @@ export function buildCurrentEaCMiddleware(
   eacDBLookup: string = "eac",
 ): EaCRuntimeHandler<CurrentEaCState> {
   return async (_req, ctx) => {
-    const kv = await ctx.Runtime.IoC.Resolve(Deno.Kv, eacDBLookup);
+    ctx.State.EaCKV = await ctx.Runtime.IoC.Resolve(Deno.Kv, eacDBLookup);
 
-    const currentEntLookup = await kv.get<string>([
+    const currentEntLookup = await ctx.State.EaCKV.get<string>([
       "User",
       ctx.State.Username!,
       "Current",
@@ -49,7 +49,7 @@ export function buildCurrentEaCMiddleware(
 
     if (!eac) {
       if (ctx.State.UserEaCs[0]) {
-        await kv.set(
+        await ctx.State.EaCKV.set(
           ["User", ctx.State.Username!, "Current", "EnterpriseLookup"],
           ctx.State.UserEaCs[0].EnterpriseLookup,
         );
