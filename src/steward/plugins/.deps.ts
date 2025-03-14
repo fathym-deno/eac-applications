@@ -3,18 +3,18 @@ export { delay } from "jsr:@std/async@1.0.10/delay";
 export { enqueueAtomic } from "jsr:@fathym/common@0.2.179/deno-kv";
 export { loadJwtConfig } from "jsr:@fathym/common@0.2.179/jwt";
 
-export type { EaCUserRecord } from "jsr:@fathym/eac@0.2.98-ebpf-nats";
+export type { EaCUserRecord } from "jsr:@fathym/eac@0.2.101-ebpf-nats";
 export type {
   EaCDistributedFileSystemDetails,
   EaCJSRDistributedFileSystemDetails,
   EaCLocalDistributedFileSystemDetails,
-} from "jsr:@fathym/eac@0.2.98-ebpf-nats/dfs";
-export type { EaCRuntimeHandlerRouteGroup } from "jsr:@fathym/eac@0.2.98-ebpf-nats/runtime/pipelines";
-export type { EaCCommitRequest } from "jsr:@fathym/eac@0.2.98-ebpf-nats/steward";
+} from "jsr:@fathym/eac@0.2.101-ebpf-nats/dfs";
+export type { EaCRuntimeHandlerRouteGroup } from "jsr:@fathym/eac@0.2.101-ebpf-nats/runtime/pipelines";
+export type { EaCCommitRequest } from "jsr:@fathym/eac@0.2.101-ebpf-nats/steward";
 export {
   type EaCStatus,
   EaCStatusProcessingTypes,
-} from "jsr:@fathym/eac@0.2.98-ebpf-nats/steward/status";
+} from "jsr:@fathym/eac@0.2.101-ebpf-nats/steward/status";
 
 export { IoCContainer } from "jsr:@fathym/ioc@0.0.14";
 
