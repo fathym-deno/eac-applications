@@ -35,7 +35,7 @@ export default class FathymAzureContainerCheckPlugin
               azureHook: {
                 Hostname: "*",
                 Path: "/robots933456.txt",
-                Port: config.Server.port,
+                Port: config.Servers![0].port,
               },
             },
             ApplicationResolvers: {
