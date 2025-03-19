@@ -43,7 +43,18 @@ export { IoCContainer } from "jsr:@fathym/ioc@0.0.14";
 import Mime from "npm:mime@4.0.6";
 export const mime = Mime;
 
+export {
+  connect,
+  type JetStreamManager,
+  type NatsConnection,
+  StringCodec,
+} from "npm:nats@2.29.2";
+
 export type { EverythingAsCodeApplications } from "../../applications/.exports.ts";
+export {
+  type EaCNATSProcessor,
+  isEaCNATSProcessor,
+} from "../../applications/processors/.exports.ts";
 
 export {
   type EaCAPIProcessor,
