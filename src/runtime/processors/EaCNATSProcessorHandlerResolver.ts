@@ -157,6 +157,10 @@ export const EaCNATSProcessorHandlerResolver: ProcessorHandlerResolver = {
 
       logger.debug("✅ NATS Connected");
 
+      ioc.Register(() => nc, {
+        Type: ioc.Symbol("NatsConnection"),
+      });
+
       let jsm: JetStreamManager | null = null;
 
       if (processor.JetStream?.Enabled) {

@@ -39,7 +39,6 @@ export class DefaultProcessorHandlerResolver
     } else if (isEaCAPIProcessor(appProcCfg.Application.Processor)) {
       toResolveName = "EaCAPIProcessor";
     } else if (isEaCNATSProcessor(appProcCfg.Application.Processor)) {
-      // debugger;
       toResolveName = "EaCNATSProcessor";
     } else if (isEaCDFSProcessor(appProcCfg.Application.Processor)) {
       toResolveName = "EaCDFSProcessor";
