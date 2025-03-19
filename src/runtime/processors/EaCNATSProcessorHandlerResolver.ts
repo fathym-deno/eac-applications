@@ -1,4 +1,4 @@
-import { Msg, RetentionPolicy } from "npm:nats@2.29.2";
+import { Msg, RetentionPolicy } from 'npm:nats@2.29.2';
 import {
   connect,
   EaCNATSProcessor,
@@ -14,13 +14,13 @@ import {
   LoggingProvider,
   NatsConnection,
   StringCodec,
-} from "./.deps.ts";
-import { ProcessorHandlerResolver } from "./ProcessorHandlerResolver.ts";
-import { StorageType } from "npm:nats@2.29.2";
-import { Logger } from "jsr:@std/log@0.224.14/logger";
-import { EaCRuntimeHandlerPipeline } from "jsr:@fathym/eac@0.2.102/runtime/pipelines";
-import { PathMatch } from "jsr:@fathym/eac@0.2.102/dfs/utils";
-import { buildURLMatch } from "jsr:@fathym/common@0.2.179";
+} from './.deps.ts';
+import { ProcessorHandlerResolver } from './ProcessorHandlerResolver.ts';
+import { StorageType } from 'npm:nats@2.29.2';
+import { Logger } from 'jsr:@std/log@0.224.14/logger';
+import { EaCRuntimeHandlerPipeline } from 'jsr:@fathym/eac@0.2.102/runtime/pipelines';
+import { PathMatch } from 'jsr:@fathym/eac@0.2.102/dfs/utils';
+import { buildURLMatch } from 'jsr:@fathym/common@0.2.179';
 
 export const EaCNATSProcessorHandlerResolver: ProcessorHandlerResolver = {
   async Resolve(ioc, appProcCfg, eac) {
@@ -28,7 +28,7 @@ export const EaCNATSProcessorHandlerResolver: ProcessorHandlerResolver = {
 
     if (!isEaCNATSProcessor(appProcCfg.Application.Processor)) {
       throw new Deno.errors.NotSupported(
-        "The provided processor is not supported for the EaCNATSProcessorHandlerResolver.",
+        'The provided processor is not supported for the EaCNATSProcessorHandlerResolver.'
       );
     }
 
@@ -37,7 +37,7 @@ export const EaCNATSProcessorHandlerResolver: ProcessorHandlerResolver = {
 
     try {
       console.log(
-        `🚀 Initializing EaCNATSProcessor for ${processor.DFSLookup}...`,
+        `🚀 Initializing EaCNATSProcessor for ${processor.DFSLookup}...`
       );
 
       // Load DFS File Handler
@@ -45,12 +45,12 @@ export const EaCNATSProcessorHandlerResolver: ProcessorHandlerResolver = {
         ioc,
         eac.DFSs!,
         eac.$GlobalOptions?.DFSs ?? {},
-        processor.DFSLookup,
+        processor.DFSLookup
       );
 
       if (!fileHandler) {
         throw new Error(
-          `❌ Failed to load DFS file handler for ${processor.DFSLookup}`,
+          `❌ Failed to load DFS file handler for ${processor.DFSLookup}`
         );
       }
 
@@ -81,8 +81,8 @@ export const EaCNATSProcessorHandlerResolver: ProcessorHandlerResolver = {
         async (allPaths) => {
           const middlewareLoader = async () => {
             const middlewarePaths = allPaths
-              .filter((p) => p.endsWith("_middleware.ts"))
-              .sort((a, b) => a.split("/").length - b.split("/").length);
+              .filter((p) => p.endsWith('_middleware.ts'))
+              .sort((a, b) => a.split('/').length - b.split('/').length);
 
             const middlewareCalls = middlewarePaths.map((p) =>
               loadMiddleware(logger, fileHandler, p, dfs, processor.DFSLookup)
@@ -100,12 +100,12 @@ export const EaCNATSProcessorHandlerResolver: ProcessorHandlerResolver = {
             middleware
               .map(
                 (m) =>
-                  `${appProcCfg.ResolverConfig.PathPattern.replace("*", "")}${
-                    m[0].startsWith(".") ? m[0].slice(1) : m[0]
-                  }`,
+                  `${appProcCfg.ResolverConfig.PathPattern.replace('*', '')}${
+                    m[0].startsWith('.') ? m[0].slice(1) : m[0]
+                  }`
               )
               .forEach((pt) => logger.debug(`\t${pt}`));
-            logger.debug("");
+            logger.debug('');
           }
 
           return { middleware };
@@ -116,7 +116,7 @@ export const EaCNATSProcessorHandlerResolver: ProcessorHandlerResolver = {
             fileHandler,
             filePath,
             dfs,
-            processor.DFSLookup,
+            processor.DFSLookup
           );
         },
         (filePath, pipeline, { middleware }) => {
@@ -128,7 +128,7 @@ export const EaCNATSProcessorHandlerResolver: ProcessorHandlerResolver = {
 
           pipeline.Prepend(...reqMiddleware);
         },
-        appProcCfg.Revision,
+        appProcCfg.Revision
       );
 
       if (patterns?.length) {
@@ -137,16 +137,16 @@ export const EaCNATSProcessorHandlerResolver: ProcessorHandlerResolver = {
           .map((p) => p.PatternText)
           .map(
             (pt) =>
-              `${appProcCfg.ResolverConfig.PathPattern.replace("*", "")}${
-                pt.endsWith("/") ? pt.substring(0, pt.length - 1) : pt
-              }`,
+              `${processor.EventRoot}${
+                pt.endsWith('/') ? pt.substring(0, pt.length - 1) : pt
+              }`
           )
           .forEach((pt) => logger.debug(`\t${pt}`));
-        logger.debug("");
+        logger.debug('');
       }
 
       // Initialize NATS connection
-      logger.debug("🔹 Connecting to NATS...");
+      logger.debug('🔹 Connecting to NATS...');
 
       const nc: NatsConnection = await connect({
         servers: processor.NATSURL,
@@ -155,19 +155,19 @@ export const EaCNATSProcessorHandlerResolver: ProcessorHandlerResolver = {
         ...processor.ClientOptions,
       });
 
-      logger.debug("✅ NATS Connected");
+      logger.debug('✅ NATS Connected');
 
       let jsm: JetStreamManager | null = null;
 
       if (processor.JetStream?.Enabled) {
-        logger.debug("🔹 Setting up JetStream...");
+        logger.debug('🔹 Setting up JetStream...');
 
         jsm = await nc.jetstreamManager();
 
         await setupJetStream(jsm, processor);
       }
 
-      logger.debug("🔹 Subscribing to events...");
+      logger.debug('🔹 Subscribing to events...');
 
       for (const pattern of patterns) {
         nc.subscribe(`${processor.EventRoot}/${pattern.PatternText}`, {
@@ -175,7 +175,7 @@ export const EaCNATSProcessorHandlerResolver: ProcessorHandlerResolver = {
             if (err) {
               logger.error(
                 `❌ Error processing event: ${pattern.PatternText}`,
-                err,
+                err
               );
               return;
             }
@@ -187,7 +187,7 @@ export const EaCNATSProcessorHandlerResolver: ProcessorHandlerResolver = {
 
       return (_req, _ctx) => {
         const handledEvents = patterns.map(
-          (p) => `${processor.EventRoot}/${p.PatternText}`,
+          (p) => `${processor.EventRoot}/${p.PatternText}`
         );
 
         return Response.json({ Events: handledEvents });
@@ -195,7 +195,7 @@ export const EaCNATSProcessorHandlerResolver: ProcessorHandlerResolver = {
     } catch (err) {
       if (err instanceof Error) {
         logger.error(
-          `Error processing ${appProcCfg.ApplicationLookup} NATS processor: ${err.message}`,
+          `Error processing ${appProcCfg.ApplicationLookup} NATS processor: ${err.message}`
         );
       }
       throw err;
@@ -210,7 +210,7 @@ async function handleNATSEvent(
   logger: Logger,
   msg: Msg,
   pattern: PathMatch,
-  ctx: EaCRuntimeContext,
+  ctx: EaCRuntimeContext
 ) {
   const SC = StringCodec();
 
@@ -227,10 +227,10 @@ async function handleNATSEvent(
   let request = new Request(
     new URL(pattern.PatternText, `nats://eac-applications/`),
     {
-      method: "POST",
+      method: 'POST',
       body: msg.data.length > 0 ? SC.decode(msg.data) : null,
       headers: requestHeaders,
-    },
+    }
   );
 
   // Update runtime context with URL pattern match
@@ -252,7 +252,7 @@ async function handleNATSEvent(
  */
 async function setupJetStream(
   jsm: JetStreamManager,
-  processor: EaCNATSProcessor,
+  processor: EaCNATSProcessor
 ) {
   if (processor.JetStream?.Enabled) {
     for (const stream of processor.JetStream.Streams) {
@@ -268,11 +268,11 @@ async function setupJetStream(
           no_ack: stream.NoAck ?? false,
         });
         console.log(
-          `✅ Created stream: ${stream.Name} (${stream.Subjects.join(", ")})`,
+          `✅ Created stream: ${stream.Name} (${stream.Subjects.join(', ')})`
         );
       } catch (_err) {
         console.warn(
-          `⚠️ Stream ${stream.Name} already exists or failed to create.`,
+          `⚠️ Stream ${stream.Name} already exists or failed to create.`
         );
       }
     }
