@@ -225,7 +225,7 @@ async function handleNATSEvent(
   }
 
   let request = new Request(
-    new URL(pattern.PatternText, `nats://eac-applications/`),
+    new URL(pattern.PatternText, `https://fathym-nats-server:4222/`),
     {
       method: "POST",
       body: msg.data.length > 0 ? SC.decode(msg.data) : null,
