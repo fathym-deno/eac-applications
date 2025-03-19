@@ -180,7 +180,13 @@ export const EaCNATSProcessorHandlerResolver: ProcessorHandlerResolver = {
               return;
             }
 
-            await handleNATSEvent(logger, msg, pattern, await buildContext());
+            await handleNATSEvent(
+              logger,
+              processor.EventRoot,
+              msg,
+              pattern,
+              await buildContext(),
+            );
           },
         });
       }
@@ -208,6 +214,7 @@ export const EaCNATSProcessorHandlerResolver: ProcessorHandlerResolver = {
  */
 async function handleNATSEvent(
   logger: Logger,
+  eventRoot: string,
   msg: Msg,
   pattern: PathMatch,
   ctx: EaCRuntimeContext,
@@ -225,7 +232,10 @@ async function handleNATSEvent(
   }
 
   let request = new Request(
-    new URL(pattern.PatternText, `https://fathym-nats-server:4222/`),
+    new URL(
+      pattern.PatternText,
+      `https://fathym-nats-server:4222/${eventRoot}/`,
+    ),
     {
       method: "POST",
       body: msg.data.length > 0 ? SC.decode(msg.data) : null,
