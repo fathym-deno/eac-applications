@@ -1,4 +1,5 @@
-import { EaCNATSProcessorHandlerResolver } from "../processors/EaCNATSProcessorHandlerResolver.ts";
+import { EaCMDXProcessorHandlerResolver } from "../processors/.exports.ts";
+import { EaCNATSProcessorHandlerResolver } from "../processors/.exports.ts";
 import {
   DefaultProcessorHandlerResolver,
   EaCAPIProcessorHandlerResolver,
@@ -44,13 +45,18 @@ export default class FathymProcessorHandlerPlugin implements EaCRuntimePlugin {
       Type: pluginConfig.IoC!.Symbol("ProcessorHandlerResolver"),
     });
 
-    pluginConfig.IoC!.Register(() => EaCNATSProcessorHandlerResolver, {
-      Name: "EaCNATSProcessor",
+    pluginConfig.IoC!.Register(() => EaCMDXProcessorHandlerResolver, {
+      Name: "EaCMDXProcessor",
       Type: pluginConfig.IoC!.Symbol("ProcessorHandlerResolver"),
     });
 
     pluginConfig.IoC!.Register(() => EaCOAuthProcessorHandlerResolver, {
       Name: "EaCOAuthProcessor",
+      Type: pluginConfig.IoC!.Symbol("ProcessorHandlerResolver"),
+    });
+
+    pluginConfig.IoC!.Register(() => EaCNATSProcessorHandlerResolver, {
+      Name: "EaCNATSProcessor",
       Type: pluginConfig.IoC!.Symbol("ProcessorHandlerResolver"),
     });
 

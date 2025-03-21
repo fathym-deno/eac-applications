@@ -2,6 +2,8 @@ export * from "./DefaultProcessorHandlerResolver.ts";
 export * from "./EaCAPIProcessorHandlerResolver.ts";
 export * from "./EaCDenoLSPProcessorHandlerResolver.ts";
 export * from "./EaCDFSProcessorHandlerResolver.ts";
+export * from "./EaCMDXProcessorHandlerResolver.ts";
+export * from "./EaCNATSProcessorHandlerResolver.ts";
 export * from "./EaCOAuthProcessorHandlerResolver.ts";
 export * from "./EaCPreactAppProcessorHandlerResolver.ts";
 export * from "./EaCProxyProcessorHandlerResolver.ts";
