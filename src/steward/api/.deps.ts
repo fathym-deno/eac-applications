@@ -8,25 +8,25 @@ export type {
   EaCMetadataBase,
   EaCUserRecord,
   EverythingAsCode,
-} from "jsr:@fathym/eac@0.2.103";
+} from "jsr:@fathym/eac@0.2.104";
 export type {
   EaCRuntimeHandler,
   EaCRuntimeHandlers,
   EaCRuntimeHandlerSet,
-} from "jsr:@fathym/eac@0.2.103/runtime/pipelines";
+} from "jsr:@fathym/eac@0.2.104/runtime/pipelines";
 export type {
   EaCCommitRequest,
   EaCCommitResponse,
   EaCDeleteRequest,
-} from "jsr:@fathym/eac@0.2.103/steward";
+} from "jsr:@fathym/eac@0.2.104/steward";
 export {
   EaCStewardClient,
   loadEaCStewardSvc,
-} from "jsr:@fathym/eac@0.2.103/steward/clients";
+} from "jsr:@fathym/eac@0.2.104/steward/clients";
 export {
   type EaCStatus,
   EaCStatusProcessingTypes,
-} from "jsr:@fathym/eac@0.2.103/steward/status";
-export { eacExists } from "jsr:@fathym/eac@0.2.103/steward/utils";
+} from "jsr:@fathym/eac@0.2.104/steward/status";
+export { eacExists } from "jsr:@fathym/eac@0.2.104/steward/utils";
 
 export { loadConnections } from "../../utils/.exports.ts";
