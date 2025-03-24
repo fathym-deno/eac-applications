@@ -1,10 +1,10 @@
-import { EaCMDXProcessorHandlerResolver } from "../processors/.exports.ts";
-import { EaCNATSProcessorHandlerResolver } from "../processors/.exports.ts";
 import {
   DefaultProcessorHandlerResolver,
   EaCAPIProcessorHandlerResolver,
   EaCDenoLSPProcessorHandlerResolver,
   EaCDFSProcessorHandlerResolver,
+  EaCMDXProcessorHandlerResolver,
+  EaCNATSProcessorHandlerResolver,
   EaCOAuthProcessorHandlerResolver,
   EaCPreactAppProcessorHandlerResolver,
   EaCProxyProcessorHandlerResolver,

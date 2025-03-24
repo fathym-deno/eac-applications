@@ -1,14 +1,14 @@
 // deno-lint-ignore-file no-explicit-any
-import { importDFSTypescriptModule } from "jsr:@fathym/eac@0.2.102/dfs/utils";
+import { importDFSTypescriptModule } from "jsr:@fathym/eac@0.2.103/dfs/utils";
 import matter from "npm:gray-matter@4.0.3";
 import { toText } from "jsr:@std/streams@^1.0.9";
-import { EaCDistributedFileSystemDetails } from "jsr:@fathym/eac@0.2.102/dfs";
-import { DFSFileHandler } from "jsr:@fathym/eac@0.2.102/dfs/handlers";
+import { EaCDistributedFileSystemDetails } from "jsr:@fathym/eac@0.2.103/dfs";
+import { DFSFileHandler } from "jsr:@fathym/eac@0.2.103/dfs/handlers";
 import { ComponentType, h, VNode } from "preact";
 import {
   EaCRuntimeHandlerPipeline,
   EaCRuntimeHandlers,
-} from "jsr:@fathym/eac@0.2.102/runtime/pipelines";
+} from "jsr:@fathym/eac@0.2.103/runtime/pipelines";
 
 import {
   EaCMDXProcessor,
@@ -25,23 +25,16 @@ import { ProcessorHandlerResolver } from "./ProcessorHandlerResolver.ts";
 import { compileMDX } from "../../utils/compileMDX.ts";
 import { Logger } from "../modules/.deps.ts";
 import { loadLayout } from "../../preact/loadLayout.ts";
-import { PreactRenderToString } from "../../preact/.deps.ts";
+import { ESBuild, PreactRenderToString } from "../../preact/.deps.ts";
 import { PageProps } from "../../preact/PageProps.ts";
+import { generateDocConfigFromSource } from "../../utils/generateDocConfigFromSource.ts";
+import { convertHeadingsToNavItems } from "../../utils/convertHeadingsToNavItems.ts";
 /**
  * Documentation site configuration for the EaCMDXProcessor.
  */
 export type DocsConfig = {
   /** The title of the documentation site. */
   Title: string;
-
-  /** The theme for the documentation site. */
-  Theme: "light" | "dark" | "auto";
-
-  /** The default layout component to use for MDX pages. */
-  Layout: string;
-
-  /** Middleware files for extending documentation functionality. */
-  Middleware: string[];
 
   /** Navigation structure for the documentation site. */
   Nav: DocsNavItem[];
@@ -54,6 +47,9 @@ export type DocsConfig = {
  * Represents a single navigation item in the documentation.
  */
 export type DocsNavItem = {
+  /** .... */
+  Abstract?: string;
+
   /** The title of the navigation link. */
   Title: string;
 
@@ -156,7 +152,7 @@ export const EaCMDXProcessorHandlerResolver: ProcessorHandlerResolver = {
                 "ts",
               );
               return configModule?.module.default
-                ? await configModule.module.default()
+                ? ((await configModule.module.default()) as DocsConfig)
                 : undefined;
             })(),
             (async () => {
@@ -235,102 +231,126 @@ export const EaCMDXProcessorHandlerResolver: ProcessorHandlerResolver = {
             filePath,
             Date.now().toString(),
           );
+
           const source = file?.Contents
             ? await toText(file.Contents)
             : "# File Not Found";
 
           const { content: mdxBody, data: frontmatter } = matter(source);
 
-          const compiledJSX = await compileMDX(mdxBody, docsConfig?.MDX ?? {});
-
-          const encoded = btoa(unescape(encodeURIComponent(compiledJSX)));
-
-          const mod = await import(`data:text/javascript;base64,${encoded}`);
-
-          const component: ComponentType<any> = mod.default;
-
-          const renderStack: ComponentType<any>[] = [...pageLayouts, component];
+          const compModule = await compileMDX(
+            ioc,
+            mdxBody,
+            docsConfig?.MDX ?? {},
+          );
 
           const pipeline = new EaCRuntimeHandlerPipeline();
 
-          if (pageLayoutHandlers && !Array.isArray(pageLayoutHandlers)) {
-            pageLayoutHandlers = [
-              pageLayoutHandlers as EaCRuntimeHandler | EaCRuntimeHandlers,
-            ] as (EaCRuntimeHandler | EaCRuntimeHandlers)[];
-          }
+          if (compModule) {
+            const renderStack: ComponentType<any>[] = [
+              ...pageLayouts,
+              compModule.compiled,
+            ];
 
-          pipeline.Append(
-            ...(pageLayoutHandlers as (
-              | EaCRuntimeHandler
-              | EaCRuntimeHandlers
-            )[]),
-          );
-
-          pipeline.Append(async (req, ctx) => {
-            const componentStack: ComponentType<any>[] = new Array(
-              renderStack.length,
-            ).fill(null);
-
-            const pageProps: PageProps = {
-              Data: ctx.Data,
-              Params: ctx.Params,
-              Revision: ctx.Runtime.Revision,
-              Component: () => null,
-            };
-
-            for (let i = 0; i < renderStack.length; i++) {
-              const fn = renderStack[i];
-              if (!fn) continue;
-
-              componentStack[i] = () => {
-                return h(fn, {
-                  ...pageProps,
-                  Component() {
-                    return h(componentStack[i + 1], null);
-                  },
-                });
-              };
+            if (pageLayoutHandlers && !Array.isArray(pageLayoutHandlers)) {
+              pageLayoutHandlers = [
+                pageLayoutHandlers as EaCRuntimeHandler | EaCRuntimeHandlers,
+              ] as (EaCRuntimeHandler | EaCRuntimeHandlers)[];
             }
 
-            const routeComponent = componentStack[componentStack.length - 1];
-
-            let finalComp = h(routeComponent, pageProps) as VNode;
-
-            let i = componentStack.length - 1;
-
-            while (i--) {
-              const component = componentStack[i];
-
-              const curComp = finalComp;
-
-              finalComp = h(component, {
-                ...pageProps,
-                Component() {
-                  return curComp;
-                },
-              } as any) as VNode;
-            }
-
-            let bodyHtml = await PreactRenderToString.renderToStringAsync(
-              finalComp,
+            pipeline.Append(
+              ...(pageLayoutHandlers as (
+                | EaCRuntimeHandler
+                | EaCRuntimeHandlers
+              )[]),
+              compModule.handler,
             );
 
-            return new Response(bodyHtml, {
-              headers: { "Content-Type": "text/javascript" },
+            pipeline.Append(async (req, ctx) => {
+              const componentStack: ComponentType<any>[] = new Array(
+                renderStack.length,
+              ).fill(null);
+
+              const headings = generateDocConfigFromSource(mdxBody);
+              const docNavItems = convertHeadingsToNavItems(headings);
+
+              const { prev: prevPage, next: nextPage } = getPrevNextItems(
+                (docsConfig || { Nav: [] }) as DocsConfig,
+                ctx.Runtime.URLMatch.Path || "",
+              );
+
+              const pageProps: PageProps = {
+                Data: {
+                  ...(ctx.Data || {}),
+                  $Frontmatter: frontmatter || {},
+                  $Config: docsConfig,
+                  $DocNavItems: docNavItems,
+                  $PrevPage: prevPage,
+                  $NextPage: nextPage,
+                },
+                Params: ctx.Params,
+                Revision: ctx.Runtime.Revision,
+                Component: () => null,
+              };
+
+              for (let i = 0; i < renderStack.length; i++) {
+                const fn = renderStack[i];
+                if (!fn) continue;
+
+                componentStack[i] = () => {
+                  return h(fn, {
+                    ...pageProps,
+                    Component() {
+                      return h(componentStack[i + 1], null);
+                    },
+                  });
+                };
+              }
+
+              const routeComponent = componentStack[componentStack.length - 1];
+
+              let finalComp = h(routeComponent, pageProps) as VNode;
+
+              let i = componentStack.length - 1;
+
+              while (i--) {
+                const component = componentStack[i];
+
+                const curComp = finalComp;
+
+                finalComp = h(component, {
+                  ...pageProps,
+                  Component() {
+                    return curComp;
+                  },
+                } as any) as VNode;
+
+                const bodyHtml = await PreactRenderToString.renderToStringAsync(
+                  finalComp,
+                );
+
+                return new Response(bodyHtml, {
+                  headers: { "Content-Type": "text/html" },
+                });
+              }
+
+              return new Response("Failed to load document", {
+                headers: { "Content-Type": "text/javascript" },
+              });
             });
-          });
+          }
 
           return (req, ctx) => {
             return pipeline.Execute(req, ctx);
           };
         },
         (filePath, pipeline, { middleware }) => {
-          // const reqMiddleware = middleware
-          //   .filter(([root]) => filePath.startsWith(root))
-          //   .flatMap(([_root, handler]) =>
-          //     Array.isArray(handler) ? handler : [handler]
-          //   );
-          // pipeline.Prepend(...reqMiddleware);
+          const reqMiddleware = middleware
+            .filter(([root]) => filePath.startsWith(root))
+            .flatMap(([_root, handler]) =>
+              Array.isArray(handler) ? handler : [handler]
+            );
+          pipeline.Prepend(...reqMiddleware);
         },
         appProcCfg.Revision,
       ).then((patterns) => {
@@ -365,3 +385,26 @@ export const EaCMDXProcessorHandlerResolver: ProcessorHandlerResolver = {
     }
   },
 };
+
+function flattenNav(items: DocsNavItem[]): DocsNavItem[] {
+  return items.flatMap((item) => [
+    item,
+    ...(item.Children ? flattenNav(item.Children) : []),
+  ]);
+}
+
+function getPrevNextItems(
+  docsConfig: DocsConfig,
+  currentPath: string,
+): {
+  prev?: DocsNavItem;
+  next?: DocsNavItem;
+} {
+  const flat = flattenNav(docsConfig.Nav); // ✅ Use docsConfig.Nav here
+  const index = flat.findIndex((item) => item.Path === currentPath);
+
+  return {
+    prev: index > 0 ? flat[index - 1] : undefined,
+    next: index >= 0 && index < flat.length - 1 ? flat[index + 1] : undefined,
+  };
+}

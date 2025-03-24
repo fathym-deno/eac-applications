@@ -8,22 +8,22 @@ export {
 export { initializeDenoKv } from "jsr:@fathym/common@0.2.179/deno-kv";
 export { loadJwtConfig } from "jsr:@fathym/common@0.2.179/jwt";
 
-export type { EverythingAsCode } from "jsr:@fathym/eac@0.2.102";
+export type { EverythingAsCode } from "jsr:@fathym/eac@0.2.103";
 export {
   EAC_RUNTIME_DEV,
   type EaCRuntimeConfig,
   type EaCRuntimePluginConfig,
-} from "jsr:@fathym/eac@0.2.102/runtime/config";
+} from "jsr:@fathym/eac@0.2.103/runtime/config";
 export {
   type EaCRuntimeHandler,
   EaCRuntimeHandlerPipeline,
   type EaCRuntimeHandlerRoute,
   type EaCRuntimeHandlerRouteGroup,
   // } from "../../../../eac/src/runtime/pipelines/.exports.ts";
-} from "jsr:@fathym/eac@0.2.102/runtime/pipelines";
-export type { EaCRuntimePlugin } from "jsr:@fathym/eac@0.2.102/runtime/plugins";
-export { EaCSteward } from "jsr:@fathym/eac@0.2.102/steward";
-export { loadEaCStewardSvc } from "jsr:@fathym/eac@0.2.102/steward/clients";
+} from "jsr:@fathym/eac@0.2.103/runtime/pipelines";
+export type { EaCRuntimePlugin } from "jsr:@fathym/eac@0.2.103/runtime/plugins";
+export { EaCSteward } from "jsr:@fathym/eac@0.2.103/steward";
+export { loadEaCStewardSvc } from "jsr:@fathym/eac@0.2.103/steward/clients";
 export {
   DefaultDFSFileHandlerResolver,
   EaCAzureBlobStorageDistributedFileSystemHandlerResolver,
@@ -35,8 +35,8 @@ export {
   EaCRemoteDistributedFileSystemHandlerResolver,
   EaCWorkerDistributedFileSystemHandlerResolver,
   UnknownEaCDistributedFileSystemHandlerResolver,
-} from "jsr:@fathym/eac@0.2.102/dfs/resolvers";
-// } from '../../../../eac/src/dfs/resolvers/.exports.ts';
+  // } from 'jsr:@fathym/eac@0.2.103/dfs/resolvers';
+} from "../../../../eac/src/dfs/resolvers/.exports.ts";
 
 export {
   type EaCDenoKVDetails,
@@ -87,6 +87,8 @@ export {
   EaCAPIProcessorHandlerResolver,
   EaCDenoLSPProcessorHandlerResolver,
   EaCDFSProcessorHandlerResolver,
+  EaCMDXProcessorHandlerResolver,
+  EaCNATSProcessorHandlerResolver,
   EaCOAuthProcessorHandlerResolver,
   EaCPreactAppProcessorHandlerResolver,
   EaCProxyProcessorHandlerResolver,
