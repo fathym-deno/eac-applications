@@ -32,9 +32,14 @@ export default class FathymAzureContainerCheckPlugin
               Priority: 200,
             },
             ResolverConfigs: {
-              azureHook: {
+              "/robots933456.txt": {
                 Hostname: "*",
                 Path: "/robots933456.txt",
+                Port: config.Servers![0].port,
+              },
+              "/admin/host/status": {
+                Hostname: "*",
+                Path: "/admin/host/status",
                 Port: config.Servers![0].port,
               },
             },
