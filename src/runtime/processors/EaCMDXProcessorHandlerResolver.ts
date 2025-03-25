@@ -54,7 +54,7 @@ export type DocsNavItem = {
   Title: string;
 
   /** The relative path for this navigation item. */
-  Path: string;
+  Path?: string;
 
   /** Optional nested items for dropdown menus. */
   Children?: DocsNavItem[];
