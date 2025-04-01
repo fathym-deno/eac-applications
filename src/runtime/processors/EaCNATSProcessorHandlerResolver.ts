@@ -18,8 +18,8 @@ import {
 import { ProcessorHandlerResolver } from "./ProcessorHandlerResolver.ts";
 import { StorageType } from "npm:nats@2.29.2";
 import { Logger } from "jsr:@std/log@0.224.14/logger";
-import { EaCRuntimeHandlerPipeline } from "jsr:@fathym/eac@0.2.104/runtime/pipelines";
-import { PathMatch } from "jsr:@fathym/eac@0.2.104/dfs/utils";
+import { EaCRuntimeHandlerPipeline } from "jsr:@fathym/eac@0.2.105/runtime/pipelines";
+import { PathMatch } from "jsr:@fathym/eac@0.2.105/dfs/utils";
 import { buildURLMatch } from "jsr:@fathym/common@0.2.179";
 
 export const EaCNATSProcessorHandlerResolver: ProcessorHandlerResolver = {
