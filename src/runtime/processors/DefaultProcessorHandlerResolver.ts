@@ -4,6 +4,7 @@ import {
   EverythingAsCode,
   IoCContainer,
   isEaCAPIProcessor,
+  isEaCAzureEventHubProcessor,
   isEaCDenoLSPProcessor,
   isEaCDFSProcessor,
   isEaCMDXProcessor,
@@ -33,6 +34,8 @@ export class DefaultProcessorHandlerResolver
       toResolveName = "EaCPreactAppProcessor";
     } else if (isEaCProxyProcessor(appProcCfg.Application.Processor)) {
       toResolveName = "EaCProxyProcessor";
+    } else if (isEaCAzureEventHubProcessor(appProcCfg.Application.Processor)) {
+      toResolveName = "EaCAzureEventHubProcessor";
     } else if (isEaCDenoLSPProcessor(appProcCfg.Application.Processor)) {
       toResolveName = "EaCDenoLSPProcessor";
     } else if (isEaCOAuthProcessor(appProcCfg.Application.Processor)) {

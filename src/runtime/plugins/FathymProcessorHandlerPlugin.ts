@@ -1,6 +1,7 @@
 import {
   DefaultProcessorHandlerResolver,
   EaCAPIProcessorHandlerResolver,
+  EaCAzureEventHubProcessorHandlerResolver,
   EaCDenoLSPProcessorHandlerResolver,
   EaCDFSProcessorHandlerResolver,
   EaCMDXProcessorHandlerResolver,
@@ -32,6 +33,11 @@ export default class FathymProcessorHandlerPlugin implements EaCRuntimePlugin {
 
     pluginConfig.IoC!.Register(() => EaCAPIProcessorHandlerResolver, {
       Name: "EaCAPIProcessor",
+      Type: pluginConfig.IoC!.Symbol("ProcessorHandlerResolver"),
+    });
+
+    pluginConfig.IoC!.Register(() => EaCAzureEventHubProcessorHandlerResolver, {
+      Name: "EaCAzureEventHubProcessor",
       Type: pluginConfig.IoC!.Symbol("ProcessorHandlerResolver"),
     });
 

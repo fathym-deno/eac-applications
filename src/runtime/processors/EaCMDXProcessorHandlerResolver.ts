@@ -401,7 +401,9 @@ function getPrevNextItems(
   next?: DocsNavItem;
 } {
   const flat = flattenNav(docsConfig.Nav); // ✅ Use docsConfig.Nav here
-  const index = flat.findIndex((item) => item.Path === currentPath);
+  const index = flat.findIndex(
+    (item) => item.Path === (currentPath ? currentPath : "/"),
+  );
 
   return {
     prev: index > 0 ? flat[index - 1] : undefined,

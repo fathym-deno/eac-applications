@@ -1,3 +1,4 @@
+import { BaseEaCMessagingProcessor } from "./BaseEaCMessagingProcessor.ts";
 import { EaCProcessor, isEaCProcessor } from "./EaCProcessor.ts";
 import { RetentionPolicy, StorageType } from "npm:nats@2.29.2";
 
@@ -37,11 +38,6 @@ export type EaCNATSProcessor = {
   /** Additional NATS client options. */
   ClientOptions?: Record<string, unknown>;
 
-  /** The DFS lookup. */
-  DFSLookup: string;
-
-  EventRoot: string;
-
   /** Maximum reconnect attempts if the connection fails. */
   MaxReconnects?: number;
 
@@ -59,7 +55,7 @@ export type EaCNATSProcessor = {
     /** JetStream Stream Configurations */
     Streams: JetStreamStreamConfig[];
   };
-} & EaCProcessor<"NATS">;
+} & BaseEaCMessagingProcessor<"NATS">;
 
 /**
  * Type Guard: Checks if the given object is an EaCNATSProcessor.

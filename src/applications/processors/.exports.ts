@@ -2,8 +2,10 @@
  * The core Everything as Code (EaC) Application processor types.
  * @module
  */
+export * from "./BaseEaCMessagingProcessor.ts";
 export * from "./EaCAPIProcessor.ts";
 export * from "./EaCApplicationProcessorConfig.ts";
+export * from "./EaCAzureEventHubProcessor.ts";
 export * from "./EaCDenoLSPProcessor.ts";
 export * from "./EaCDFSProcessor.ts";
 export * from "./EaCMDXProcessor.ts";

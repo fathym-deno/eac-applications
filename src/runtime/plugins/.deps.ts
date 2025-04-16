@@ -85,6 +85,7 @@ export {
 export {
   DefaultProcessorHandlerResolver,
   EaCAPIProcessorHandlerResolver,
+  EaCAzureEventHubProcessorHandlerResolver,
   EaCDenoLSPProcessorHandlerResolver,
   EaCDFSProcessorHandlerResolver,
   EaCMDXProcessorHandlerResolver,

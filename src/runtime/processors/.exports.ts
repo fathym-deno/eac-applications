@@ -1,5 +1,7 @@
+export * from "./BaseEaCMessagingProcessorHandlerResolver.ts";
 export * from "./DefaultProcessorHandlerResolver.ts";
 export * from "./EaCAPIProcessorHandlerResolver.ts";
+export * from "./EaCAzureEventHubProcessorHandlerResolver.ts";
 export * from "./EaCDenoLSPProcessorHandlerResolver.ts";
 export * from "./EaCDFSProcessorHandlerResolver.ts";
 export * from "./EaCMDXProcessorHandlerResolver.ts";

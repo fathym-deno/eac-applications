@@ -1,8 +1,10 @@
 export * as DenoKVOAuth from "jsr:@deno/kv-oauth@0.11.0";
+export type { Logger } from "jsr:@std/log@0.224.14/get-logger";
 
 export { STATUS_CODE } from "jsr:@std/http@1.0.13";
 export { toText } from "jsr:@std/streams@1.0.9";
 
+export { buildURLMatch } from "jsr:@fathym/common@0.2.184/http";
 export { proxyRequest, redirectRequest } from "jsr:@fathym/common@0.2.184/http";
 export { djwt } from "jsr:@fathym/common@0.2.184/jwt";
 export { LoggingProvider } from "jsr:@fathym/common@0.2.184/log";
@@ -12,6 +14,9 @@ export {
 } from "jsr:@fathym/common@0.2.184/oauth";
 
 export type { EverythingAsCode } from "jsr:@fathym/eac@0.2.106";
+export type { EverythingAsCodeDFS } from "jsr:@fathym/eac@0.2.106/dfs";
+export { DFSFileHandler } from "jsr:@fathym/eac@0.2.106/dfs/handlers";
+export type { PathMatch } from "jsr:@fathym/eac@0.2.106/dfs/utils";
 export type { EaCRuntimeContext } from "jsr:@fathym/eac@0.2.106/runtime";
 export { EAC_RUNTIME_DEV } from "jsr:@fathym/eac@0.2.106/runtime/config";
 export type { ESBuild } from "jsr:@fathym/eac@0.2.106/esbuild";
@@ -43,6 +48,8 @@ export { IoCContainer } from "jsr:@fathym/ioc@0.0.14";
 import Mime from "npm:mime@4.0.6";
 export const mime = Mime;
 
+export { EventHubConsumerClient } from "npm:@azure/event-hubs@6.0.0";
+
 export {
   connect,
   type JetStreamManager,
@@ -57,8 +64,10 @@ export {
 } from "../../applications/processors/.exports.ts";
 
 export {
+  type BaseEaCMessagingProcessor,
   type EaCAPIProcessor,
   type EaCApplicationProcessorConfig,
+  type EaCAzureEventHubProcessor,
   type EaCDenoLSPProcessor,
   type EaCDFSProcessor,
   type EaCMDXProcessor,
@@ -70,6 +79,7 @@ export {
   type EaCStripeProcessor,
   type EaCTailwindProcessor,
   isEaCAPIProcessor,
+  isEaCAzureEventHubProcessor,
   isEaCDenoLSPProcessor,
   isEaCDFSProcessor,
   isEaCMDXProcessor,
