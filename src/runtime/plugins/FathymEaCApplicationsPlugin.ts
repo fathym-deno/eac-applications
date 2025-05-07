@@ -1,3 +1,4 @@
+import { LoggingProvider } from "jsr:@fathym/common@0.2.184/log";
 import {
   buildURLMatch,
   EAC_RUNTIME_DEV,
@@ -24,6 +25,7 @@ import {
   processCacheControlHeaders,
   ProcessorHandlerResolver,
 } from "./.deps.ts";
+import { Logger } from "../modules/.deps.ts";
 
 export default class FathymEaCApplicationsPlugin implements EaCRuntimePlugin {
   protected revision?: string;
@@ -32,55 +34,64 @@ export default class FathymEaCApplicationsPlugin implements EaCRuntimePlugin {
     eac: EverythingAsCode,
     ioc: IoCContainer,
   ): Promise<EaCRuntimeHandlerRouteGroup[]> {
-    return await this.configureRuntimeRouteMatrix(eac, ioc);
+    const logger = await ioc.Resolve(LoggingProvider);
+
+    logger.Package.debug("Resolving routes after EaC processed...");
+
+    return await this.configureRuntimeRouteMatrix(eac, ioc, logger.Package);
   }
 
-  public Setup(config: EaCRuntimeConfig): Promise<EaCRuntimePluginConfig> {
+  public async Setup(
+    config: EaCRuntimeConfig,
+  ): Promise<EaCRuntimePluginConfig> {
+    const logger = await config.LoggingProvider;
+
+    logger.Package.debug("Running Setup for FathymEaCApplicationsPlugin...");
+
     const pluginConfig: EaCRuntimePluginConfig = {
       Name: FathymEaCApplicationsPlugin.name,
     };
 
     this.revision = config.Runtime(config).Revision;
 
-    return Promise.resolve(pluginConfig);
+    return pluginConfig;
   }
 
   protected async buildApplicationGraph(
     eac: EverythingAsCode,
     ioc: IoCContainer,
+    logger: Logger,
     projGraph: EaCProjectProcessorConfig[],
   ): Promise<Record<string, EaCApplicationProcessorConfig[]>> {
+    logger.debug("Building application graph...");
     const appGraph = {} as Record<string, EaCApplicationProcessorConfig[]>;
 
     if (isEverythingAsCodeApplications(eac) && eac!.Applications) {
       const projProcCfgCalls = projGraph!.map(async (projProcCfg) => {
+        logger.debug(`Processing project: ${projProcCfg.ProjectLookup}`);
+
         const appLookups = Object.keys(
           projProcCfg.Project.ApplicationResolvers || {},
         );
 
         appGraph![projProcCfg.ProjectLookup] = appLookups
           .map((appLookup) => {
-            if (!isEverythingAsCodeApplications(eac)) {
-              // This will never happen, check is just to get proper typing
-              throw new Error();
-            }
-
             const app = eac!.Applications![appLookup];
 
             if (!app) {
+              logger.error(
+                `Missing application config for lookup: ${appLookup}`,
+              );
               throw new Error(
                 `The '${appLookup}' app configured for the project does not exist in the EaC Applications configuration.`,
               );
             }
 
-            const resolverCfg =
-              projProcCfg.Project.ApplicationResolvers[appLookup];
-
             return {
               Application: app,
               ApplicationLookup: appLookup,
-              ResolverConfig: resolverCfg,
-              // Pattern: new URLPattern({ pathname: resolverCfg.PathPattern }),
+              ResolverConfig:
+                projProcCfg.Project.ApplicationResolvers[appLookup],
               Revision: this.revision,
             } as EaCApplicationProcessorConfig;
           })
@@ -90,16 +101,16 @@ export default class FathymEaCApplicationsPlugin implements EaCRuntimePlugin {
 
         const appProcCfgCalls = appGraph![projProcCfg.ProjectLookup].map(
           async (appProcCfg) => {
-            if (!isEverythingAsCodeApplications(eac)) {
-              // This will never happen, check is just to get proper typing
-              throw new Error();
-            }
-
             const pipeline = await this.constructPipeline(
               ioc,
+              logger,
               projProcCfg,
               appProcCfg,
               eac,
+            );
+
+            logger.debug(
+              `Assigned pipeline to app: ${appProcCfg.ApplicationLookup}`,
             );
 
             appProcCfg.Handler = pipeline;
@@ -117,7 +128,10 @@ export default class FathymEaCApplicationsPlugin implements EaCRuntimePlugin {
 
   protected buildProjectGraph(
     eac: EverythingAsCode,
+    logger: Logger,
   ): EaCProjectProcessorConfig[] {
+    logger.debug("Building project graph...");
+
     const projGraph: EaCProjectProcessorConfig[] = [];
 
     if (isEverythingAsCodeApplications(eac) && eac!.Projects) {
@@ -125,11 +139,6 @@ export default class FathymEaCApplicationsPlugin implements EaCRuntimePlugin {
 
       const procCfgs: EaCProjectProcessorConfig[] = projLookups
         .map((projLookup) => {
-          if (!isEverythingAsCodeApplications(eac)) {
-            // This will never happen, check is just to get proper typing
-            throw new Error();
-          }
-
           const proj = eac!.Projects![projLookup]!;
 
           const resolverKeys = Object.keys(proj.ResolverConfigs);
@@ -161,16 +170,21 @@ export default class FathymEaCApplicationsPlugin implements EaCRuntimePlugin {
   protected async configureRuntimeRouteMatrix(
     eac: EverythingAsCode,
     ioc: IoCContainer,
+    logger: Logger,
   ): Promise<EaCRuntimeHandlerRouteGroup[]> {
-    let projGraph = this.buildProjectGraph(eac);
+    logger.debug("Configuring route matrix...");
 
-    const appGraph = await this.buildApplicationGraph(eac, ioc, projGraph);
+    let projGraph = this.buildProjectGraph(eac, logger);
+
+    const appGraph = await this.buildApplicationGraph(
+      eac,
+      ioc,
+      logger,
+      projGraph,
+    );
 
     projGraph = projGraph.map((projProcCfg) => {
-      return {
-        ...projProcCfg,
-        // Handler: this.establishProjectHandler(projProcCfg, appGraph),
-      };
+      return { ...projProcCfg };
     });
 
     return projGraph.map((projProcCfg) => {
@@ -183,6 +197,7 @@ export default class FathymEaCApplicationsPlugin implements EaCRuntimePlugin {
         );
 
         if (activate) {
+          logger.debug(`Activated project route: ${projProcCfg.ProjectLookup}`);
           ctx.Runtime = merge(
             ctx.Runtime,
             {
@@ -199,7 +214,7 @@ export default class FathymEaCApplicationsPlugin implements EaCRuntimePlugin {
       const routes = projAppProcCfgs.map((appProcCfg) => {
         const appActivator: EaCRuntimeHandlerRoute["Activator"] = (
           req,
-          ctx,
+          _ctx,
         ) => {
           const appResolverConfig = appProcCfg.ResolverConfig;
 
@@ -214,16 +229,18 @@ export default class FathymEaCApplicationsPlugin implements EaCRuntimePlugin {
               req.headers.get("user-agent") || "",
             );
 
-          // TODO(mcgear): How to account for IsPrivate/IsTriggerSignIn during application resolution...
-          //    Maybe return a list of available apps, so their handlers can be nexted through
-          //    Think through logic, as this already may be happening based on configs?...
-
           const pattern = new URLPattern({
             pathname: appResolverConfig.PathPattern,
           });
 
           const activate = pattern.test(req.url) && isAllowedMethod &&
             matchesRegex;
+
+          if (activate) {
+            logger.debug(
+              `Activated application route: ${appProcCfg.ApplicationLookup}`,
+            );
+          }
 
           return activate;
         };
@@ -246,10 +263,14 @@ export default class FathymEaCApplicationsPlugin implements EaCRuntimePlugin {
 
   protected async constructPipeline(
     ioc: IoCContainer,
+    logger: Logger,
     projProcCfg: EaCProjectProcessorConfig,
     appProcCfg: EaCApplicationProcessorConfig,
     eac: EverythingAsCodeApplications,
   ): Promise<EaCRuntimeHandlerPipeline> {
+    logger.debug(
+      `Constructing pipeline for app: ${appProcCfg.ApplicationLookup}`,
+    );
     const pipeline = new EaCRuntimeHandlerPipeline();
 
     pipeline.Append((req, ctx) => {
@@ -276,13 +297,14 @@ export default class FathymEaCApplicationsPlugin implements EaCRuntimePlugin {
     );
 
     for (const mod of pipelineModifiers) {
+      logger.debug(`Appending modifier middleware: ${mod.Details?.Name}`);
       pipeline.Append(
         await defaultModifierMiddlewareResolver.Resolve(ioc, mod),
       );
     }
 
     pipeline.Append(
-      await this.establishApplicationHandler(eac, ioc, appProcCfg),
+      await this.establishApplicationHandler(eac, ioc, logger, appProcCfg),
     );
 
     return pipeline;
@@ -332,8 +354,13 @@ export default class FathymEaCApplicationsPlugin implements EaCRuntimePlugin {
   protected async establishApplicationHandler(
     eac: EverythingAsCode,
     ioc: IoCContainer,
+    logger: Logger,
     appProcessorConfig: EaCApplicationProcessorConfig,
   ): Promise<EaCRuntimeHandler> {
+    logger.debug(
+      `Resolving handler for app: ${appProcessorConfig.ApplicationLookup}`,
+    );
+
     const defaultProcessorHandlerResolver = await ioc.Resolve<
       ProcessorHandlerResolver
     >(
@@ -351,6 +378,8 @@ export default class FathymEaCApplicationsPlugin implements EaCRuntimePlugin {
       appProcessorConfig.Application.Processor.CacheControl &&
       !EAC_RUNTIME_DEV()
     ) {
+      logger.debug("Wrapping handler with cache-control logic.");
+
       const cacheHandler = handler;
 
       handler = async (req, ctx) => {
