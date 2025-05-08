@@ -12,6 +12,9 @@ export type EaCPreactAppProcessor = {
   /** Determines if the system will bypass base href logic. */
   BypassEaCBase?: boolean;
 
+  /** Enables automatic injection of doc-like navigation metadata into PageProps, via the config at the path (relative to dfs root). */
+  DocPageConfigPath?: string;
+
   /** The component DFS lookups for resolving Islands. */
   ComponentDFSLookups?: [string, string[]][];
 } & EaCProcessor<"PreactApp">;

@@ -6,10 +6,12 @@ import rehypeSlug from "npm:rehype-slug@6.0.0";
 import rehypeAutolinkHeadings from "npm:rehype-autolink-headings@7.1.0";
 import {
   ComponentType,
+  DFSFileHandler,
   EaCRuntimeHandlerSet,
   ESBuild,
   IoCContainer,
 } from "../preact/.deps.ts";
+import { VirtualMDXFileHandler } from "./VirtualMDXFileHandler.tsx";
 
 // TypeScript doesn't know about the full MDXConfig type structure, define a generic
 export type DocsMDXOptions = {
@@ -23,11 +25,12 @@ export async function compileMDX(
   mdxSource: string,
   config?: DocsMDXOptions,
 ): Promise<
-  {
+  | {
     compiled: ComponentType<any>;
     handler: EaCRuntimeHandlerSet;
     source: string;
-  } | undefined
+  }
+  | undefined
 > {
   try {
     const result = await compile(mdxSource, {
@@ -72,4 +75,28 @@ export async function compileMDX(
     return undefined;
     // throw ne hJSON.stringify(err, null, 4);
   }
+}
+
+export async function createVirtualMDX(
+  ioc: IoCContainer,
+  dfsLookup: string,
+  mdxSource: string,
+  filePath: string,
+  isIsland: boolean,
+  config: {
+    remarkPlugins?: any[];
+    rehypePlugins?: any[];
+  } = {},
+): Promise<{ FileHandler: DFSFileHandler }> {
+  const handler = new VirtualMDXFileHandler(
+    dfsLookup,
+    { Type: "Virtual" },
+    filePath,
+    mdxSource,
+    ioc,
+    isIsland,
+    config,
+  );
+
+  return { FileHandler: handler };
 }

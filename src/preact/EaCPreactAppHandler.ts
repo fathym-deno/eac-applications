@@ -669,10 +669,11 @@ export class EaCPreactAppHandler {
       async (filePath, { layouts }) => {
         return await loadPreactAppHandler(
           this.logger,
+          this.ioc,
+          processor,
           appDFSHandler,
           filePath,
           appDFS,
-          processor.AppDFSLookup,
           layouts,
           this.renderHandler,
         );

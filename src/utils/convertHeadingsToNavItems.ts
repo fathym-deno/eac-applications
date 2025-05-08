@@ -1,4 +1,4 @@
-import type { DocsNavItem } from "@fathym/eac-applications/runtime/processors";
+import { DocsNavItem } from "./DocsNavItem.ts";
 import { DocHeading } from "./generateDocConfigFromSource.ts";
 
 export function convertHeadingsToNavItems(

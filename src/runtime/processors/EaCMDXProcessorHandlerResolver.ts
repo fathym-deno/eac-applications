@@ -25,41 +25,12 @@ import { ProcessorHandlerResolver } from "./ProcessorHandlerResolver.ts";
 import { compileMDX } from "../../utils/compileMDX.ts";
 import { Logger } from "../modules/.deps.ts";
 import { loadLayout } from "../../preact/loadLayout.ts";
-import { ESBuild, PreactRenderToString } from "../../preact/.deps.ts";
+import { PreactRenderToString } from "../../preact/.deps.ts";
 import { PageProps } from "../../preact/PageProps.ts";
 import { generateDocConfigFromSource } from "../../utils/generateDocConfigFromSource.ts";
 import { convertHeadingsToNavItems } from "../../utils/convertHeadingsToNavItems.ts";
-/**
- * Documentation site configuration for the EaCMDXProcessor.
- */
-export type DocsConfig = {
-  /** The title of the documentation site. */
-  Title: string;
-
-  /** Navigation structure for the documentation site. */
-  Nav: DocsNavItem[];
-
-  /** MDX Processing options (plugins, settings, etc.). */
-  MDX: MDXConfig;
-};
-
-/**
- * Represents a single navigation item in the documentation.
- */
-export type DocsNavItem = {
-  /** .... */
-  Abstract?: string;
-
-  /** The title of the navigation link. */
-  Title: string;
-
-  /** The relative path for this navigation item. */
-  Path?: string;
-
-  /** Optional nested items for dropdown menus. */
-  Children?: DocsNavItem[];
-};
-
+import { getPrevNextItems } from "../../utils/getPrevNextItems.ts";
+import { DocsConfig } from "../../utils/DocsConfig.ts";
 /**
  * MDX configuration options, including Remark/Rehype plugins.
  */
@@ -385,28 +356,3 @@ export const EaCMDXProcessorHandlerResolver: ProcessorHandlerResolver = {
     }
   },
 };
-
-function flattenNav(items: DocsNavItem[]): DocsNavItem[] {
-  return items.flatMap((item) => [
-    item,
-    ...(item.Children ? flattenNav(item.Children) : []),
-  ]);
-}
-
-function getPrevNextItems(
-  docsConfig: DocsConfig,
-  currentPath: string,
-): {
-  prev?: DocsNavItem;
-  next?: DocsNavItem;
-} {
-  const flat = flattenNav(docsConfig.Nav); // ✅ Use docsConfig.Nav here
-  const index = flat.findIndex(
-    (item) => item.Path === (currentPath ? currentPath : "/"),
-  );
-
-  return {
-    prev: index > 0 ? flat[index - 1] : undefined,
-    next: index >= 0 && index < flat.length - 1 ? flat[index + 1] : undefined,
-  };
-}

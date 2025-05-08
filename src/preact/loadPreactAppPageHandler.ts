@@ -4,13 +4,17 @@ import {
   DFSFileHandler,
   EaCDistributedFileSystemDetails,
   EaCRuntimeHandlerSet,
-  ESBuild,
   importDFSTypescriptModule,
+  IoCContainer,
   Logger,
+  matter,
+  toText,
 } from "./.deps.ts";
+import { createVirtualMDX } from "../utils/compileMDX.ts";
 
 export async function loadPreactAppPageHandler(
   logger: Logger,
+  ioc: IoCContainer,
   fileHandler: DFSFileHandler,
   filePath: string,
   dfs: EaCDistributedFileSystemDetails,
@@ -18,7 +22,31 @@ export async function loadPreactAppPageHandler(
 ): Promise<
   [EaCRuntimeHandlerSet, ComponentType<any>, boolean, string, string[]]
 > {
-  const loader = filePath.endsWith(".ts") ? "ts" : "tsx";
+  const isMDX = filePath.endsWith(".mdx") || filePath.endsWith(".md");
+
+  let loader = filePath.endsWith(".ts") ? "ts" : "tsx";
+
+  if (isMDX) {
+    const file = await fileHandler.GetFileInfo(filePath, Date.now().toString());
+
+    const source = await toText(file!.Contents);
+
+    const { content: mdxBody, data: frontmatter } = matter(source);
+
+    const isIsland = frontmatter?.IsIsland === true;
+
+    const mdxResult = await createVirtualMDX(
+      ioc,
+      dfsLookup,
+      mdxBody,
+      filePath,
+      isIsland,
+    );
+
+    fileHandler = mdxResult.FileHandler;
+
+    loader = "tsx";
+  }
 
   const { module, contents } = (await importDFSTypescriptModule(
     logger,
@@ -26,7 +54,7 @@ export async function loadPreactAppPageHandler(
     filePath,
     dfs,
     dfsLookup,
-    loader,
+    loader as "ts" | "tsx",
   ))!;
 
   const component: ComponentType<any> | undefined = module.default;

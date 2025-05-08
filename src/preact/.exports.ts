@@ -6,5 +6,7 @@ export * from "./establishPreactAppHandler.ts";
 export * from "./loadLayout.ts";
 export * from "./loadPreactAppHandler.ts";
 export * from "./loadPreactAppPageHandler.ts";
+export * from "./markIslands.ts";
+export * from "./maybeInjectDocPageMetadata.ts";
 export * from "./PageProps.ts";
 export * from "./PreactRenderHandler.ts";

@@ -43,7 +43,7 @@ export type {
   EaCDistributedFileSystemDetails,
   EverythingAsCodeDFS,
 } from "jsr:@fathym/eac@0.2.107/dfs";
-export type { DFSFileHandler } from "jsr:@fathym/eac@0.2.107/dfs/handlers";
+export { DFSFileHandler } from "jsr:@fathym/eac@0.2.107/dfs/handlers";
 export {
   executePathMatch,
   importDFSTypescriptModule,
@@ -71,5 +71,9 @@ export {
 } from "npm:preact@10.20.1";
 
 export * as PreactRenderToString from "npm:preact-render-to-string@6.5.9";
+
+import matter from "npm:gray-matter@4.0.3";
+export { matter };
+export { toText } from "jsr:@std/streams@^1.0.9";
 
 export type { EaCPreactAppProcessor } from "../applications/processors/.exports.ts";

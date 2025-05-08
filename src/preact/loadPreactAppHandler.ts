@@ -3,23 +3,26 @@ import {
   ComponentType,
   DFSFileHandler,
   EaCDistributedFileSystemDetails,
+  EaCPreactAppProcessor,
   EaCRuntimeHandler,
   EaCRuntimeHandlerPipeline,
   EaCRuntimeHandlers,
   EaCRuntimeHandlerSet,
-  ESBuild,
+  IoCContainer,
   Logger,
   merge,
 } from "./.deps.ts";
 import { PreactRenderHandler } from "./PreactRenderHandler.ts";
 import { loadPreactAppPageHandler } from "./loadPreactAppPageHandler.ts";
+import { maybeInjectDocPageMetadata } from "./maybeInjectDocPageMetadata.ts";
 
 export async function loadPreactAppHandler(
   logger: Logger,
+  ioc: IoCContainer,
+  processor: EaCPreactAppProcessor,
   fileHandler: DFSFileHandler,
   filePath: string,
   dfs: EaCDistributedFileSystemDetails,
-  dfsLookup: string,
   layouts: [
     string,
     ComponentType<any>,
@@ -30,9 +33,12 @@ export async function loadPreactAppHandler(
   ][],
   renderHandler: PreactRenderHandler,
 ): Promise<EaCRuntimeHandlerSet> {
+  const dfsLookup = processor.AppDFSLookup;
+
   let [pageHandlers, component, isIsland, contents] =
     await loadPreactAppPageHandler(
       logger,
+      ioc,
       fileHandler,
       filePath,
       dfs,
@@ -78,6 +84,16 @@ export async function loadPreactAppHandler(
     ctx.Render = async (data = {}) => {
       ctx.Data = merge(ctx.Data || {}, data ?? {});
 
+      await maybeInjectDocPageMetadata(
+        logger,
+        processor,
+        fileHandler,
+        filePath,
+        dfs,
+        dfsLookup,
+        ctx,
+      );
+
       const html = await renderHandler.RenderPage(renderStack, ctx);
 
       return new Response(html, {
@@ -113,8 +129,4 @@ export async function loadPreactAppHandler(
   return (req, ctx) => {
     return pipeline.Execute(req, ctx);
   };
-}
-
-export function markIslands(root: ComponentType<any>): ComponentType<any> {
-  return root;
 }
