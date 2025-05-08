@@ -218,23 +218,39 @@ export default class FathymEaCApplicationsPlugin implements EaCRuntimePlugin {
         ) => {
           const appResolverConfig = appProcCfg.ResolverConfig;
 
+          const pattern = new URLPattern({
+            pathname: appResolverConfig.PathPattern,
+          });
+
           const isAllowedMethod = !appResolverConfig.AllowedMethods ||
             appResolverConfig.AllowedMethods.length === 0 ||
             appResolverConfig.AllowedMethods.some(
               (arc) => arc.toLowerCase() === req.method.toLowerCase(),
             );
 
+          const userAgent = req.headers.get("user-agent") || "";
           const matchesRegex = !appResolverConfig.UserAgentRegex ||
-            new RegExp(appResolverConfig.UserAgentRegex).test(
-              req.headers.get("user-agent") || "",
-            );
+            new RegExp(appResolverConfig.UserAgentRegex).test(userAgent);
 
-          const pattern = new URLPattern({
-            pathname: appResolverConfig.PathPattern,
-          });
+          const pathMatched = pattern.test(req.url);
 
-          const activate = pattern.test(req.url) && isAllowedMethod &&
-            matchesRegex;
+          const activate = pathMatched && isAllowedMethod && matchesRegex;
+
+          logger.debug(
+            `[App Route: ${appProcCfg.ApplicationLookup}] Trying to match: ${req.method} ${req.url}
+            → PathPattern: "${appResolverConfig.PathPattern}" ${
+              pathMatched ? "✓" : "✗"
+            }
+            → AllowedMethods: ${
+              JSON.stringify(
+                appResolverConfig.AllowedMethods,
+              )
+            } ${isAllowedMethod ? "✓" : "✗"}
+            → UserAgentRegex: ${appResolverConfig.UserAgentRegex || "n/a"} ${
+              matchesRegex ? "✓" : "✗"
+            }
+            → Final activation: ${activate ? "✅ MATCHED" : "❌ not matched"}`,
+          );
 
           if (activate) {
             logger.debug(
