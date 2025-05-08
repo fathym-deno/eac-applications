@@ -192,6 +192,8 @@ export default class FathymEaCApplicationsPlugin implements EaCRuntimePlugin {
         req,
         ctx,
       ) => {
+        logger.debug(`Checking project for: ${req.url.toString()}`);
+        logger.debug(projProcCfg.Patterns);
         const activate = projProcCfg.Patterns.some((pattern) =>
           pattern.test(req.url)
         );
