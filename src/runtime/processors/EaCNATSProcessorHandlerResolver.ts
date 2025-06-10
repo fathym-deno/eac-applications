@@ -6,7 +6,7 @@ import {
   RetentionPolicy,
   StorageType,
   StringCodec,
-} from 'npm:nats@2.29.2';
+} from "npm:nats@2.29.2";
 import {
   EaCApplicationProcessorConfig,
   EaCNATSProcessor,
@@ -17,35 +17,36 @@ import {
   isEaCNATSProcessor,
   Logger,
   LoggingProvider,
-} from './.deps.ts';
+} from "./.deps.ts";
 import {
   EaCRuntimeHandlerPipeline,
   EaCRuntimeHandlerSet,
-} from 'jsr:@fathym/eac@0.2.107/runtime/pipelines';
-import { PathMatch } from 'jsr:@fathym/eac@0.2.107/dfs/utils';
-import { buildURLMatch } from 'jsr:@fathym/common@0.2.184';
-import { BaseEaCMessagingProcessorHandlerResolver } from './BaseEaCMessagingProcessorHandlerResolver.ts';
-import { ProcessorHandlerResolver } from './ProcessorHandlerResolver.ts';
+} from "jsr:@fathym/eac@0.2.109/runtime/pipelines";
+import { PathMatch } from "jsr:@fathym/eac@0.2.109/dfs/utils";
+import { buildURLMatch } from "jsr:@fathym/common@0.2.261";
+import { BaseEaCMessagingProcessorHandlerResolver } from "./BaseEaCMessagingProcessorHandlerResolver.ts";
+import { ProcessorHandlerResolver } from "./ProcessorHandlerResolver.ts";
 
 export const EaCNATSProcessorHandlerResolver: ProcessorHandlerResolver =
-  new (class extends BaseEaCMessagingProcessorHandlerResolver<EaCNATSProcessor> {
+  new (class
+    extends BaseEaCMessagingProcessorHandlerResolver<EaCNATSProcessor> {
     async Resolve(
       ioc: IoCContainer,
       appProcCfg: EaCApplicationProcessorConfig,
-      eac: EverythingAsCode & EverythingAsCodeDFS
+      eac: EverythingAsCode & EverythingAsCodeDFS,
     ): Promise<(req: Request, ctx: unknown) => Promise<Response>> {
       const logger = (await ioc.Resolve(LoggingProvider)).Package;
 
       if (!isEaCNATSProcessor(appProcCfg.Application.Processor)) {
         throw new Deno.errors.NotSupported(
-          'The provided processor is not supported for the EaCNATSProcessorHandlerResolver.'
+          "The provided processor is not supported for the EaCNATSProcessorHandlerResolver.",
         );
       }
 
       const processor = appProcCfg.Application.Processor;
 
       console.log(
-        `🚀 Initializing EaCNATSProcessor for ${processor.DFSLookup}...`
+        `🚀 Initializing EaCNATSProcessor for ${processor.DFSLookup}...`,
       );
 
       const { patterns } = await this.loadPatterns(
@@ -53,7 +54,7 @@ export const EaCNATSProcessorHandlerResolver: ProcessorHandlerResolver =
         ioc,
         eac,
         appProcCfg,
-        logger
+        logger,
       );
 
       if (patterns?.length) {
@@ -62,10 +63,10 @@ export const EaCNATSProcessorHandlerResolver: ProcessorHandlerResolver =
         patterns
           .map((p) => this.pathToSubject(processor.EventRoot, p.Pattern))
           .forEach((pt) => logger.debug(`\t${pt}`));
-        logger.debug('');
+        logger.debug("");
       }
 
-      logger.debug('🔹 Connecting to NATS...');
+      logger.debug("🔹 Connecting to NATS...");
 
       const nc: NatsConnection = await connect({
         servers: processor.NATSURL,
@@ -74,22 +75,22 @@ export const EaCNATSProcessorHandlerResolver: ProcessorHandlerResolver =
         ...processor.ClientOptions,
       });
 
-      logger.debug('✅ NATS Connected');
+      logger.debug("✅ NATS Connected");
 
       ioc.Register(() => nc, {
-        Type: ioc.Symbol('NatsConnection'),
+        Type: ioc.Symbol("NatsConnection"),
       });
 
       let jsm: JetStreamManager | null = null;
 
       if (processor.JetStream?.Enabled) {
-        logger.debug('Setting up JetStream...');
+        logger.debug("Setting up JetStream...");
 
         jsm = await nc.jetstreamManager();
         await this.setupJetStream(jsm, processor);
       }
 
-      logger.debug('🔹 Subscribing to events...');
+      logger.debug("🔹 Subscribing to events...");
 
       for (const pattern of patterns) {
         nc.subscribe(this.pathToSubject(processor.EventRoot, pattern.Pattern), {
@@ -97,12 +98,12 @@ export const EaCNATSProcessorHandlerResolver: ProcessorHandlerResolver =
             if (err) {
               logger.error(
                 `❌ Error processing event: ${pattern.PatternText}`,
-                err
+                err,
               );
               return;
             }
 
-            const pathname = msg.subject.replace(/\./g, '/');
+            const pathname = msg.subject.replace(/\./g, "/");
 
             const match = pattern.Pattern.exec({ pathname });
 
@@ -115,7 +116,7 @@ export const EaCNATSProcessorHandlerResolver: ProcessorHandlerResolver =
               processor.EventRoot,
               msg,
               pattern,
-              ctx
+              ctx,
             );
           },
         });
@@ -123,7 +124,7 @@ export const EaCNATSProcessorHandlerResolver: ProcessorHandlerResolver =
 
       return (_req, _ctx) => {
         const handledEvents = patterns.map(
-          (p) => `${processor.EventRoot}${p.PatternText}`
+          (p) => `${processor.EventRoot}${p.PatternText}`,
         );
         return Promise.resolve(Response.json({ Events: handledEvents }));
       };
@@ -139,18 +140,18 @@ export const EaCNATSProcessorHandlerResolver: ProcessorHandlerResolver =
      *  → 'eac.*.snapshots.commit'
      */
     protected pathToSubject(eventRoot: string, pattern: URLPattern): string {
-      const normalizedRoot = eventRoot.replace(/^\.+|\.+$/g, '').trim();
+      const normalizedRoot = eventRoot.replace(/^\.+|\.+$/g, "").trim();
 
-      const path = pattern.pathname.replace(/\/+$/, '');
+      const path = pattern.pathname.replace(/\/+$/, "");
 
       const segments = path
-        .split('/')
+        .split("/")
         .filter(Boolean)
-        .map((segment) => (segment.startsWith(':') ? '*' : segment));
+        .map((segment) => (segment.startsWith(":") ? "*" : segment));
 
-      const subject = segments.join('.');
+      const subject = segments.join(".");
 
-      return [normalizedRoot, subject].filter(Boolean).join('.');
+      return [normalizedRoot, subject].filter(Boolean).join(".");
     }
 
     /**
@@ -161,7 +162,7 @@ export const EaCNATSProcessorHandlerResolver: ProcessorHandlerResolver =
       eventRoot: string,
       msg: Msg,
       pattern: PathMatch,
-      ctx: EaCRuntimeContext
+      ctx: EaCRuntimeContext,
     ) {
       const SC = StringCodec();
 
@@ -174,15 +175,15 @@ export const EaCNATSProcessorHandlerResolver: ProcessorHandlerResolver =
         });
       }
 
-      const pathname = msg.subject.replace(/\./g, '/');
+      const pathname = msg.subject.replace(/\./g, "/");
 
       const request = new Request(
         new URL(pathname, `https://fathym-nats-server:4222/${eventRoot}/`),
         {
-          method: 'POST',
+          method: "POST",
           body: msg.data.length > 0 ? SC.decode(msg.data) : null,
           headers: requestHeaders,
-        }
+        },
       );
 
       ctx.Runtime.URLMatch = buildURLMatch(pattern.Pattern, request);
@@ -201,7 +202,7 @@ export const EaCNATSProcessorHandlerResolver: ProcessorHandlerResolver =
      */
     protected async setupJetStream(
       jsm: JetStreamManager,
-      processor: EaCNATSProcessor
+      processor: EaCNATSProcessor,
     ) {
       if (processor.JetStream) {
         for (const stream of processor.JetStream.Streams) {
@@ -218,13 +219,15 @@ export const EaCNATSProcessorHandlerResolver: ProcessorHandlerResolver =
             });
 
             console.log(
-              `✅ Created stream: ${stream.Name} (${stream.Subjects.join(
-                ', '
-              )})`
+              `✅ Created stream: ${stream.Name} (${
+                stream.Subjects.join(
+                  ", ",
+                )
+              })`,
             );
           } catch (_err) {
             console.warn(
-              `⚠️ Stream ${stream.Name} already exists or failed to create.`
+              `⚠️ Stream ${stream.Name} already exists or failed to create.`,
             );
           }
         }

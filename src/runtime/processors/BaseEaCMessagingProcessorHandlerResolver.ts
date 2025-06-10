@@ -12,9 +12,9 @@ import {
   Logger,
   LoggingProvider,
   PathMatch,
-} from './.deps.ts';
-import { ProcessorHandlerResolver } from './ProcessorHandlerResolver.ts';
-import { BaseEaCMessagingProcessor } from '../../applications/processors/BaseEaCMessagingProcessor.ts';
+} from "./.deps.ts";
+import { ProcessorHandlerResolver } from "./ProcessorHandlerResolver.ts";
+import { BaseEaCMessagingProcessor } from "../../applications/processors/BaseEaCMessagingProcessor.ts";
 
 /**
  * Structure returned by pattern loader.
@@ -29,9 +29,8 @@ export type MessagingProcessorPatternLoad = {
  * Base class to handle shared messaging processor setup (DFS, middleware, handlers).
  */
 export abstract class BaseEaCMessagingProcessorHandlerResolver<
-  TProcessor extends BaseEaCMessagingProcessor<string>
-> implements ProcessorHandlerResolver
-{
+  TProcessor extends BaseEaCMessagingProcessor<string>,
+> implements ProcessorHandlerResolver {
   /**
    * Implement this in subclasses.
    * Responsible for full resolution and processor wiring.
@@ -39,7 +38,7 @@ export abstract class BaseEaCMessagingProcessorHandlerResolver<
   public abstract Resolve(
     ioc: IoCContainer,
     appProcCfg: EaCApplicationProcessorConfig,
-    eac: EverythingAsCode & EverythingAsCodeDFS
+    eac: EverythingAsCode & EverythingAsCodeDFS,
   ): Promise<(req: Request, ctx: unknown) => Promise<Response>>;
 
   /**
@@ -50,18 +49,18 @@ export abstract class BaseEaCMessagingProcessorHandlerResolver<
     ioc: IoCContainer,
     eac: EverythingAsCode & EverythingAsCodeDFS,
     appProcCfg: EaCApplicationProcessorConfig,
-    logger: Logger
+    logger: Logger,
   ): Promise<MessagingProcessorPatternLoad> {
     const fileHandler = await loadDFSFileHandler(
       ioc,
       eac.DFSs!,
       eac.$GlobalOptions?.DFSs ?? {},
-      processor.DFSLookup
+      processor.DFSLookup,
     );
 
     if (!fileHandler) {
       throw new Error(
-        `❌ Failed to load DFS handler for ${processor.DFSLookup}`
+        `❌ Failed to load DFS handler for ${processor.DFSLookup}`,
       );
     }
 
@@ -73,8 +72,8 @@ export abstract class BaseEaCMessagingProcessorHandlerResolver<
       async (allPaths) => {
         const middlewareLoader = async () => {
           const middlewarePaths = allPaths
-            .filter((p) => p.endsWith('_middleware.ts'))
-            .sort((a, b) => a.split('/').length - b.split('/').length);
+            .filter((p) => p.endsWith("_middleware.ts"))
+            .sort((a, b) => a.split("/").length - b.split("/").length);
 
           const middlewareCalls = middlewarePaths.map((p) =>
             loadMiddleware(logger, fileHandler, p, dfs, processor.DFSLookup)
@@ -95,7 +94,7 @@ export abstract class BaseEaCMessagingProcessorHandlerResolver<
           fileHandler,
           filePath,
           dfs,
-          processor.DFSLookup
+          processor.DFSLookup,
         ),
       (filePath, pipeline, { middleware }) => {
         const applicableMiddleware = middleware
@@ -106,7 +105,7 @@ export abstract class BaseEaCMessagingProcessorHandlerResolver<
 
         pipeline.Prepend(...applicableMiddleware);
       },
-      appProcCfg.Revision
+      appProcCfg.Revision,
     );
 
     return { fileHandler, patterns };
@@ -120,8 +119,8 @@ export abstract class BaseEaCMessagingProcessorHandlerResolver<
     eac: EverythingAsCode,
     appProcCfg: EaCApplicationProcessorConfig,
     contextOverrides?: Partial<
-      Pick<EaCRuntimeContext, 'Params' | 'State' | 'Data'>
-    >
+      Pick<EaCRuntimeContext, "Params" | "State" | "Data">
+    >,
   ): Promise<EaCRuntimeContext> {
     return {
       Data: contextOverrides?.Data ?? {},
