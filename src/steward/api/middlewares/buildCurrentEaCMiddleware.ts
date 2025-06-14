@@ -15,9 +15,11 @@ export function buildCurrentEaCMiddleware(
   return async (_req, ctx) => {
     ctx.State.EaCKV = await ctx.Runtime.IoC.Resolve(Deno.Kv, eacDBLookup);
 
+    const username = ctx.State.Username!;
+
     const currentEntLookup = await ctx.State.EaCKV.get<string>([
       "User",
-      ctx.State.Username!,
+      username,
       "Current",
       "EnterpriseLookup",
     ]);
@@ -26,14 +28,14 @@ export function buildCurrentEaCMiddleware(
 
     ctx.State.ParentSteward = await loadEaCStewardSvc();
 
-    const username = ctx.State.Username!;
-
-    ctx.State.UserEaCs = await ctx.State.ParentSteward.EaC.ListForUser();
+    ctx.State.UserEaCs = await ctx.State.ParentSteward.EaC.ListForUser(
+      username,
+    );
 
     if (currentEntLookup.value) {
       ctx.State.Steward = await loadEaCStewardSvc(
         currentEntLookup.value,
-        ctx.State.Username!,
+        username,
       );
 
       eac = await ctx.State.Steward.EaC.Get();
@@ -42,7 +44,7 @@ export function buildCurrentEaCMiddleware(
     if (!eac) {
       if (ctx.State.UserEaCs[0]) {
         await ctx.State.EaCKV.set(
-          ["User", ctx.State.Username!, "Current", "EnterpriseLookup"],
+          ["User", username, "Current", "EnterpriseLookup"],
           ctx.State.UserEaCs[0].EnterpriseLookup,
         );
 
@@ -60,7 +62,7 @@ export function buildCurrentEaCMiddleware(
 
       const jwt = await ctx.State.ParentSteward.EaC.JWT(
         eac.EnterpriseLookup!,
-        ctx.State.Username!,
+        username,
       );
 
       ctx.State.EaCJWT = jwt.Token;

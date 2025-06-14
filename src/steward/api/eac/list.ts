@@ -7,8 +7,9 @@ export default {
 
     const url = new URL(req.url);
 
-    // TODO(mcgear): Remove this once we update everything
-    const username = ctx.State.Username!;
+    // TODO(mcgear): Shouldn't actually use ctx.State.Username here, need to add query string usage everywhere before changing
+    const username = ctx.Runtime.URLMatch.SearchParams?.get("username")! ??
+      ctx.State.Username;
 
     const parentEntLookup = ctx.State.EnterpriseLookup!;
 
