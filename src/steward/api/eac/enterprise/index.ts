@@ -42,6 +42,9 @@ export default {
 
     const eac = (await req.json()) as EverythingAsCode;
 
+    const actJWT = (eac.ActuatorJWT as string) || "";
+    delete eac.ActuatorJWT;
+
     const commitStatus: EaCStatus = {
       ID: crypto.randomUUID(),
       EnterpriseLookup: entLookup,
@@ -61,7 +64,7 @@ export default {
         ...(eac || {}),
         EnterpriseLookup: commitStatus.EnterpriseLookup,
       },
-      JWT: ctx.State.JWT!,
+      JWT: actJWT || ctx.State.JWT!,
       ProcessingSeconds: processingSeconds,
       Username: "",
     };
