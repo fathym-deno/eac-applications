@@ -1,4 +1,4 @@
-import { LoggingProvider } from "jsr:@fathym/common@0.2.261/log";
+import { LoggingProvider } from "jsr:@fathym/common@0.2.264/log";
 import {
   buildURLMatch,
   EAC_RUNTIME_DEV,
