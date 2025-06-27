@@ -12,8 +12,8 @@ import remarkGfm from "npm:remark-gfm@4.0.1";
 import remarkFrontmatter from "npm:remark-frontmatter@5.0.0";
 import rehypeSlug from "npm:rehype-slug@6.0.0";
 import rehypeAutolinkHeadings from "npm:rehype-autolink-headings@7.1.0";
-import { getPackageLoggerSync } from "jsr:@fathym/common@0.2.264/log";
-import { DFSFileInfo } from "jsr:@fathym/eac@0.2.112/dfs/handlers";
+import { getPackageLoggerSync } from "jsr:@fathym/common@0.2.265/log";
+import { DFSFileInfo } from "jsr:@fathym/eac@0.2.113/dfs/handlers";
 import { bufferToStream } from "./bufferToStream.tsx";
 
 export class VirtualMDXFileHandler extends DFSFileHandler {
