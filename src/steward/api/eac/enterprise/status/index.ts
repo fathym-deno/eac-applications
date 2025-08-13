@@ -6,8 +6,8 @@ import {
 import { EaCStewardAPIState } from "../../../state/EaCStewardAPIState.ts";
 
 export default {
-  async POST(req, ctx) {
-    const entLookup = ctx.State.EnterpriseLookup;
+  async GET(req, ctx) {
+    const entLookup = ctx.State.EnterpriseLookup!;
 
     const eacKv = await ctx.Runtime.IoC.Resolve<Deno.Kv>(Deno.Kv, "eac");
 
