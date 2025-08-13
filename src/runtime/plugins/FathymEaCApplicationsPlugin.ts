@@ -193,7 +193,7 @@ export default class FathymEaCApplicationsPlugin implements EaCRuntimePlugin {
         ctx,
       ) => {
         console.log(`Checking project for: ${req.url.toString()}`);
-        
+
         const activate = projProcCfg.Patterns.some((pattern) =>
           pattern.test(req.url)
         );
@@ -238,21 +238,21 @@ export default class FathymEaCApplicationsPlugin implements EaCRuntimePlugin {
 
           const activate = pathMatched && isAllowedMethod && matchesRegex;
 
-          logger.debug(
-            `[App Route: ${appProcCfg.ApplicationLookup}] Trying to match: ${req.method} ${req.url}
-            → PathPattern: "${appResolverConfig.PathPattern}" ${
-              pathMatched ? "✓" : "✗"
-            }
-            → AllowedMethods: ${
-              JSON.stringify(
-                appResolverConfig.AllowedMethods,
-              )
-            } ${isAllowedMethod ? "✓" : "✗"}
-            → UserAgentRegex: ${appResolverConfig.UserAgentRegex || "n/a"} ${
-              matchesRegex ? "✓" : "✗"
-            }
-            → Final activation: ${activate ? "✅ MATCHED" : "❌ not matched"}`,
-          );
+          // logger.debug(
+          //   `[App Route: ${appProcCfg.ApplicationLookup}] Trying to match: ${req.method} ${req.url}
+          //   → PathPattern: "${appResolverConfig.PathPattern}" ${
+          //     pathMatched ? "✓" : "✗"
+          //   }
+          //   → AllowedMethods: ${
+          //     JSON.stringify(
+          //       appResolverConfig.AllowedMethods,
+          //     )
+          //   } ${isAllowedMethod ? "✓" : "✗"}
+          //   → UserAgentRegex: ${appResolverConfig.UserAgentRegex || "n/a"} ${
+          //     matchesRegex ? "✓" : "✗"
+          //   }
+          //   → Final activation: ${activate ? "✅ MATCHED" : "❌ not matched"}`,
+          // );
 
           if (activate) {
             logger.debug(
