@@ -55,8 +55,8 @@ export default {
       },
       JWT: ctx.State.JWT!,
       ProcessingSeconds: processingSeconds,
-      Username: username,
       SkipActuators: skipActuators,
+      Username: username,
     };
 
     if (!commitReq.EaC.EnterpriseLookup) {

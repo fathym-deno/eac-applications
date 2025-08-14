@@ -21,9 +21,9 @@ import {
 import {
   EaCRuntimeHandlerPipeline,
   EaCRuntimeHandlerSet,
-} from "jsr:@fathym/eac@0.2.113/runtime/pipelines";
-import { PathMatch } from "jsr:@fathym/eac@0.2.113/dfs/utils";
-import { buildURLMatch } from "jsr:@fathym/common@0.2.265";
+} from "jsr:@fathym/eac@0.2.116/runtime/pipelines";
+import { PathMatch } from "jsr:@fathym/eac@0.2.116/dfs/utils";
+import { buildURLMatch } from "jsr:@fathym/common@0.2.266";
 import { BaseEaCMessagingProcessorHandlerResolver } from "./BaseEaCMessagingProcessorHandlerResolver.ts";
 import { ProcessorHandlerResolver } from "./ProcessorHandlerResolver.ts";
 

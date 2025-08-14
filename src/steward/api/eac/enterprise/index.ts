@@ -36,6 +36,8 @@ export default {
 
     const url = new URL(req.url);
 
+    const skipActuators = url.searchParams.has("skipActuators");
+
     const processingSeconds = Number.parseInt(
       url.searchParams.get("processingSeconds")!,
     );
@@ -66,6 +68,7 @@ export default {
       },
       JWT: actJWT || ctx.State.JWT!,
       ProcessingSeconds: processingSeconds,
+      SkipActuators: skipActuators,
       Username: "",
     };
 
