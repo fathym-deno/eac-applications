@@ -19,6 +19,8 @@ export default {
 
     const username = url.searchParams.get("username")!;
 
+    const skipActuators = url.searchParams.has("skipActuators");
+
     const processingSeconds = Number.parseInt(
       url.searchParams.get("processingSeconds")!,
     );
@@ -54,6 +56,7 @@ export default {
       JWT: ctx.State.JWT!,
       ProcessingSeconds: processingSeconds,
       Username: username,
+      SkipActuators: skipActuators,
     };
 
     if (!commitReq.EaC.EnterpriseLookup) {
