@@ -216,7 +216,7 @@ export default class FathymEaCApplicationsPlugin implements EaCRuntimePlugin {
       const routes = projAppProcCfgs.map((appProcCfg) => {
         const appActivator: EaCRuntimeHandlerRoute["Activator"] = (
           req,
-          _ctx,
+          ctx,
         ) => {
           const appResolverConfig = appProcCfg.ResolverConfig;
 
@@ -236,7 +236,16 @@ export default class FathymEaCApplicationsPlugin implements EaCRuntimePlugin {
 
           const pathMatched = pattern.test(req.url);
 
-          const activate = pathMatched && isAllowedMethod && matchesRegex;
+          const userRights = ctx.State.AccessRights ?? [];
+          const required = appResolverConfig.AccessRightLookups;
+          const hasRights = !required
+            ? true
+            : appResolverConfig.IsAnyAccessRight
+            ? required.some((r) => userRights.includes(r))
+            : required.every((r) => userRights.includes(r));
+
+          const activate = pathMatched && isAllowedMethod && matchesRegex &&
+            hasRights;
 
           // logger.debug(
           //   `[App Route: ${appProcCfg.ApplicationLookup}] Trying to match: ${req.method} ${req.url}
@@ -257,6 +266,12 @@ export default class FathymEaCApplicationsPlugin implements EaCRuntimePlugin {
           if (activate) {
             logger.debug(
               `Activated application route: ${appProcCfg.ApplicationLookup}`,
+            );
+          } else if (
+            !hasRights && pathMatched && isAllowedMethod && matchesRegex
+          ) {
+            logger.debug(
+              `Skipped application route due to missing rights: ${appProcCfg.ApplicationLookup}`,
             );
           }
 
