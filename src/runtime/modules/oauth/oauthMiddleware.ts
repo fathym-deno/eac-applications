@@ -20,6 +20,17 @@ import {
   userOAuthConnExpired,
 } from "../.deps.ts";
 
+async function getAccessRightsForUser(
+  username?: string,
+): Promise<string[]> {
+  if (!username) {
+    return [];
+  }
+
+  // Placeholder for real access rights retrieval.
+  return [];
+}
+
 export function loadOAuth2ClientConfig(
   provider: EaCProviderAsCode,
 ): DenoKVOAuth.OAuth2ClientConfig | undefined {
@@ -67,7 +78,7 @@ export function establishOAuthMiddleware(
   return (async (
     req,
     ctx: EaCApplicationsRuntimeContext<
-      { Username?: string },
+      { Username?: string; AccessRights?: string[] },
       Record<string, unknown>,
       EverythingAsCode & EverythingAsCodeIdentity
     >,
@@ -114,6 +125,9 @@ export function establishOAuthMiddleware(
 
         if (!userOAuthConnExpired(currentUsername.value)) {
           ctx.State.Username = currentUsername.value!.Username;
+
+          const rights = await getAccessRightsForUser(ctx.State.Username);
+          ctx.State.AccessRights = rights ?? [];
 
           resp = ctx.Next();
         } else {
