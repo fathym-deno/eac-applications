@@ -13,17 +13,17 @@ export {
   type UserOAuthConnection,
 } from "jsr:@fathym/common@0.2.266/oauth";
 
-export type { EverythingAsCode } from "jsr:@fathym/eac@0.2.118";
-export type { EverythingAsCodeDFS } from "jsr:@fathym/eac@0.2.118/dfs";
-export { DFSFileHandler } from "jsr:@fathym/eac@0.2.118/dfs/handlers";
-export type { PathMatch } from "jsr:@fathym/eac@0.2.118/dfs/utils";
-export type { EaCRuntimeContext } from "jsr:@fathym/eac@0.2.118/runtime";
-export { EAC_RUNTIME_DEV } from "jsr:@fathym/eac@0.2.118/runtime/config";
-export type { ESBuild } from "jsr:@fathym/eac@0.2.118/esbuild";
+export type { EverythingAsCode } from "jsr:@fathym/eac@0.2.119";
+export type { EverythingAsCodeDFS } from "jsr:@fathym/eac@0.2.119/dfs";
+export { DFSFileHandler } from "jsr:@fathym/eac@0.2.119/dfs/handlers";
+export type { PathMatch } from "jsr:@fathym/eac@0.2.119/dfs/utils";
+export type { EaCRuntimeContext } from "jsr:@fathym/eac@0.2.119/runtime";
+export { EAC_RUNTIME_DEV } from "jsr:@fathym/eac@0.2.119/runtime/config";
+export type { ESBuild } from "jsr:@fathym/eac@0.2.119/esbuild";
 export type {
   EaCRuntimeHandler,
   EaCRuntimeHandlerSet,
-} from "jsr:@fathym/eac@0.2.118/runtime/pipelines";
+} from "jsr:@fathym/eac@0.2.119/runtime/pipelines";
 
 export {
   executePathMatch,
@@ -31,7 +31,7 @@ export {
   loadEaCRuntimeHandlers,
   loadMiddleware,
   loadRequestPathPatterns,
-} from "jsr:@fathym/eac@0.2.118/dfs/utils";
+} from "jsr:@fathym/eac@0.2.119/dfs/utils";
 
 export {
   type EaCGitHubAppProviderDetails,
