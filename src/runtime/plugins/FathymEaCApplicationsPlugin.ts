@@ -238,12 +238,11 @@ export default class FathymEaCApplicationsPlugin implements EaCRuntimePlugin {
 
           const userRights = ctx.State.AccessRights ?? [];
           const required = appResolverConfig.AccessRightLookups;
-          const hasRights = true;
-          // !required
-          // ? true
-          // : appResolverConfig.IsAnyAccessRight
-          // ? required.some((r) => userRights.includes(r))
-          // : required.every((r) => userRights.includes(r));
+          const hasRights = !required
+            ? true
+            : appResolverConfig.IsAnyAccessRight
+            ? required.some((r) => userRights.includes(r))
+            : required.every((r) => userRights.includes(r));
 
           const activate = pathMatched && isAllowedMethod && matchesRegex &&
             hasRights;
