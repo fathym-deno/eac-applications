@@ -41,7 +41,7 @@ export {
   isEaCAzureADProviderDetails,
   isEaCGitHubAppProviderDetails,
   isEaCOAuthProviderDetails,
-} from "jsr:@fathym/eac-identity@0.0.21";
+} from "jsr:@fathym/eac-identity@0.0.22";
 
 export {
   DOMParser,
