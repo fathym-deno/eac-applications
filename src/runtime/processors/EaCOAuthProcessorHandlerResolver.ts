@@ -110,7 +110,13 @@ export const EaCOAuthProcessorHandlerResolver: ProcessorHandlerResolver<
     const oAuthConfig = loadOAuth2ClientConfig(provider)!;
 
     return (req, ctx) => {
-      const base = ctx.Runtime.URLMatch.FromBase("./").href;
+      let base = ctx.Runtime.URLMatch.FromBase("./");
+
+      if (provider.Details?.OAuthBase) {
+        base = ctx.Runtime.URLMatch.FromOrigin(
+          `${provider.Details?.OAuthBase}${base.pathname}`,
+        );
+      }
 
       if (isEaCAzureADB2CProviderDetails(provider.Details)) {
         return oAuthRequest(
@@ -131,7 +137,7 @@ export const EaCOAuthProcessorHandlerResolver: ProcessorHandlerResolver<
               provider.Details?.IsPrimary,
             );
           },
-          base,
+          base.href,
           ctx.Runtime.URLMatch.Path,
         );
       } else if (isEaCAzureADProviderDetails(provider.Details)) {
@@ -159,7 +165,7 @@ export const EaCOAuthProcessorHandlerResolver: ProcessorHandlerResolver<
               provider.Details?.IsPrimary,
             );
           },
-          base,
+          base.href,
           ctx.Runtime.URLMatch.Path,
         );
         // } else if (isEaCGitHubAppProviderDetails(provider.Details)) {
@@ -188,7 +194,7 @@ export const EaCOAuthProcessorHandlerResolver: ProcessorHandlerResolver<
         //         provider.Details?.IsPrimary,
         //       );
         //     },
-        //     base,
+        //     base.href,
         //     ctx.Runtime.URLMatch.Path,
         //   );
       } else if (isEaCOAuthProviderDetails(provider.Details)) {
@@ -204,7 +210,7 @@ export const EaCOAuthProcessorHandlerResolver: ProcessorHandlerResolver<
 
             payload?.toString();
           },
-          base,
+          base.href,
           ctx.Runtime.URLMatch.Path,
         );
       } else {
