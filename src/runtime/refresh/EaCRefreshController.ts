@@ -1,5 +1,8 @@
-import type { EaCRuntimeConfig, EverythingAsCode } from "./.deps.ts";
-import { LoggingProvider } from "./.deps.ts";
+import {
+  EaCRuntimeConfig,
+  EverythingAsCode,
+  LoggingProvider,
+} from "./.deps.ts";
 import { EaCSource } from "./EaCSource.ts";
 import { RuntimeBuilder } from "./RuntimeBuilder.ts";
 import { RuntimeHost } from "./RuntimeHost.ts";

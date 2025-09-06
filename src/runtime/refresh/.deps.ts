@@ -1,56 +1,26 @@
-export type { EverythingAsCode } from "../plugins/.deps.ts";
-export type { EaCRuntimeConfig } from "../plugins/.deps.ts";
-
-export { IoCContainer } from "../plugins/.deps.ts";
+export { loadJwtConfig } from "jsr:@fathym/common@0.2.266/jwt";
+export { LoggingProvider } from "jsr:@fathym/common@0.2.266/log";
+export type { EverythingAsCode } from "jsr:@fathym/eac@0.2.119";
+export type { EaCRuntimeConfig } from "jsr:@fathym/eac@0.2.119/runtime/config";
 export {
   type EaCRuntimeHandler,
   EaCRuntimeHandlerPipeline,
-  type EaCRuntimeHandlerRoute,
   type EaCRuntimeHandlerRouteGroup,
-} from "../plugins/.deps.ts";
+} from "jsr:@fathym/eac@0.2.119/runtime/pipelines";
+export { loadEaCStewardSvc } from "jsr:@fathym/eac@0.2.119/steward/clients";
 
-export { LoggingProvider } from "../_/.deps.ts";
-
-export { djwt } from "../plugins/.deps.ts";
-export { loadEaCStewardSvc } from "../plugins/.deps.ts";
-export { loadJwtConfig } from "../plugins/.deps.ts";
-
-// Re-export resolver and plugin types used by the builder
+export { IoCContainer } from "jsr:@fathym/ioc@0.0.14";
 export {
   DefaultDFSFileHandlerResolver,
-  DefaultModifierMiddlewareResolver,
-  DefaultProcessorHandlerResolver,
-  EaCAPIProcessorHandlerResolver,
   EaCAzureBlobStorageDistributedFileSystemHandlerResolver,
-  EaCAzureEventHubProcessorHandlerResolver,
-  EaCBaseHREFModifierHandlerResolver,
-  EaCDenoKVCacheModifierHandlerResolver,
   EaCDenoKVDistributedFileSystemHandlerResolver,
-  EaCDenoLSPProcessorHandlerResolver,
-  EaCDFSProcessorHandlerResolver,
   EaCESMDistributedFileSystemHandlerResolver,
-  EaCGoogleTagMgrModifierHandlerResolver,
   EaCJSRDistributedFileSystemHandlerResolver,
-  EaCJWTValidationModifierHandlerResolver,
-  EaCKeepAliveModifierHandlerResolver,
   EaCLocalDistributedFileSystemHandlerResolver,
-  EaCMarkdownToHTMLModifierHandlerResolver,
-  EaCMDXProcessorHandlerResolver,
-  EaCMSAppInsightsModifierHandlerResolver,
-  EaCNATSProcessorHandlerResolver,
   EaCNPMDistributedFileSystemHandlerResolver,
-  EaCOAuthModifierHandlerResolver,
-  EaCOAuthProcessorHandlerResolver,
-  EaCPreactAppProcessorHandlerResolver,
-  EaCProxyProcessorHandlerResolver,
-  EaCRedirectProcessorHandlerResolver,
   EaCRemoteDistributedFileSystemHandlerResolver,
-  EaCResponseProcessorHandlerResolver,
-  EaCStripeModifierHandlerResolver,
-  EaCStripeProcessorHandlerResolver,
-  EaCTailwindProcessorHandlerResolver,
-  EaCTracingModifierHandlerResolver,
   EaCWorkerDistributedFileSystemHandlerResolver,
   UnknownEaCDistributedFileSystemHandlerResolver,
-  UnknownEaCProcessorHandlerResolver,
-} from "../plugins/.deps.ts";
+} from "jsr:@fathym/eac@0.2.119/dfs/resolvers";
+
+export * as djwt from "jsr:@zaubrik/djwt@3.0.2";

@@ -1,4 +1,9 @@
-import { djwt, type EverythingAsCode, loadEaCStewardSvc } from "./.deps.ts";
+import {
+  djwt,
+  type EverythingAsCode,
+  loadEaCStewardSvc,
+  loadJwtConfig,
+} from "./.deps.ts";
 
 export type EaCFetchResult = {
   eac: EverythingAsCode;
@@ -24,7 +29,7 @@ export class EaCSource {
         const eacApiUsername = Deno.env.get("EAC_API_USERNAME");
 
         // Lazy import to avoid circular deps; loadJwtConfig is provided by deps in plugins scope
-        const { loadJwtConfig } = await import("./.deps.ts");
+        // const { loadJwtConfig } = await import("./.deps.ts");
 
         eacApiKey = await loadJwtConfig().Create(
           {

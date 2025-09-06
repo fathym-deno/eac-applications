@@ -1,7 +1,7 @@
 import {
-  type EaCRuntimeHandler,
+  EaCRuntimeHandler,
   EaCRuntimeHandlerPipeline,
-  type EaCRuntimeHandlerRouteGroup,
+  EaCRuntimeHandlerRouteGroup,
 } from "./.deps.ts";
 
 export class RuntimeHost {

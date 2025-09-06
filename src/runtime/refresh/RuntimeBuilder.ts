@@ -1,50 +1,48 @@
 import {
+  DefaultDFSFileHandlerResolver,
+  EaCAzureBlobStorageDistributedFileSystemHandlerResolver,
+  EaCDenoKVDistributedFileSystemHandlerResolver,
+  EaCESMDistributedFileSystemHandlerResolver,
+  EaCJSRDistributedFileSystemHandlerResolver,
+  EaCLocalDistributedFileSystemHandlerResolver,
+  EaCNPMDistributedFileSystemHandlerResolver,
+  EaCRemoteDistributedFileSystemHandlerResolver,
   type EaCRuntimeConfig,
   type EaCRuntimeHandlerRouteGroup,
+  EaCWorkerDistributedFileSystemHandlerResolver,
+  type EverythingAsCode,
   IoCContainer,
   LoggingProvider,
-} from "./.deps.ts";
-import {
-  DefaultDFSFileHandlerResolver,
-  DefaultModifierMiddlewareResolver,
-  DefaultProcessorHandlerResolver,
-  EaCAPIProcessorHandlerResolver,
-  EaCAzureBlobStorageDistributedFileSystemHandlerResolver,
-  EaCAzureEventHubProcessorHandlerResolver,
-  EaCBaseHREFModifierHandlerResolver,
-  EaCDenoKVCacheModifierHandlerResolver,
-  EaCDenoKVDistributedFileSystemHandlerResolver,
-  EaCDenoLSPProcessorHandlerResolver,
-  EaCDFSProcessorHandlerResolver,
-  EaCESMDistributedFileSystemHandlerResolver,
-  EaCGoogleTagMgrModifierHandlerResolver,
-  EaCJSRDistributedFileSystemHandlerResolver,
-  EaCJWTValidationModifierHandlerResolver,
-  EaCKeepAliveModifierHandlerResolver,
-  EaCLocalDistributedFileSystemHandlerResolver,
-  EaCMarkdownToHTMLModifierHandlerResolver,
-  EaCMDXProcessorHandlerResolver,
-  EaCMSAppInsightsModifierHandlerResolver,
-  EaCNATSProcessorHandlerResolver,
-  EaCNPMDistributedFileSystemHandlerResolver,
-  EaCOAuthModifierHandlerResolver,
-  EaCOAuthProcessorHandlerResolver,
-  EaCPreactAppProcessorHandlerResolver,
-  EaCProxyProcessorHandlerResolver,
-  EaCRedirectProcessorHandlerResolver,
-  EaCRemoteDistributedFileSystemHandlerResolver,
-  EaCResponseProcessorHandlerResolver,
-  EaCStripeModifierHandlerResolver,
-  EaCStripeProcessorHandlerResolver,
-  EaCTailwindProcessorHandlerResolver,
-  EaCTracingModifierHandlerResolver,
-  EaCWorkerDistributedFileSystemHandlerResolver,
   UnknownEaCDistributedFileSystemHandlerResolver,
-  UnknownEaCProcessorHandlerResolver,
 } from "./.deps.ts";
 import FathymEaCDenoKVPlugin from "../plugins/FathymEaCDenoKVPlugin.ts";
 import FathymEaCApplicationsPlugin from "../plugins/FathymEaCApplicationsPlugin.ts";
-import type { EverythingAsCode } from "./.deps.ts";
+import { DefaultProcessorHandlerResolver } from "../processors/DefaultProcessorHandlerResolver.ts";
+import { EaCAPIProcessorHandlerResolver } from "../processors/EaCAPIProcessorHandlerResolver.ts";
+import { EaCAzureEventHubProcessorHandlerResolver } from "../processors/EaCAzureEventHubProcessorHandlerResolver.ts";
+import { EaCDenoLSPProcessorHandlerResolver } from "../processors/EaCDenoLSPProcessorHandlerResolver.ts";
+import { EaCDFSProcessorHandlerResolver } from "../processors/EaCDFSProcessorHandlerResolver.ts";
+import { EaCMDXProcessorHandlerResolver } from "../processors/EaCMDXProcessorHandlerResolver.ts";
+import { EaCOAuthProcessorHandlerResolver } from "../processors/EaCOAuthProcessorHandlerResolver.ts";
+import { EaCNATSProcessorHandlerResolver } from "../processors/EaCNATSProcessorHandlerResolver.ts";
+import { EaCPreactAppProcessorHandlerResolver } from "../processors/EaCPreactAppProcessorHandlerResolver.ts";
+import { EaCProxyProcessorHandlerResolver } from "../processors/EaCProxyProcessorHandlerResolver.ts";
+import { EaCRedirectProcessorHandlerResolver } from "../processors/EaCRedirectProcessorHandlerResolver.ts";
+import { EaCResponseProcessorHandlerResolver } from "../processors/EaCResponseProcessorHandlerResolver.ts";
+import { EaCStripeProcessorHandlerResolver } from "../processors/EaCStripeProcessorHandlerResolver.ts";
+import { EaCTailwindProcessorHandlerResolver } from "../processors/EaCTailwindProcessorHandlerResolver.ts";
+import { UnknownEaCProcessorHandlerResolver } from "../processors/UnknownEaCProcessorHandlerResolver.ts";
+import { DefaultModifierMiddlewareResolver } from "../modifiers/DefaultModifierMiddlewareResolver.ts";
+import { EaCBaseHREFModifierHandlerResolver } from "../modifiers/EaCBaseHREFModifierHandlerResolver.ts";
+import { EaCDenoKVCacheModifierHandlerResolver } from "../modifiers/EaCDenoKVCacheModifierHandlerResolver.ts";
+import { EaCGoogleTagMgrModifierHandlerResolver } from "../modifiers/EaCGoogleTagMgrModifierHandlerResolver.ts";
+import { EaCJWTValidationModifierHandlerResolver } from "../modifiers/EaCJWTValidationModifierHandlerResolver.ts";
+import { EaCKeepAliveModifierHandlerResolver } from "../modifiers/EaCKeepAliveModifierHandlerResolver.ts";
+import { EaCMarkdownToHTMLModifierHandlerResolver } from "../modifiers/EaCMarkdownToHTMLModifierHandlerResolver.ts";
+import { EaCMSAppInsightsModifierHandlerResolver } from "../modifiers/EaCMSAppInsightsModifierHandlerResolver.ts";
+import { EaCOAuthModifierHandlerResolver } from "../modifiers/EaCOAuthModifierHandlerResolver.ts";
+import { EaCStripeModifierHandlerResolver } from "../modifiers/EaCStripeModifierHandlerResolver.ts";
+import { EaCTracingModifierHandlerResolver } from "../modifiers/EaCTracingModifierHandlerResolver.ts";
 
 export class RuntimeBuilder {
   constructor(protected baseConfig: EaCRuntimeConfig) {}
