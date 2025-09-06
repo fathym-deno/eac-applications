@@ -38,7 +38,37 @@ export default class FathymEaCApplicationsPlugin implements EaCRuntimePlugin {
 
     logger.Package.debug("Resolving routes after EaC processed...");
 
-    return await this.configureRuntimeRouteMatrix(eac, ioc, logger.Package);
+    const routes = await this.configureRuntimeRouteMatrix(
+      eac,
+      ioc,
+      logger.Package,
+    );
+
+    // Publish the routes to the RuntimeHost for hot-swap dispatchers, if available
+    try {
+      const { RuntimeHost } = await import("../refresh/RuntimeHost.ts");
+      const host = await ioc.Resolve<InstanceType<typeof RuntimeHost>>(
+        RuntimeHost,
+      );
+      host?.SetRoutes(routes, this.revision);
+    } catch (_err) {
+      // If not registered, ignore; the runtime will still run normally
+    }
+
+    // Auto-start refresh polling if configured
+    try {
+      const { EaCRefreshController } = await import(
+        "../refresh/EaCRefreshController.ts"
+      );
+      const controller = await ioc.Resolve<
+        InstanceType<typeof EaCRefreshController>
+      >(EaCRefreshController);
+      controller?.AutoStartFromEnv?.();
+    } catch (_err) {
+      // Optional; ignore if not wired
+    }
+
+    return routes;
   }
 
   public async Setup(

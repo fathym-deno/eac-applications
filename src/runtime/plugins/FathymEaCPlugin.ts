@@ -4,9 +4,11 @@ import {
   EaCRuntimeConfig,
   EaCRuntimePlugin,
   EaCRuntimePluginConfig,
+  IoCContainer,
   loadEaCStewardSvc,
   loadJwtConfig,
 } from "./.deps.ts";
+import { EaCSource } from "../refresh/EaCSource.ts";
 
 export default class FathymEaCPlugin implements EaCRuntimePlugin {
   constructor() {}
@@ -18,7 +20,11 @@ export default class FathymEaCPlugin implements EaCRuntimePlugin {
 
     const pluginConfig: EaCRuntimePluginConfig = {
       Name: FathymEaCPlugin.name,
+      IoC: new IoCContainer(),
     };
+
+    // Register EaCSource so other components can fetch cloud EaC on demand
+    pluginConfig.IoC!.Register(EaCSource, () => new EaCSource());
 
     let eacApiKey = Deno.env.get("EAC_API_KEY");
 
