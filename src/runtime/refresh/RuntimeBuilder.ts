@@ -2,8 +2,8 @@ import {
   type EaCRuntimeConfig,
   type EaCRuntimeHandlerRouteGroup,
   IoCContainer,
-} from "../plugins/.deps.ts";
-import { LoggingProvider } from "../_/.deps.ts";
+  LoggingProvider,
+} from "./.deps.ts";
 import {
   DefaultDFSFileHandlerResolver,
   DefaultModifierMiddlewareResolver,
@@ -41,10 +41,10 @@ import {
   EaCWorkerDistributedFileSystemHandlerResolver,
   UnknownEaCDistributedFileSystemHandlerResolver,
   UnknownEaCProcessorHandlerResolver,
-} from "../plugins/.deps.ts";
+} from "./.deps.ts";
 import FathymEaCDenoKVPlugin from "../plugins/FathymEaCDenoKVPlugin.ts";
 import FathymEaCApplicationsPlugin from "../plugins/FathymEaCApplicationsPlugin.ts";
-import type { EverythingAsCode } from "../plugins/.deps.ts";
+import type { EverythingAsCode } from "./.deps.ts";
 
 export class RuntimeBuilder {
   constructor(protected baseConfig: EaCRuntimeConfig) {}

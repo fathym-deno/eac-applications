@@ -2,7 +2,7 @@ import {
   type EaCRuntimeHandler,
   EaCRuntimeHandlerPipeline,
   type EaCRuntimeHandlerRouteGroup,
-} from "../plugins/.deps.ts";
+} from "./.deps.ts";
 
 export class RuntimeHost {
   protected routes: EaCRuntimeHandlerRouteGroup[] = [];

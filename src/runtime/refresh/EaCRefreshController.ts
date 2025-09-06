@@ -1,6 +1,5 @@
-import type { EaCRuntimeConfig } from "../plugins/.deps.ts";
-import { LoggingProvider } from "../_/.deps.ts";
-import type { EverythingAsCode } from "../plugins/.deps.ts";
+import type { EaCRuntimeConfig, EverythingAsCode } from "./.deps.ts";
+import { LoggingProvider } from "./.deps.ts";
 import { EaCSource } from "./EaCSource.ts";
 import { RuntimeBuilder } from "./RuntimeBuilder.ts";
 import { RuntimeHost } from "./RuntimeHost.ts";
@@ -13,6 +12,18 @@ export type RefreshResult = {
   routeGroups?: number;
   enterprise?: string;
   message?: string;
+};
+
+export type RefreshStatus = {
+  lastHash?: string;
+  lastSwappedAt?: number;
+  refreshing: boolean;
+  cooldownMs: number;
+  polling: boolean;
+  pollIntervalMs?: number;
+  pollJitterPct?: number;
+  lastPollAt?: number;
+  pollCount: number;
 };
 
 export class EaCRefreshController {
@@ -47,7 +58,7 @@ export class EaCRefreshController {
     this.cooldownMs = envCooldown ? Number(envCooldown) : 0;
   }
 
-  public GetStatus() {
+  public GetStatus(): RefreshStatus {
     return {
       lastHash: this.lastHash,
       lastSwappedAt: this.lastSwappedAt,
@@ -58,7 +69,7 @@ export class EaCRefreshController {
       pollJitterPct: this.pollJitterPct,
       lastPollAt: this.lastPollAt,
       pollCount: this.pollCount,
-    } as const;
+    };
   }
 
   public async RefreshNow(force = false): Promise<RefreshResult> {
@@ -158,7 +169,7 @@ export class EaCRefreshController {
     }, delay) as unknown as number;
   }
 
-  public StartPolling(intervalMs?: number, jitterPct?: number) {
+  public StartPolling(intervalMs?: number, jitterPct?: number): boolean {
     const logger = this.logging?.Package ?? console;
 
     const interval = intervalMs ??
@@ -189,11 +200,11 @@ export class EaCRefreshController {
     return true;
   }
 
-  public AutoStartFromEnv() {
+  public AutoStartFromEnv(): boolean {
     return this.StartPolling();
   }
 
-  public StopPolling() {
+  public StopPolling(): boolean {
     if (!this.polling) return false;
     this.polling = false;
     if (this.pollTimer) {
