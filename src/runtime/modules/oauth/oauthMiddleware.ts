@@ -20,17 +20,6 @@ import {
   userOAuthConnExpired,
 } from "../.deps.ts";
 
-async function getAccessRightsForUser(
-  username?: string,
-): Promise<string[]> {
-  if (!username) {
-    return [];
-  }
-
-  // Placeholder for real access rights retrieval.
-  return [];
-}
-
 export function loadOAuth2ClientConfig(
   provider: EaCProviderAsCode,
 ): DenoKVOAuth.OAuth2ClientConfig | undefined {
@@ -126,8 +115,25 @@ export function establishOAuthMiddleware(
         if (!userOAuthConnExpired(currentUsername.value)) {
           ctx.State.Username = currentUsername.value!.Username;
 
-          const rights = await getAccessRightsForUser(ctx.State.Username);
-          ctx.State.AccessRights = rights ?? [];
+          // Opportunistically resolve rights via IoC resolver; primary enforcement
+          // occurs in authorization middleware.
+          try {
+            const sym = ctx.Runtime.IoC.Symbol("AccessRightsResolver");
+            const resolver = await ctx.Runtime.IoC.Resolve<
+              (
+                ctx: EaCApplicationsRuntimeContext,
+              ) => Promise<{ rights: string[] }>
+            >(sym);
+            if (resolver) {
+              const { rights } = await resolver(
+                ctx as unknown as EaCApplicationsRuntimeContext,
+              );
+              (ctx as unknown as EaCApplicationsRuntimeContext).Runtime
+                .AccessRights = rights || [];
+            }
+          } catch (_) {
+            // no-op if not registered
+          }
 
           resp = ctx.Next();
         } else {

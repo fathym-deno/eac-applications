@@ -1,4 +1,9 @@
-import { EaCRuntimeHandler, JWTConfig, STATUS_CODE } from "../.deps.ts";
+import {
+  EaCApplicationsRuntimeContext,
+  EaCRuntimeHandler,
+  JWTConfig,
+  STATUS_CODE,
+} from "../.deps.ts";
 
 export function establishJwtValidationMiddleware(
   jwtConfig: JWTConfig,
@@ -47,6 +52,18 @@ export function establishJwtValidationMiddleware(
         ...(payload || {}),
         JWT: jwtToken,
       };
+
+      // If JWT includes AccessRights claim, copy to context-level runtime
+      try {
+        const p = payload as Record<string, unknown>;
+        const ar = p?.["AccessRights"];
+        if (Array.isArray(ar)) {
+          const ctxWithRights = ctx as unknown as EaCApplicationsRuntimeContext;
+          ctxWithRights.Runtime.AccessRights = ar as string[];
+        }
+      } catch (_) {
+        // ignore
+      }
     }
 
     return ctx.Next();

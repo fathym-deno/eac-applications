@@ -8,8 +8,14 @@ export type EaCApplicationResolverConfiguration = {
   /** The access right lookups required for the resolver. */
   AccessRightLookups?: string[];
 
-  /** Whether any access right is allowed for the resolver. */
-  IsAnyAccessRight?: boolean;
+  /**
+   * Match mode for required access rights. If omitted, falls back to
+   * IsAnyAccessRight when evaluating.
+   *
+   * 'Any' => at least one of the required rights is present.
+   * 'All' => all required rights must be present.
+   */
+  AccessRightMatch?: "Any" | "All";
 
   /** Whether the resolver is private. */
   IsPrivate?: boolean;

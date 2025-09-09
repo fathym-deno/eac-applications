@@ -5,6 +5,7 @@ export * from "./jwt/.exports.ts";
 export * from "./keepAlive/.exports.ts";
 export * from "./markdown/.exports.ts";
 export * from "./msAppInsights/.exports.ts";
+export * from "./authorization/.exports.ts";
 export * from "./oauth/.exports.ts";
 export * from "./stripe/.exports.ts";
 export * from "./tailwind/.exports.ts";

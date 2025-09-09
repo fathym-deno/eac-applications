@@ -16,6 +16,7 @@ import {
   EaCRuntimeHandlerRouteGroup,
   EaCRuntimePlugin,
   EaCRuntimePluginConfig,
+  establishAuthorizationMiddleware,
   EverythingAsCode,
   EverythingAsCodeApplications,
   IoCContainer,
@@ -266,16 +267,36 @@ export default class FathymEaCApplicationsPlugin implements EaCRuntimePlugin {
 
           const pathMatched = pattern.test(req.url);
 
-          const userRights: string[] = (ctx.State.AccessRights as string[]) ??
-            [];
+          // Prefer context-level rights if already available; otherwise defer
+          // rights enforcement to the authorization middleware.
+          const userRights: string[] =
+            ((ctx as unknown as EaCApplicationsRuntimeContext).Runtime
+              .AccessRights as
+                | string[]
+                | undefined) ??
+              (ctx.State.AccessRights as string[] | undefined) ?? [];
 
-          const required = appResolverConfig.AccessRightLookups;
+          const required = appResolverConfig.AccessRightLookups as
+            | string[]
+            | undefined;
 
-          const hasRights = !required
-            ? true
-            : appResolverConfig.IsAnyAccessRight
-            ? required.some((r) => userRights.includes(r))
-            : required.every((r) => userRights.includes(r));
+          let hasRights = true;
+          if (required && required.length > 0) {
+            if (userRights && userRights.length > 0) {
+              const arc = appResolverConfig as unknown as {
+                AccessRightMatch?: "Any" | "All";
+                IsAnyAccessRight?: boolean;
+              };
+              const matchAny = arc.AccessRightMatch === "Any" ||
+                !!arc.IsAnyAccessRight;
+
+              hasRights = matchAny
+                ? required.some((r) => userRights.includes(r))
+                : required.every((r) => userRights.includes(r));
+            } else {
+              hasRights = true; // defer evaluation to middleware
+            }
+          }
 
           const activate = pathMatched && isAllowedMethod && matchesRegex &&
             hasRights;
@@ -371,6 +392,11 @@ export default class FathymEaCApplicationsPlugin implements EaCRuntimePlugin {
         await defaultModifierMiddlewareResolver.Resolve(ioc, mod),
       );
     }
+
+    // Enforce authorization after auth-related modifiers run
+    pipeline.Append(
+      establishAuthorizationMiddleware(),
+    );
 
     pipeline.Append(
       await this.establishApplicationHandler(eac, ioc, logger, appProcCfg),

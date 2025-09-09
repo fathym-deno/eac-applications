@@ -99,3 +99,6 @@ export {
   EaCTailwindProcessorHandlerResolver,
   UnknownEaCProcessorHandlerResolver,
 } from "../processors/.exports.ts";
+
+// Modules used directly by plugins
+export { establishAuthorizationMiddleware } from "../modules/.exports.ts";
