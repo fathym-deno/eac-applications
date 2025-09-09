@@ -44,32 +44,6 @@ async function resolveAccessRights(
   return ctx.Runtime.AccessRights;
 }
 
-function expandAccessConfigsToRights(
-  ctx: EaCApplicationsRuntimeContext,
-  configLookups?: string[],
-): string[] {
-  if (!configLookups || configLookups.length === 0) return [];
-
-  const rights = new Set<string>();
-  type EaCWithAccess = {
-    AccessConfigurations?: Record<
-      string,
-      { AccessRightLookups?: string[] | null }
-    >;
-  };
-  const eacWithAccess = ctx.Runtime.EaC as unknown as EaCWithAccess;
-  const acs = eacWithAccess?.AccessConfigurations;
-
-  for (const acLookup of configLookups) {
-    const ac = acs?.[acLookup];
-    if (ac?.AccessRightLookups && Array.isArray(ac.AccessRightLookups)) {
-      for (const r of ac.AccessRightLookups) rights.add(r);
-    }
-  }
-
-  return Array.from(rights);
-}
-
 function checkMatch(
   required: string[],
   have: Set<string>,
@@ -87,16 +61,9 @@ function checkMatch(
 export function establishAuthorizationMiddleware(): EaCRuntimeHandler {
   return async (_req, ctx) => {
     const appCtx = ctx as unknown as EaCApplicationsRuntimeContext;
-    type ResolverCfg = {
-      AccessRightLookups?: string[];
-      AccessRightMatch?: "Any" | "All";
-      AccessConfigurationLookups?: string[];
-      IsAnyAccessRight?: boolean;
-      IsPrivate?: boolean;
-      IsTriggerSignIn?: boolean;
-    };
+
     const resolverCfg = appCtx.Runtime.ApplicationProcessorConfig
-      .ResolverConfig as ResolverCfg;
+      .ResolverConfig;
 
     // Gather required rights from app resolver config
     const appRequired: string[] = Array.isArray(resolverCfg.AccessRightLookups)
@@ -104,14 +71,7 @@ export function establishAuthorizationMiddleware(): EaCRuntimeHandler {
       : [];
     const appMatch: "Any" | "All" = (resolverCfg.AccessRightMatch === "All")
       ? "All"
-      : (resolverCfg.IsAnyAccessRight ? "Any" : "All");
-
-    // Expand optional AccessConfiguration lookups
-    const fromConfigs = expandAccessConfigsToRights(
-      appCtx,
-      resolverCfg.AccessConfigurationLookups,
-    );
-    appRequired.push(...fromConfigs);
+      : "Any";
 
     // If no authz required by app, skip
     const needsAuthz = appRequired.length > 0;
