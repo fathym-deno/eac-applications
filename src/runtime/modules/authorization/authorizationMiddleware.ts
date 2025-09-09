@@ -52,7 +52,6 @@ function checkMatch(
  */
 export function establishAuthorizationMiddleware(): EaCRuntimeHandler {
   return async (_req, ctx) => {
-    debugger;
     const appCtx = ctx as unknown as EaCApplicationsRuntimeContext;
 
     const resolverCfg =
