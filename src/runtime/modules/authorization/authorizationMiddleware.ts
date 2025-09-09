@@ -2,14 +2,14 @@ import {
   EaCApplicationsRuntimeContext,
   EaCRuntimeHandler,
   STATUS_CODE,
-} from "../.deps.ts";
+} from '../.deps.ts';
 
 /**
  * Resolve effective rights for this request using a pluggable resolver.
  * Falls back to JWT claim and existing ctx.Runtime.AccessRights if no resolver is registered.
  */
 async function resolveAccessRights(
-  ctx: EaCApplicationsRuntimeContext,
+  ctx: EaCApplicationsRuntimeContext
 ): Promise<string[]> {
   // Fast path
   if (ctx.Runtime.AccessRights && ctx.Runtime.AccessRights.length > 0) {
@@ -18,7 +18,7 @@ async function resolveAccessRights(
 
   // Attempt to use IoC-registered resolver if available
   try {
-    const symbol = ctx.Runtime.IoC.Symbol("AccessRightsResolver");
+    const symbol = ctx.Runtime.IoC.Symbol('AccessRightsResolver');
     const resolver = await ctx.Runtime.IoC.Resolve<
       (ctx: EaCApplicationsRuntimeContext) => Promise<{ rights: string[] }>
     >(symbol);
@@ -32,14 +32,6 @@ async function resolveAccessRights(
     // No resolver registered; fall back to claim/state
   }
 
-  // Fallback: try to pull rights from JWT payload merged into ctx.State
-  const stateAny = ctx.State as Record<string, unknown>;
-  const claim = stateAny?.["AccessRights"];
-  if (Array.isArray(claim)) {
-    ctx.Runtime.AccessRights = claim as string[];
-    return ctx.Runtime.AccessRights;
-  }
-
   ctx.Runtime.AccessRights = [];
   return ctx.Runtime.AccessRights;
 }
@@ -47,10 +39,10 @@ async function resolveAccessRights(
 function checkMatch(
   required: string[],
   have: Set<string>,
-  match: "Any" | "All",
+  isAnyMatch: boolean
 ): boolean {
   if (required.length === 0) return true;
-  if (match === "Any") return required.some((r) => have.has(r));
+  if (isAnyMatch) return required.some((r) => have.has(r));
   return required.every((r) => have.has(r));
 }
 
@@ -60,18 +52,16 @@ function checkMatch(
  */
 export function establishAuthorizationMiddleware(): EaCRuntimeHandler {
   return async (_req, ctx) => {
+    debugger;
     const appCtx = ctx as unknown as EaCApplicationsRuntimeContext;
 
-    const resolverCfg = appCtx.Runtime.ApplicationProcessorConfig
-      .ResolverConfig;
+    const resolverCfg =
+      appCtx.Runtime.ApplicationProcessorConfig.ResolverConfig;
 
     // Gather required rights from app resolver config
     const appRequired: string[] = Array.isArray(resolverCfg.AccessRightLookups)
       ? [...resolverCfg.AccessRightLookups]
       : [];
-    const appMatch: "Any" | "All" = (resolverCfg.AccessRightMatch === "All")
-      ? "All"
-      : "Any";
 
     // If no authz required by app, skip
     const needsAuthz = appRequired.length > 0;
@@ -80,7 +70,7 @@ export function establishAuthorizationMiddleware(): EaCRuntimeHandler {
     type GlobalAuth = {
       RequiredRights?: string[];
       DenyRights?: string[];
-      Match?: "Any" | "All";
+      IsAnyAccessMatch?: boolean;
     };
     type EacWithGlobal = { $GlobalOptions?: { Authorization?: GlobalAuth } };
     const eacGlobal = appCtx.Runtime.EaC as unknown as EacWithGlobal;
@@ -88,9 +78,6 @@ export function establishAuthorizationMiddleware(): EaCRuntimeHandler {
 
     const globalRequired = globalAuth?.RequiredRights ?? [];
     const globalDeny = new Set(globalAuth?.DenyRights ?? []);
-    const globalMatch: "Any" | "All" = globalAuth?.Match === "All"
-      ? "All"
-      : "Any";
 
     if (!needsAuthz && globalRequired.length === 0 && globalDeny.size === 0) {
       // Nothing to enforce
@@ -98,7 +85,7 @@ export function establishAuthorizationMiddleware(): EaCRuntimeHandler {
       appCtx.HasAccessRights = async (reqd: string[], matchAll?: boolean) => {
         const rights = await resolveAccessRights(appCtx);
         const have = new Set(rights);
-        return checkMatch(reqd, have, matchAll ? "All" : "Any");
+        return checkMatch(reqd, have, resolverCfg.IsAnyAccessMatch ?? false);
       };
       return appCtx.Next();
     }
@@ -109,33 +96,41 @@ export function establishAuthorizationMiddleware(): EaCRuntimeHandler {
     // Global deny before anything else
     const isDenied = Array.from(globalDeny).some((r) => have.has(r));
     if (isDenied) {
-      return new Response("Forbidden", { status: STATUS_CODE.Forbidden });
+      return new Response('Forbidden', { status: STATUS_CODE.Forbidden });
     }
 
     // Global required
     if (globalRequired.length > 0) {
-      const ok = checkMatch(globalRequired, have, globalMatch);
+      const ok = checkMatch(
+        globalRequired,
+        have,
+        globalAuth?.IsAnyAccessMatch ?? false
+      );
       if (!ok) {
-        return new Response("Forbidden", { status: STATUS_CODE.Forbidden });
+        return new Response('Forbidden', { status: STATUS_CODE.Forbidden });
       }
     }
 
     // App-level required
     if (needsAuthz) {
-      const ok = checkMatch(appRequired, have, appMatch);
+      const ok = checkMatch(
+        appRequired,
+        have,
+        resolverCfg.IsAnyAccessMatch ?? false
+      );
       if (!ok) {
         // If app wanted to trigger sign-in and user is anonymous, we could redirect.
         // Assume OAuth middleware has already done its part for private routes.
-        return new Response("Forbidden", { status: STATUS_CODE.Forbidden });
+        return new Response('Forbidden', { status: STATUS_CODE.Forbidden });
       }
     }
 
     // Attach helper for handlers
-    appCtx.HasAccessRights = async (reqd: string[], matchAll?: boolean) => {
-      const rightsEff = appCtx.Runtime.AccessRights ||
-        (await resolveAccessRights(appCtx));
+    appCtx.HasAccessRights = async (reqd: string[], isAnyMatch?: boolean) => {
+      const rightsEff =
+        appCtx.Runtime.AccessRights || (await resolveAccessRights(appCtx));
       const haveEff = new Set(rightsEff);
-      return checkMatch(reqd, haveEff, matchAll ? "All" : "Any");
+      return checkMatch(reqd, haveEff, isAnyMatch ?? false);
     };
 
     return appCtx.Next();
