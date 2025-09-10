@@ -92,4 +92,44 @@ export default {
         `The user '${userEaCRecord.Username}' has been invited to enterprise '${userEaCRecord.EnterpriseLookup}'.`,
     });
   },
+
+  async DELETE(req, ctx) {
+    const entLookup = ctx.State.UserEaC!.EnterpriseLookup;
+
+    const ct = req.headers.get("content-type") || "";
+    let payload: Record<string, string> = {};
+    if (ct.includes("application/json")) {
+      payload = (await req.json()) as Record<string, string>;
+    } else {
+      const fd = await req.formData();
+      fd.forEach((v, k) => (payload[k] = String(v)));
+    }
+
+    const username = (payload["Username"] || payload["username"] || "").trim();
+
+    if (!entLookup) {
+      return Response.json(
+        { Message: "The enterprise lookup must be provided." },
+        { status: STATUS_CODE.BadRequest },
+      );
+    }
+
+    if (!username) {
+      return Response.json(
+        { Message: "The username must be provided." },
+        { status: STATUS_CODE.BadRequest },
+      );
+    }
+
+    const eacKv = await ctx.Runtime.IoC.Resolve<Deno.Kv>(Deno.Kv, "eac");
+
+    // Remove user from both user- and enterprise-indexed locations.
+    await eacKv
+      .atomic()
+      .delete(["User", username, "EaC", entLookup])
+      .delete(["EaC", "Users", entLookup, username])
+      .commit();
+
+    return new Response(null, { status: STATUS_CODE.NoContent });
+  },
 } as EaCRuntimeHandlers<EaCStewardAPIState>;
