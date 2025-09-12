@@ -1,11 +1,11 @@
 ---
-title: 'EaC Runtime - Teams'
-path: './teams'
-description: 'Get started with the EaC Runtime for teams'
-tags: ['DenoJS', 'EaC Runtime', 'Microfrontends']
-date: '2022-02-22'
+title: "EaC Runtime - Teams"
+path: "./teams"
+description: "Get started with the EaC Runtime for teams"
+tags: ["DenoJS", "EaC Runtime", "Microfrontends"]
+date: "2022-02-22"
 params:
-  author: 'Michael Gearhardt (CTO)'
+  author: "Michael Gearhardt (CTO)"
 ---
 
 # EaC Runtime - Teams

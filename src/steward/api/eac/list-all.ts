@@ -1,48 +1,48 @@
-import { EaCRuntimeHandlers, EaCUserRecord } from "../.deps.ts";
+import { EaCRuntimeHandlers, EverythingAsCode } from "../.deps.ts";
 import { EaCStewardAPIState } from "../state/EaCStewardAPIState.ts";
 
 export default {
   async GET(req, ctx) {
     const logger = ctx.Runtime.Logs;
 
-    const url = new URL(req.url);
-
-    // TODO(mcgear): Shouldn't actually use ctx.State.Username here, need to add query string usage everywhere before changing
-    const username = ctx.Runtime.URLMatch.SearchParams?.get("username")! ??
-      ctx.State.Username;
-
     const parentEntLookup = ctx.State.EnterpriseLookup!;
 
     const eacKv = await ctx.Runtime.IoC.Resolve<Deno.Kv>(Deno.Kv, "eac");
 
-    const userEaCResults = await eacKv.list<EaCUserRecord>({
-      prefix: ["User", username, "EaC"],
+    // List all current EaC containers. These are stored under
+    // ["EaC", "Current", <EnterpriseLookup>]
+    const eacResults = await eacKv.list<EverythingAsCode>({
+      prefix: ["EaC", "Current"],
     });
 
-    const userEaCRecords: EaCUserRecord[] = [];
+    const eacs: EverythingAsCode[] = [];
 
     try {
-      for await (const userEaCRecord of userEaCResults) {
+      for await (const eacRecord of eacResults) {
+        const eac = eacRecord.value;
+
+        // If a parent enterprise is provided in the JWT, only include children
         if (
           !parentEntLookup ||
-          userEaCRecord.value.ParentEnterpriseLookup === parentEntLookup
+          eac.ParentEnterpriseLookup === parentEntLookup ||
+          // Allow top-level when no parent is enforced
+          (!eac.ParentEnterpriseLookup && !parentEntLookup)
         ) {
-          userEaCRecords.push(userEaCRecord.value);
+          // Trim to core props to keep payload small for listings
+          eacs.push({
+            EnterpriseLookup: eac.EnterpriseLookup,
+            ParentEnterpriseLookup: eac.ParentEnterpriseLookup,
+            Details: eac.Details,
+          } as EverythingAsCode);
         }
       }
     } catch (err) {
       logger.Package.error(
-        `The was an error processing the user eac results for '${username}'`,
+        `There was an error processing the EaC list-all results`,
         err,
       );
     }
 
-    // const userEaCs = await denoKv.getMany<EverythingAsCode[]>(
-    //   userEaCRecords.map((userEaC) => ["EaC", userEaC.EnterpriseLookup]),
-    // );
-
-    // const eacs = userEaCs.map((eac) => eac.value!);
-
-    return Response.json(userEaCRecords);
+    return Response.json(eacs);
   },
 } as EaCRuntimeHandlers<EaCStewardAPIState>;

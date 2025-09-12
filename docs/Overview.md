@@ -1,11 +1,11 @@
 ---
-title: 'EaC Runtime Introduction'
-path: './'
-description: 'An introduction to the EaC Runtime and what you can do with it'
-tags: ['DenoJS', 'EaC Runtime', 'Microfrontends']
-date: '2022-02-22'
+title: "EaC Runtime Introduction"
+path: "./"
+description: "An introduction to the EaC Runtime and what you can do with it"
+tags: ["DenoJS", "EaC Runtime", "Microfrontends"]
+date: "2022-02-22"
 params:
-  author: 'Michael Gearhardt (CTO)'
+  author: "Michael Gearhardt (CTO)"
 ---
 
 # Introduction to EaC (Everything as Code) Runtime

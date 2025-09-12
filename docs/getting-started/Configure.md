@@ -1,11 +1,11 @@
 ---
-title: 'EaC Runtime - Configuration'
-path: './configure'
-description: 'Get started configuring the EaC Runtime'
-tags: ['DenoJS', 'EaC Runtime', 'Micro Applications']
-date: '2022-02-22'
+title: "EaC Runtime - Configuration"
+path: "./configure"
+description: "Get started configuring the EaC Runtime"
+tags: ["DenoJS", "EaC Runtime", "Micro Applications"]
+date: "2022-02-22"
 params:
-  author: 'Michael Gearhardt (CTO)'
+  author: "Michael Gearhardt (CTO)"
 ---
 
 # EaC Runtime - Configuration
