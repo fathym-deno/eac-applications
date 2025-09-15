@@ -1,9 +1,9 @@
 import {
   EaCRuntimeHandlers,
-  EverythingAsCode,
   EaCUserRecord,
-} from '../.deps.ts';
-import { EaCStewardAPIState } from '../state/EaCStewardAPIState.ts';
+  EverythingAsCode,
+} from "../.deps.ts";
+import { EaCStewardAPIState } from "../state/EaCStewardAPIState.ts";
 
 export default {
   async GET(req, ctx) {
@@ -11,12 +11,12 @@ export default {
 
     const parentEntLookup = ctx.State.EnterpriseLookup!;
 
-    const eacKv = await ctx.Runtime.IoC.Resolve<Deno.Kv>(Deno.Kv, 'eac');
+    const eacKv = await ctx.Runtime.IoC.Resolve<Deno.Kv>(Deno.Kv, "eac");
 
     // List all current EaC containers. These are stored under
     // ["EaC", "Current", <EnterpriseLookup>]
     const eacResults = await eacKv.list<EverythingAsCode>({
-      prefix: ['EaC', 'Current'],
+      prefix: ["EaC", "Current"],
     });
 
     const eacs: EverythingAsCode[] = [];
@@ -37,7 +37,7 @@ export default {
 
           try {
             const usersIter = await eacKv.list<EaCUserRecord>({
-              prefix: ['EaC', 'Users', eac.EnterpriseLookup!],
+              prefix: ["EaC", "Users", eac.EnterpriseLookup!],
             });
 
             for await (const u of usersIter) {
@@ -49,7 +49,7 @@ export default {
           } catch (err) {
             logger.Package.error(
               `There was an error retrieving users for EaC '${eac.EnterpriseLookup}'.`,
-              err
+              err,
             );
           }
 
@@ -70,7 +70,7 @@ export default {
     } catch (err) {
       logger.Package.error(
         `There was an error processing the EaC list-all results`,
-        err
+        err,
       );
     }
 
