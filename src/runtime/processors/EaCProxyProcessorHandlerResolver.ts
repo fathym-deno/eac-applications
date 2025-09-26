@@ -2,8 +2,8 @@ import {
   EAC_RUNTIME_DEV,
   EaCProxyProcessor,
   isEaCProxyProcessor,
-  proxyRequest,
 } from "./.deps.ts";
+import { proxyRequest } from "./proxyRequest.ts";
 import { ProcessorHandlerResolver } from "./ProcessorHandlerResolver.ts";
 
 export const EaCProxyProcessorHandlerResolver: ProcessorHandlerResolver = {
@@ -28,7 +28,6 @@ export const EaCProxyProcessorHandlerResolver: ProcessorHandlerResolver = {
         processor.RedirectMode,
         !EAC_RUNTIME_DEV() ? processor.CacheControl : undefined,
         processor.ForceCache,
-        // ctx.Info.remoteAddr.hostname,
       );
     });
   },

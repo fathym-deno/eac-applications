@@ -1,0 +1,2 @@
+import "./baseHrefMiddleware.test.ts";
+
