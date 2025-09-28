@@ -50,7 +50,7 @@ export function establishMSAppInsightsMiddleware(
         `;
 
         // Insert the script immediately after the opening <head> tag
-        doc.head.prepend(aiScript);
+        doc.head.append(aiScript);
 
         const docHtml = doc.childNodes[1] as Element;
         const fullDoc = `<!DOCTYPE html>\n${docHtml.outerHTML}`;

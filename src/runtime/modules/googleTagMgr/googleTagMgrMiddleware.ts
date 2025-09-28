@@ -48,8 +48,8 @@ export function establishGoogleTagMgrMiddleware(
         `;
 
         // Insert the scripts immediately after the opening <head> tag
-        doc.head.prepend(gtmInlineScript);
-        doc.head.prepend(gtmScript);
+        doc.head.append(gtmScript);
+        doc.head.append(gtmInlineScript);
 
         const docHtml = doc.childNodes[1] as Element;
         const fullDoc = `<!DOCTYPE html>\n${docHtml.outerHTML}`;
