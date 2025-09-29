@@ -8,8 +8,8 @@ export type { Logger } from "jsr:@std/log@0.224.14";
 
 export * as path from "jsr:@std/path@1.0.8";
 
-export { redirectRequest } from "jsr:@fathym/common@0.2.266/http";
-export type { JWTConfig } from "jsr:@fathym/common@0.2.266/jwt";
+export { redirectRequest } from "jsr:@fathym/common@0.2.272/http";
+export type { JWTConfig } from "jsr:@fathym/common@0.2.272/jwt";
 export {
   creatAzureADB2COAuthConfig,
   createAzureADOAuthConfig,
@@ -18,7 +18,7 @@ export {
   creatOAuthConfig,
   type UserOAuthConnection,
   userOAuthConnExpired,
-} from "jsr:@fathym/common@0.2.266/oauth";
+} from "jsr:@fathym/common@0.2.272/oauth";
 
 export type { EverythingAsCode } from "jsr:@fathym/eac@0.2.122";
 

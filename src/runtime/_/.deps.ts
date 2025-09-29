@@ -1,9 +1,9 @@
 export {
   buildURLMatch,
   processCacheControlHeaders,
-} from "jsr:@fathym/common@0.2.266/http";
-export { LoggingProvider } from "jsr:@fathym/common@0.2.266/log";
-export { merge, mergeWithArrays } from "jsr:@fathym/common@0.2.266/merge";
+} from "jsr:@fathym/common@0.2.272/http";
+export { LoggingProvider } from "jsr:@fathym/common@0.2.272/log";
+export { merge, mergeWithArrays } from "jsr:@fathym/common@0.2.272/merge";
 
 export type { EverythingAsCode } from "jsr:@fathym/eac@0.2.122";
 export {

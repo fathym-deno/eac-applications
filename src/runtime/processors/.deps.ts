@@ -6,16 +6,16 @@ export { toText } from "jsr:@std/streams@1.0.9";
 export {
   establishHeaders,
   processCacheControlHeaders,
-} from "jsr:@fathym/common@0.2.266/http";
+} from "jsr:@fathym/common@0.2.272/http";
 
-export { buildURLMatch } from "jsr:@fathym/common@0.2.266/http";
-export { proxyRequest, redirectRequest } from "jsr:@fathym/common@0.2.266/http";
-export { djwt } from "jsr:@fathym/common@0.2.266/jwt";
-export { LoggingProvider } from "jsr:@fathym/common@0.2.266/log";
+export { buildURLMatch } from "jsr:@fathym/common@0.2.272/http";
+export { proxyRequest, redirectRequest } from "jsr:@fathym/common@0.2.272/http";
+export { djwt } from "jsr:@fathym/common@0.2.272/jwt";
+export { LoggingProvider } from "jsr:@fathym/common@0.2.272/log";
 export {
   oAuthRequest,
   type UserOAuthConnection,
-} from "jsr:@fathym/common@0.2.266/oauth";
+} from "jsr:@fathym/common@0.2.272/oauth";
 
 export type { EverythingAsCode } from "jsr:@fathym/eac@0.2.122";
 export type { EverythingAsCodeDFS } from "jsr:@fathym/eac@0.2.122/dfs";

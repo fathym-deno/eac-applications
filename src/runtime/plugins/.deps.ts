@@ -4,9 +4,9 @@ export {
   buildURLMatch,
   merge,
   processCacheControlHeaders,
-} from "jsr:@fathym/common@0.2.266";
-export { initializeDenoKv } from "jsr:@fathym/common@0.2.266/deno-kv";
-export { loadJwtConfig } from "jsr:@fathym/common@0.2.266/jwt";
+} from "jsr:@fathym/common@0.2.272";
+export { initializeDenoKv } from "jsr:@fathym/common@0.2.272/deno-kv";
+export { loadJwtConfig } from "jsr:@fathym/common@0.2.272/jwt";
 
 export type { EverythingAsCode } from "jsr:@fathym/eac@0.2.122";
 export {

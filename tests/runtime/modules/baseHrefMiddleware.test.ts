@@ -1,5 +1,5 @@
 import type { Logger } from "../../../src/runtime/modules/.deps.ts";
-import { assert } from "../../test.deps.ts";
+import { assert, assertEquals } from "../../test.deps.ts";
 import { establishBaseHrefMiddleware } from "../../../src/runtime/modules/baseHref/baseHrefMiddleware.ts";
 
 function createLogger(): Logger {
@@ -12,13 +12,10 @@ function createLogger(): Logger {
   } as unknown as Logger;
 }
 
-function createCtx(base: string, path: string | undefined, html: string) {
+function createCtx(base: string | undefined, html: string) {
   return {
     Runtime: {
-      URLMatch: {
-        Base: base,
-        Path: path,
-      },
+      URLMatch: base ? { Base: base } : {},
     },
     Next: () =>
       Promise.resolve(
@@ -33,18 +30,11 @@ function createCtx(base: string, path: string | undefined, html: string) {
 
 const htmlDoc = "<html><head></head><body><h1>Hi</h1></body></html>";
 
-Deno.test("uses forwarded headers to compute nested base href", async () => {
+Deno.test("uses runtime URLMatch base href", async () => {
   const middleware = establishBaseHrefMiddleware(createLogger());
 
-  const ctx = createCtx("http://admin-runtime/", "/users", htmlDoc);
-
-  const req = new Request("http://admin-runtime/users", {
-    headers: {
-      "x-eac-forwarded-proto": "http:",
-      "x-eac-forwarded-host": "localhost:5410",
-      "x-eac-forwarded-path": "/admin/users",
-    },
-  });
+  const ctx = createCtx("http://localhost:5410/admin/", htmlDoc);
+  const req = new Request("http://admin-runtime/users");
 
   const resp = await (middleware as any)(req, ctx);
   const body = await resp.text();
@@ -52,11 +42,10 @@ Deno.test("uses forwarded headers to compute nested base href", async () => {
   assert(body.includes('<base href="http://localhost:5410/admin/">'));
 });
 
-Deno.test("falls back to runtime base when forwarded headers are absent", async () => {
+Deno.test("ensures trailing slash appended to base href", async () => {
   const middleware = establishBaseHrefMiddleware(createLogger());
 
-  const ctx = createCtx("http://admin-runtime/", "/users", htmlDoc);
-
+  const ctx = createCtx("http://admin-runtime", htmlDoc);
   const req = new Request("http://admin-runtime/users");
 
   const resp = await (middleware as any)(req, ctx);
@@ -65,22 +54,17 @@ Deno.test("falls back to runtime base when forwarded headers are absent", async 
   assert(body.includes('<base href="http://admin-runtime/">'));
 });
 
-Deno.test("trims trailing slash when forwarded root path is provided", async () => {
+Deno.test("falls back to request origin when URLMatch base missing", async () => {
   const middleware = establishBaseHrefMiddleware(createLogger());
 
-  const ctx = createCtx("http://admin-runtime/", "/", htmlDoc);
-
-  const req = new Request("http://admin-runtime/", {
-    headers: {
-      "x-eac-forwarded-proto": "https:",
-      "x-eac-forwarded-host": "example.com",
-      "x-eac-forwarded-path": "/admin/",
-    },
-  });
+  const ctx = createCtx(undefined, htmlDoc);
+  const req = new Request("https://fallback.example.com/users");
 
   const resp = await (middleware as any)(req, ctx);
   const body = await resp.text();
 
-  assert(body.includes('<base href="https://example.com/admin/">'));
+  assertEquals(
+    body.includes('<base href="https://fallback.example.com/">'),
+    true,
+  );
 });
-
