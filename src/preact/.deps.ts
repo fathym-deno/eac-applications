@@ -2,13 +2,13 @@ export { parse as parseJsonc } from "jsr:@std/jsonc@1.0.0";
 export type { Logger } from "jsr:@std/log@0.224.14";
 export * as path from "jsr:@std/path@1.0.8";
 
-export { jsonMapSetClone } from "jsr:@fathym/common@0.2.272/iterables/json-map-set";
-export { LoggingProvider } from "jsr:@fathym/common@0.2.272/log";
+export { jsonMapSetClone } from "jsr:@fathym/common@0.2.273/iterables/json-map-set";
+export { LoggingProvider } from "jsr:@fathym/common@0.2.273/log";
 export {
   type DenoConfig,
   loadDenoConfigSync,
-} from "jsr:@fathym/common@0.2.272/build";
-export { merge } from "jsr:@fathym/common@0.2.272/merge";
+} from "jsr:@fathym/common@0.2.273/build";
+export { merge } from "jsr:@fathym/common@0.2.273/merge";
 
 export {
   denoPlugins,
