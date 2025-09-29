@@ -3,8 +3,10 @@ export type { Logger } from "jsr:@std/log@0.224.14/get-logger";
 
 export { STATUS_CODE } from "jsr:@std/http@1.0.13";
 export { toText } from "jsr:@std/streams@1.0.9";
-export { establishHeaders, processCacheControlHeaders } from "jsr:@fathym/common@0.2.266/http";
-
+export {
+  establishHeaders,
+  processCacheControlHeaders,
+} from "jsr:@fathym/common@0.2.266/http";
 
 export { buildURLMatch } from "jsr:@fathym/common@0.2.266/http";
 export { proxyRequest, redirectRequest } from "jsr:@fathym/common@0.2.266/http";

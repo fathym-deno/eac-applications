@@ -2,8 +2,8 @@ import {
   EAC_RUNTIME_DEV,
   EaCProxyProcessor,
   isEaCProxyProcessor,
+  proxyRequest,
 } from "./.deps.ts";
-import { proxyRequest } from "./proxyRequest.ts";
 import { ProcessorHandlerResolver } from "./ProcessorHandlerResolver.ts";
 
 export const EaCProxyProcessorHandlerResolver: ProcessorHandlerResolver = {
