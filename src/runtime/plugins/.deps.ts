@@ -8,22 +8,22 @@ export {
 export { initializeDenoKv } from "jsr:@fathym/common@0.2.273/deno-kv";
 export { loadJwtConfig } from "jsr:@fathym/common@0.2.273/jwt";
 
-export type { EverythingAsCode } from "jsr:@fathym/eac@0.2.127-integration";
+export type { EverythingAsCode } from "jsr:@fathym/eac@0.2.130";
 export {
   EAC_RUNTIME_DEV,
   type EaCRuntimeConfig,
   type EaCRuntimePluginConfig,
-} from "jsr:@fathym/eac@0.2.127-integration/runtime/config";
+} from "jsr:@fathym/eac@0.2.130/runtime/config";
 export {
   type EaCRuntimeHandler,
   EaCRuntimeHandlerPipeline,
   type EaCRuntimeHandlerRoute,
   type EaCRuntimeHandlerRouteGroup,
   // } from "../../../../eac/src/runtime/pipelines/.exports.ts";
-} from "jsr:@fathym/eac@0.2.127-integration/runtime/pipelines";
-export type { EaCRuntimePlugin } from "jsr:@fathym/eac@0.2.127-integration/runtime/plugins";
-export { EaCSteward } from "jsr:@fathym/eac@0.2.127-integration/steward";
-export { loadEaCStewardSvc } from "jsr:@fathym/eac@0.2.127-integration/steward/clients";
+} from "jsr:@fathym/eac@0.2.130/runtime/pipelines";
+export type { EaCRuntimePlugin } from "jsr:@fathym/eac@0.2.130/runtime/plugins";
+export { EaCSteward } from "jsr:@fathym/eac@0.2.130/steward";
+export { loadEaCStewardSvc } from "jsr:@fathym/eac@0.2.130/steward/clients";
 export {
   DefaultDFSFileHandlerResolver,
   EaCAzureBlobStorageDistributedFileSystemHandlerResolver,
@@ -35,7 +35,7 @@ export {
   EaCRemoteDistributedFileSystemHandlerResolver,
   EaCWorkerDistributedFileSystemHandlerResolver,
   UnknownEaCDistributedFileSystemHandlerResolver,
-} from "jsr:@fathym/eac@0.2.127-integration/dfs/resolvers";
+} from "jsr:@fathym/eac@0.2.130/dfs/resolvers";
 // } from "../../../../eac/src/dfs/resolvers/.exports.ts";
 
 export {
@@ -43,7 +43,7 @@ export {
   type EverythingAsCodeDenoKV,
   isEaCDenoKVDetails,
   isEverythingAsCodeDenoKV,
-} from "jsr:@fathym/eac-deno-kv@0.0.23";
+} from "jsr:@fathym/eac-deno-kv@0.0.24";
 
 export { IoCContainer } from "jsr:@fathym/ioc@0.0.14";
 

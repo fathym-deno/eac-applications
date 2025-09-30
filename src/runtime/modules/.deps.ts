@@ -20,19 +20,19 @@ export {
   userOAuthConnExpired,
 } from "jsr:@fathym/common@0.2.273/oauth";
 
-export type { EverythingAsCode } from "jsr:@fathym/eac@0.2.127-integration";
+export type { EverythingAsCode } from "jsr:@fathym/eac@0.2.130";
 
-export { type EaCRuntimeContext } from "jsr:@fathym/eac@0.2.127-integration/runtime";
+export { type EaCRuntimeContext } from "jsr:@fathym/eac@0.2.130/runtime";
 
-export { EAC_RUNTIME_DEV } from "jsr:@fathym/eac@0.2.127-integration/runtime/config";
+export { EAC_RUNTIME_DEV } from "jsr:@fathym/eac@0.2.130/runtime/config";
 
-export { type EaCRuntimeHandler } from "jsr:@fathym/eac@0.2.127-integration/runtime/pipelines";
+export { type EaCRuntimeHandler } from "jsr:@fathym/eac@0.2.130/runtime/pipelines";
 
 export {
   denoKvCacheReadableStream,
   DenoKVFileStream,
   denoKvReadReadableStreamCache,
-} from "jsr:@fathym/eac@0.2.127-integration/dfs/utils";
+} from "jsr:@fathym/eac@0.2.130/dfs/utils";
 
 export {
   type EaCProviderAsCode,
@@ -41,7 +41,7 @@ export {
   isEaCAzureADProviderDetails,
   isEaCGitHubAppProviderDetails,
   isEaCOAuthProviderDetails,
-} from "jsr:@fathym/eac-identity@0.0.26";
+} from "jsr:@fathym/eac-identity@0.0.27";
 
 export {
   DOMParser,

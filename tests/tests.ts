@@ -1,3 +1,2 @@
-import './log/.tests.ts';
-import './runtime/modules/.tests.ts';
-
+import "./log/.tests.ts";
+import "./runtime/modules/.tests.ts";
