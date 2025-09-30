@@ -29,6 +29,9 @@
     "version": "deno run -A jsr:@fathym/common@0/build/version"
   },
   "imports": {
+    // "jsr:@fathym/common@0.2.274/http": "../reference-architecture/src/common/http/.exports.ts",
+    // "jsr:@fathym/common@0.2.274/oauth": "../reference-architecture/src/oauth/.exports.ts",
+
     "preact": "npm:preact@10.20.1"
   },
   "lint": {

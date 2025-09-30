@@ -1,14 +1,14 @@
 // deno-lint-ignore-file no-explicit-any
-import { importDFSTypescriptModule } from "jsr:@fathym/eac@0.2.130/dfs/utils";
+import { importDFSTypescriptModule } from "jsr:@fathym/eac@0.2.131/dfs/utils";
 import matter from "npm:gray-matter@4.0.3";
 import { toText } from "jsr:@std/streams@^1.0.9";
-import { EaCDistributedFileSystemDetails } from "jsr:@fathym/eac@0.2.130/dfs";
-import { DFSFileHandler } from "jsr:@fathym/eac@0.2.130/dfs/handlers";
+import { EaCDistributedFileSystemDetails } from "jsr:@fathym/eac@0.2.131/dfs";
+import { DFSFileHandler } from "jsr:@fathym/eac@0.2.131/dfs/handlers";
 import { ComponentType, h, VNode } from "preact";
 import {
   EaCRuntimeHandlerPipeline,
   EaCRuntimeHandlers,
-} from "jsr:@fathym/eac@0.2.130/runtime/pipelines";
+} from "jsr:@fathym/eac@0.2.131/runtime/pipelines";
 
 import {
   EaCMDXProcessor,

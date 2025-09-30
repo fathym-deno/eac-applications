@@ -96,13 +96,23 @@ export function establishOAuthMiddleware(
 
       const sessionId = await helpers.getSessionId(req);
 
-      const url = new URL(req.url);
+      const forwardedPath = req.headers.get("x-eac-forwarded-path");
 
-      const { pathname, search } = url;
+      const successPath = forwardedPath
+        ? forwardedPath.startsWith("/") ? forwardedPath : `/${forwardedPath}`
+        : (ctx.Runtime.URLMatch.Path?.startsWith("/")
+          ? ctx.Runtime.URLMatch.Path
+          : `/${ctx.Runtime.URLMatch.Path ?? ""}`) || "/";
 
-      const successUrl = encodeURI(pathname + search);
+      const successUrl = encodeURI(
+        `${successPath}${ctx.Runtime.URLMatch.Search ?? ""}`,
+      );
 
-      const notSignedInRedirect = `${signInPath}?success_url=${successUrl}`;
+      const signInUrl = ctx.Runtime.URLMatch.FromBase(signInPath);
+      const signInLocation = `${signInUrl.pathname}${signInUrl.search}`;
+      const redirectSeparator = signInUrl.search ? "&" : "?";
+      const notSignedInRedirect =
+        `${signInLocation}${redirectSeparator}success_url=${successUrl}`;
 
       if (sessionId) {
         const currentUsername = await denoKv.get<UserOAuthConnection>([
