@@ -45,7 +45,7 @@ export {
   isEaCAzureADProviderDetails,
   isEaCGitHubAppProviderDetails,
   isEaCOAuthProviderDetails,
-} from "jsr:@fathym/eac-identity@0.0.27";
+} from "jsr:@fathym/eac-identity@0.0.28";
 
 export { IoCContainer } from "jsr:@fathym/ioc@0.0.14";
 
