@@ -9,18 +9,18 @@ import {
   enqueueAtomic,
   EverythingAsCode,
   STATUS_CODE,
-} from "../../.deps.ts";
-import { EaCStewardAPIState } from "../../state/EaCStewardAPIState.ts";
+} from '../../.deps.ts';
+import { EaCStewardAPIState } from '../../state/EaCStewardAPIState.ts';
 
 export default {
   async GET(req, ctx) {
     const entLookup = ctx.State.EnterpriseLookup!;
 
-    const eacKv = await ctx.Runtime.IoC.Resolve<Deno.Kv>(Deno.Kv, "eac");
+    const eacKv = await ctx.Runtime.IoC.Resolve<Deno.Kv>(Deno.Kv, 'eac');
 
     const eac = await eacKv.get<EverythingAsCode>([
-      "EaC",
-      "Current",
+      'EaC',
+      'Current',
       entLookup,
     ]);
 
@@ -36,21 +36,21 @@ export default {
 
     const url = new URL(req.url);
 
-    const skipActuators = url.searchParams.has("skipActuators");
+    const skipActuators = url.searchParams.has('skipActuators');
 
     const processingSeconds = Number.parseInt(
-      url.searchParams.get("processingSeconds")!,
+      url.searchParams.get('processingSeconds')!,
     );
 
     const eac = (await req.json()) as EverythingAsCode;
 
-    const actJWT = (eac.ActuatorJWT as string) || "";
+    const actJWT = (eac.ActuatorJWT as string) || '';
     delete eac.ActuatorJWT;
 
     const commitStatus: EaCStatus = {
       ID: crypto.randomUUID(),
       EnterpriseLookup: entLookup,
-      Messages: { Queued: "Commiting existing EaC container" },
+      Messages: { Queued: 'Commiting existing EaC container' },
       Processing: EaCStatusProcessingTypes.QUEUED,
       StartTime: new Date(Date.now()),
       Username: username!,
@@ -69,13 +69,13 @@ export default {
       JWT: actJWT || ctx.State.JWT!,
       ProcessingSeconds: processingSeconds,
       SkipActuators: skipActuators,
-      Username: "",
+      Username: '',
     };
 
     if (!commitReq.EaC.EnterpriseLookup) {
       return Response.json(
         {
-          Message: "The enterprise lookup must be provided.",
+          Message: 'The enterprise lookup must be provided.',
         },
         {
           status: STATUS_CODE.BadRequest,
@@ -83,13 +83,12 @@ export default {
       );
     }
 
-    const eacKv = await ctx.Runtime.IoC.Resolve<Deno.Kv>(Deno.Kv, "eac");
+    const eacKv = await ctx.Runtime.IoC.Resolve<Deno.Kv>(Deno.Kv, 'eac');
 
     if (!(await eacExists(eacKv, commitReq.EaC.EnterpriseLookup))) {
       return Response.json(
         {
-          Message:
-            "The enterprise must first be created before it can be updated.",
+          Message: 'The enterprise must first be created before it can be updated.',
         },
         {
           status: STATUS_CODE.BadRequest,
@@ -97,7 +96,7 @@ export default {
       );
     }
 
-    const commitKv = await ctx.Runtime.IoC.Resolve<Deno.Kv>(Deno.Kv, "commit");
+    const commitKv = await ctx.Runtime.IoC.Resolve<Deno.Kv>(Deno.Kv, 'commit');
 
     await enqueueAtomic(
       commitKv,
@@ -106,16 +105,16 @@ export default {
         return op
           .set(
             [
-              "EaC",
-              "Status",
+              'EaC',
+              'Status',
               commitStatus.EnterpriseLookup,
-              "ID",
+              'ID',
               commitStatus.ID,
             ],
             commitStatus,
           )
           .set(
-            ["EaC", "Status", commitStatus.EnterpriseLookup, "EaC"],
+            ['EaC', 'Status', commitStatus.EnterpriseLookup, 'EaC'],
             commitStatus,
           );
       },
@@ -129,8 +128,7 @@ export default {
     return Response.json({
       CommitID: commitStatus.ID,
       EnterpriseLookup: commitStatus.EnterpriseLookup,
-      Message:
-        `The enterprise '${commitReq.EaC.EnterpriseLookup}' commit has been queued.`,
+      Message: `The enterprise '${commitReq.EaC.EnterpriseLookup}' commit has been queued.`,
     } as EaCCommitResponse);
   },
 
@@ -140,17 +138,19 @@ export default {
     const username = ctx.State.Username!;
 
     const eac = (await req.json()) as EverythingAsCode;
+    const actJWT = (eac.ActuatorJWT as string) || '';
+    delete eac.ActuatorJWT;
 
     const url = new URL(req.url);
 
     const processingSeconds = Number.parseInt(
-      url.searchParams.get("processingSeconds")!,
+      url.searchParams.get('processingSeconds')!,
     );
 
     const commitStatus: EaCStatus = {
       ID: crypto.randomUUID(),
       EnterpriseLookup: entLookup!,
-      Messages: { Queued: "Deleting existing EaC container" },
+      Messages: { Queued: 'Deleting existing EaC container' },
       Processing: EaCStatusProcessingTypes.QUEUED,
       StartTime: new Date(Date.now()),
       Username: username!,
@@ -158,14 +158,14 @@ export default {
 
     const deleteReq: EaCDeleteRequest = {
       Archive: JSON.parse(
-        url.searchParams.get("archive") || "false",
+        url.searchParams.get('archive') || 'false',
       ) as boolean,
       CommitID: commitStatus.ID,
       EaC: {
         ...eac,
         EnterpriseLookup: entLookup,
       },
-      JWT: ctx.State.JWT!,
+      JWT: actJWT || ctx.State.JWT!,
       ProcessingSeconds: processingSeconds,
       Username: username,
     };
@@ -173,7 +173,7 @@ export default {
     if (!deleteReq.EaC.EnterpriseLookup) {
       return Response.json(
         {
-          Message: "The enterprise lookup must be provided.",
+          Message: 'The enterprise lookup must be provided.',
         },
         {
           status: STATUS_CODE.BadRequest,
@@ -181,13 +181,13 @@ export default {
       );
     }
 
-    const eacKv = await ctx.Runtime.IoC.Resolve<Deno.Kv>(Deno.Kv, "eac");
+    const eacKv = await ctx.Runtime.IoC.Resolve<Deno.Kv>(Deno.Kv, 'eac');
 
     if (!(await eacExists(eacKv, deleteReq.EaC.EnterpriseLookup))) {
       return Response.json(
         {
           Message: `The enterprise must first be created before it can ${
-            deleteReq.Archive ? " be archived" : "execute delete operations"
+            deleteReq.Archive ? ' be archived' : 'execute delete operations'
           }.`,
         },
         {
@@ -196,7 +196,7 @@ export default {
       );
     }
 
-    const commitKv = await ctx.Runtime.IoC.Resolve<Deno.Kv>(Deno.Kv, "commit");
+    const commitKv = await ctx.Runtime.IoC.Resolve<Deno.Kv>(Deno.Kv, 'commit');
 
     await enqueueAtomic(
       commitKv,
@@ -205,16 +205,16 @@ export default {
         return op
           .set(
             [
-              "EaC",
-              "Status",
+              'EaC',
+              'Status',
               commitStatus.EnterpriseLookup,
-              "ID",
+              'ID',
               commitStatus.ID,
             ],
             commitStatus,
           )
           .set(
-            ["EaC", "Status", commitStatus.EnterpriseLookup, "EaC"],
+            ['EaC', 'Status', commitStatus.EnterpriseLookup, 'EaC'],
             commitStatus,
           );
       },
@@ -225,7 +225,7 @@ export default {
       CommitID: commitStatus.ID,
       EnterpriseLookup: commitStatus.EnterpriseLookup,
       Message: `The enterprise '${deleteReq.EaC.EnterpriseLookup}' ${
-        deleteReq.Archive ? "archiving" : "delete operations"
+        deleteReq.Archive ? 'archiving' : 'delete operations'
       } have been queued.`,
     } as EaCCommitResponse);
   },

@@ -5,28 +5,28 @@ export {
 export { LoggingProvider } from "jsr:@fathym/common@0.2.273/log";
 export { merge, mergeWithArrays } from "jsr:@fathym/common@0.2.273/merge";
 
-export type { EverythingAsCode } from "jsr:@fathym/eac@0.2.122";
+export type { EverythingAsCode } from "jsr:@fathym/eac@0.2.127-integration";
 export {
   EAC_RUNTIME_DEV,
   type EaCRuntimeConfig,
   type EaCRuntimeSetupConfig,
   GenericEaCConfig,
   IS_DENO_DEPLOY,
-} from "jsr:@fathym/eac@0.2.122/runtime/config";
-export type { ESBuild } from "jsr:@fathym/eac@0.2.122/esbuild";
+} from "jsr:@fathym/eac@0.2.127-integration/runtime/config";
+export type { ESBuild } from "jsr:@fathym/eac@0.2.127-integration/esbuild";
 export {
   type EaCRuntimeContext,
   GenericEaCRuntime,
   // } from "../../../../eac/src/runtime/_/.exports.ts";
-} from "jsr:@fathym/eac@0.2.122/runtime";
-export { EaCLoggingProvider } from "jsr:@fathym/eac@0.2.122/runtime/logging";
+} from "jsr:@fathym/eac@0.2.127-integration/runtime";
+export { EaCLoggingProvider } from "jsr:@fathym/eac@0.2.127-integration/runtime/logging";
 export {
   type EaCRuntimeHandler,
   EaCRuntimeHandlerPipeline,
   type EaCRuntimeHandlerRouteGroup,
   type EaCRuntimeHandlerSet,
   // } from "../../../../eac/src/runtime/pipelines/.exports.ts";
-} from "jsr:@fathym/eac@0.2.122/runtime/pipelines";
+} from "jsr:@fathym/eac@0.2.127-integration/runtime/pipelines";
 
 export { IoCContainer } from "jsr:@fathym/ioc@0.0.14";
 
