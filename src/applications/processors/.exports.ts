@@ -11,6 +11,7 @@ export * from "./EaCDFSProcessor.ts";
 export * from "./EaCMDXProcessor.ts";
 export * from "./EaCNATSProcessor.ts";
 export * from "./EaCOAuthProcessor.ts";
+export * from "./EaCModelContextProtocolProcessor.ts";
 export * from "./EaCPreactAppProcessor.ts";
 export * from "./EaCProcessor.ts";
 export * from "./EaCProjectProcessorConfig.ts";

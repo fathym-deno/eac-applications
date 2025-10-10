@@ -8,6 +8,7 @@ import {
   isEaCDenoLSPProcessor,
   isEaCDFSProcessor,
   isEaCMDXProcessor,
+  isEaCModelContextProtocolProcessor,
   isEaCNATSProcessor,
   isEaCOAuthProcessor,
   isEaCPreactAppProcessor,
@@ -46,6 +47,10 @@ export class DefaultProcessorHandlerResolver
       toResolveName = "EaCMDXProcessor";
     } else if (isEaCNATSProcessor(appProcCfg.Application.Processor)) {
       toResolveName = "EaCNATSProcessor";
+    } else if (
+      isEaCModelContextProtocolProcessor(appProcCfg.Application.Processor)
+    ) {
+      toResolveName = "EaCModelContextProtocolProcessor";
     } else if (isEaCDFSProcessor(appProcCfg.Application.Processor)) {
       toResolveName = "EaCDFSProcessor";
     } else if (isEaCResponseProcessor(appProcCfg.Application.Processor)) {

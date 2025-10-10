@@ -5,6 +5,7 @@ import {
   EaCDenoLSPProcessorHandlerResolver,
   EaCDFSProcessorHandlerResolver,
   EaCMDXProcessorHandlerResolver,
+  EaCModelContextProtocolProcessorHandlerResolver,
   EaCNATSProcessorHandlerResolver,
   EaCOAuthProcessorHandlerResolver,
   EaCPreactAppProcessorHandlerResolver,
@@ -65,6 +66,14 @@ export default class FathymProcessorHandlerPlugin implements EaCRuntimePlugin {
       Name: "EaCNATSProcessor",
       Type: pluginConfig.IoC!.Symbol("ProcessorHandlerResolver"),
     });
+
+    pluginConfig.IoC!.Register(
+      () => EaCModelContextProtocolProcessorHandlerResolver,
+      {
+        Name: "EaCModelContextProtocolProcessor",
+        Type: pluginConfig.IoC!.Symbol("ProcessorHandlerResolver"),
+      },
+    );
 
     pluginConfig.IoC!.Register(() => EaCPreactAppProcessorHandlerResolver, {
       Name: "EaCPreactAppProcessor",

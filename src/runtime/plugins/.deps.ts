@@ -89,6 +89,7 @@ export {
   EaCDenoLSPProcessorHandlerResolver,
   EaCDFSProcessorHandlerResolver,
   EaCMDXProcessorHandlerResolver,
+  EaCModelContextProtocolProcessorHandlerResolver,
   EaCNATSProcessorHandlerResolver,
   EaCOAuthProcessorHandlerResolver,
   EaCPreactAppProcessorHandlerResolver,

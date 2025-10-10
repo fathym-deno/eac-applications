@@ -63,7 +63,9 @@ export {
 
 export type { EverythingAsCodeApplications } from "../../applications/.exports.ts";
 export {
+  type EaCModelContextProtocolProcessor,
   type EaCNATSProcessor,
+  isEaCModelContextProtocolProcessor,
   isEaCNATSProcessor,
 } from "../../applications/processors/.exports.ts";
 
